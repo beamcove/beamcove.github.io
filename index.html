@@ -1,227 +1,483 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Beamcove - Creating delightful digital experiences through mobile apps and productivity tools">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Beamcove - Creating delightful digital experiences through mobile apps and productivity tools"
+    />
     <title>Beamcove - Delightful Digital Experiences</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      /* ===================================
+           GLOBAL STYLES
+           Base styles and resets
+           =================================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        line-height: 1.6;
+        color: #fff;
+        background: #11101f;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ===================================
+           COMPONENT: Background Effects
+           Grid pattern and gradient orbs
+           =================================== */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .gradient-orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.3;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .gradient-orb.orb-1 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, #8b5cf6, transparent);
+        top: -200px;
+        right: -100px;
+      }
+
+      .gradient-orb.orb-2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, #ec4899, transparent);
+        bottom: -150px;
+        left: -100px;
+      }
+
+      /* ===================================
+           COMPONENT: Navigation Bar
+           Top navigation with logo and links
+           =================================== */
+      .navigation {
+        position: relative;
+        z-index: 100;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .navigation__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .navigation__logo {
+        font-size: 1.5em;
+        font-weight: 700;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .navigation__links {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+      }
+
+      .navigation__link {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .navigation__link:hover {
+        color: #fff;
+      }
+
+      /* ===================================
+           COMPONENT: Hero Section
+           Main headline and call-to-action
+           =================================== */
+      .hero {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 120px 40px 80px;
+        text-align: center;
+      }
+
+      .hero__title {
+        font-size: 5em;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 30px;
+        letter-spacing: -2px;
+        background: linear-gradient(135deg, #ffffff, #8b5cf6, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .hero__tagline {
+        font-size: 1.5em;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 50px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeInUp 0.8s ease-out 0.2s backwards;
+      }
+
+      .hero__cta-group {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 80px;
+        animation: fadeInUp 0.8s ease-out 0.4s backwards;
+      }
+
+      /* ===================================
+           COMPONENT: CTA Buttons
+           Primary and secondary action buttons
+           =================================== */
+      .cta-button {
+        padding: 16px 32px;
+        font-size: 1em;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+        display: inline-block;
+      }
+
+      .cta-button--primary {
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        color: white;
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+      }
+
+      .cta-button--primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 30px rgba(139, 92, 246, 0.6);
+      }
+
+      .cta-button--secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .cta-button--secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* ===================================
+           COMPONENT: Features Section
+           Grid of feature cards
+           =================================== */
+      .features {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 40px;
+      }
+
+      .features__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 40px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .feature-card:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(139, 92, 246, 0.5);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
+      }
+
+      .feature-card__icon {
+        font-size: 3em;
+        margin-bottom: 20px;
+        display: inline-block;
+      }
+
+      .feature-card__title {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .feature-card__description {
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
+      }
+
+      /* ===================================
+           COMPONENT: Stats Section
+           Statistics showcase
+           =================================== */
+      .stats {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 40px;
+        text-align: center;
+      }
+
+      .stats__title {
+        font-size: 2.5em;
+        font-weight: 700;
+        margin-bottom: 60px;
+        color: #fff;
+      }
+
+      .stats__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-top: 60px;
+      }
+
+      .stat-item {
+        padding: 20px;
+      }
+
+      .stat-item__number {
+        font-size: 3em;
+        font-weight: 800;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+      }
+
+      .stat-item__label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1.1em;
+      }
+
+      /* ===================================
+           COMPONENT: Footer
+           Site footer with links and copyright
+           =================================== */
+      .footer {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 60px 40px 40px;
+        margin-top: 80px;
+      }
+
+      .footer__content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .footer__copyright {
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .footer__links {
+        display: flex;
+        gap: 30px;
+      }
+
+      .footer__link {
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer__link:hover {
+        color: #fff;
+      }
+
+      /* ===================================
+           RESPONSIVE DESIGN
+           Mobile and tablet breakpoints
+           =================================== */
+      @media (max-width: 768px) {
+        .hero__title {
+          font-size: 3em;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+        .hero__tagline {
+          font-size: 1.2em;
         }
 
-        .container {
-            max-width: 800px;
-            background: white;
-            border-radius: 20px;
-            padding: 60px 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.8s ease-in;
+        .hero__cta-group {
+          flex-direction: column;
+          align-items: center;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .navigation__container {
+          padding: 0 20px;
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
+        .navigation__links {
+          gap: 15px;
         }
 
-        h1 {
-            font-size: 3.5em;
-            color: #667eea;
-            margin-bottom: 10px;
-            font-weight: 700;
-            text-align: center;
-            letter-spacing: -1px;
+        .features__grid {
+          grid-template-columns: 1fr;
         }
 
-        .tagline {
-            text-align: center;
-            font-size: 1.3em;
-            color: #764ba2;
-            margin-bottom: 40px;
-            font-weight: 500;
-            font-style: italic;
+        .footer__content {
+          flex-direction: column;
+          gap: 30px;
+          text-align: center;
         }
 
-        .description {
-            font-size: 1.2em;
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 30px;
-            text-align: center;
+        .stats__grid {
+          grid-template-columns: 1fr;
         }
-
-        .emoji {
-            font-size: 1.2em;
-            margin: 0 5px;
-        }
-
-        .cta {
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: 600;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .feature {
-            text-align: center;
-            padding: 30px 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        .feature:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-
-        .feature h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .feature p {
-            color: #666;
-            font-size: 1em;
-            line-height: 1.5;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 2px solid #eee;
-            color: #999;
-        }
-
-        footer a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 40px 25px;
-            }
-
-            h1 {
-                font-size: 2.5em;
-            }
-
-            .tagline {
-                font-size: 1.1em;
-            }
-
-            .description {
-                font-size: 1.1em;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="logo">
-            <h1>✨ Beamcove</h1>
-            <p class="tagline">Creating delightful digital experiences</p>
-        </div>
+  </head>
+  <body>
+    <!-- =============================
+         COMPONENT: Background Effects
+         ============================= -->
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
 
-        <div class="description">
-            <p>
-                Beamcove serves as the umbrella company for a fleet of creative ventures. 
-                Our mission is to create delightful digital experiences. 
-                <span class="emoji">📱</span> Whether it's mobile apps that help you navigate daily life, 
-                or <span class="emoji">⚡</span> software tools to improve productivity.
-            </p>
+    <!-- =============================
+         COMPONENT: Navigation Bar
+         ============================= -->
+    <nav class="navigation">
+      <div class="navigation__container">
+        <div class="navigation__logo">Beamcove</div>
+        <div class="navigation__links">
+          <a href="#features" class="navigation__link">Features</a>
+          <a href="https://github.com/beamcove" class="navigation__link"
+            >GitHub</a
+          >
         </div>
+      </div>
+    </nav>
 
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">📱</div>
-                <h3>Mobile First</h3>
-                <p>Beautiful apps that fit seamlessly into your daily routine</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🚀</div>
-                <h3>Productivity Focused</h3>
-                <p>Tools that help you work smarter, not harder</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">💡</div>
-                <h3>Creative Solutions</h3>
-                <p>Innovative approaches to everyday challenges</p>
-            </div>
+    <!-- =============================
+         COMPONENT: Hero Section
+         ============================= -->
+    <section class="hero">
+      <h1 class="hero__title">Building delightful digital experiences</h1>
+      <p class="hero__tagline">
+        Making tools that empower you to work smarter and live better.
+      </p>
+      <div class="hero__cta-group">
+        <a
+          href="https://github.com/beamcove"
+          class="cta-button cta-button--primary"
+          >Explore Our Work</a
+        >
+        <a href="#features" class="cta-button cta-button--secondary"
+          >Learn More</a
+        >
+      </div>
+    </section>
+
+    <!-- =============================
+         COMPONENT: Features Section
+         ============================= -->
+    <section class="features" id="features">
+      <div class="features__grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">📱</div>
+          <h3 class="feature-card__title">Mobile</h3>
+          <p class="feature-card__description">
+            Beautiful applications that fit seamlessly into your daily routine
+            with intuitive design and powerful functionality.
+          </p>
         </div>
-
-        <div class="cta">
-            <a href="https://github.com/beamcove" class="cta-button">Explore Our Work</a>
+        <div class="feature-card">
+          <div class="feature-card__icon">⚡</div>
+          <h3 class="feature-card__title">Lightning Fast</h3>
+          <p class="feature-card__description">
+            Optimized performance that keeps you productive. Work smarter, not
+            harder with our suite of tools.
+          </p>
         </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🚀</div>
+          <h3 class="feature-card__title">Always Innovating</h3>
+          <p class="feature-card__description">
+            Cutting-edge solutions powered by modern technology to solve today's
+            challenges and tomorrow's opportunities.
+          </p>
+        </div>
+      </div>
+    </section>
 
-        <footer>
-            <p>© 2025 Beamcove. All rights reserved.</p>
-            <p><a href="https://github.com/beamcove">GitHub</a></p>
-        </footer>
-    </div>
-</body>
+    <!-- =============================
+         COMPONENT: Footer
+         ============================= -->
+    <footer class="footer">
+      <div class="footer__content">
+        <div class="footer__copyright">
+          © 2026 Beamcove. All rights reserved.
+        </div>
+        <div class="footer__links">
+          <a href="https://github.com/beamcove" class="footer__link">GitHub</a>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
