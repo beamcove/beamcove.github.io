@@ -46,28 +46,13 @@
     }
   }
 
-  function preferredSystemTheme() {
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }
-
-  var initialTheme = root.getAttribute("data-theme") || getStoredTheme() || preferredSystemTheme();
+  var initialTheme = root.getAttribute("data-theme") || getStoredTheme() || "light";
   applyTheme(initialTheme, false);
 
   if (button) {
     button.addEventListener("click", function () {
       var current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
       applyTheme(current === "dark" ? "light" : "dark", true);
-    });
-  }
-
-  if (window.matchMedia) {
-    var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    mediaQuery.addEventListener("change", function () {
-      if (!getStoredTheme()) {
-        applyTheme(preferredSystemTheme(), false);
-      }
     });
   }
 })();

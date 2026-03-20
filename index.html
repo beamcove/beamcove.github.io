@@ -25,19 +25,9 @@
           var saved = localStorage.getItem(storageKey);
           if (saved === "light" || saved === "dark") {
             theme = saved;
-          } else if (
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches
-          ) {
-            theme = "dark";
           }
         } catch (err) {
-          if (
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches
-          ) {
-            theme = "dark";
-          }
+          // Keep light mode default if localStorage is unavailable.
         }
 
         document.documentElement.setAttribute("data-theme", theme);
