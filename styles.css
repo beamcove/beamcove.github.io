@@ -119,7 +119,8 @@
         position: sticky;
         top: 0;
         z-index: 50;
-        backdrop-filter: blur(8px);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
         background: var(--nav-surface);
         border-bottom: 1px solid var(--nav-border);
       }
@@ -305,12 +306,16 @@
       .hero-art svg {
         width: min(100%, 560px);
         height: auto;
+        transform: translateZ(0);
+        backface-visibility: hidden;
       }
 
       .hero-compass {
         animation: spin 12s linear infinite;
         transform-origin: center;
         transform-box: fill-box;
+        will-change: transform;
+        backface-visibility: hidden;
       }
 
       .capsules {
