@@ -372,6 +372,11 @@ a { color: inherit; }
 
 /* Hero map / chart card */
 
+.chart-card-wrap {
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+}
+
 .chart {
   position: relative;
   aspect-ratio: 4 / 5;
@@ -384,7 +389,49 @@ a { color: inherit; }
   box-shadow: var(--shadow-2);
   overflow: hidden;
   isolation: isolate;
+  transform-style: preserve-3d;
+  transform:
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg));
+  transition: transform 600ms cubic-bezier(.2,.7,.2,1), box-shadow 600ms ease;
+  will-change: transform;
 }
+
+.chart:hover,
+.chart-card-wrap.chart-active .chart {
+  transition: transform 80ms linear, box-shadow 300ms ease;
+  box-shadow:
+    var(--shadow-2),
+    0 40px 80px -30px rgba(12, 31, 43, 0.35);
+}
+
+.chart::before { transform: translateZ(2px); }
+.chart-grid    { transform: translateZ(8px); }
+.chart-coast   { transform: translateZ(18px); }
+.chart-meta    { transform: translateZ(34px); }
+.chart-x       { transform: translateZ(46px); }
+.compass-rose  { transform: translateZ(40px); }
+.chart-stamp   { transform: rotate(-9deg) translateZ(28px); }
+
+.chart::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    520px circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.18),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 400ms ease;
+  transform: translateZ(60px);
+  mix-blend-mode: screen;
+}
+
+.chart-card-wrap:hover .chart::after,
+.chart-card-wrap.chart-active .chart::after { opacity: 1; }
 
 .chart::before {
   /* faux paper edge */
@@ -549,7 +596,6 @@ body[data-hero="logbook"] .logbook-entry {
 .ribbon-track {
   display: flex;
   align-items: center;
-  gap: 56px;
   padding: 18px 0;
   font-family: var(--font-display);
   font-size: clamp(22px, 1.5vw + 1rem, 36px);
@@ -560,7 +606,13 @@ body[data-hero="logbook"] .logbook-entry {
 
 body[data-motion="off"] .ribbon-track { animation: none; }
 
-.ribbon-track span { display: inline-flex; align-items: center; gap: 56px; }
+.ribbon-track > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 56px;
+  padding-right: 56px;
+  flex-shrink: 0;
+}
 .ribbon-track .star { color: var(--brass); font-style: italic; }
 .ribbon-track .sep::before {
   content: "";
