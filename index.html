@@ -1,280 +1,434 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Beamcove is a playful umbrella company creating delightful apps and software tools with nautical charm, craft, and adventure."
-    />
-    <meta name="theme-color" content="#0f2432" />
-    <title>Beamcove | Digital Treasures, Carefully Crafted</title>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Beamcove — a playful umbrella for a fleet of creative ventures. Apps, tools, and digital treasures, carefully crafted." />
+<meta name="theme-color" content="#0c1f2b" />
+<title>Beamcove — A Fleet of Creative Ventures</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script>
-      (function () {
-        var storageKey = "beamcove-theme";
-        var theme = "light";
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-        try {
-          var saved = localStorage.getItem(storageKey);
-          if (saved === "light" || saved === "dark") {
-            theme = saved;
-          }
-        } catch (err) {
-          // Keep light mode default if localStorage is unavailable.
-        }
+<script>
+  (function () {
+    try {
+      var p = localStorage.getItem("beamcove-palette");
+      if (p === "inkwell" || p === "seaglass" || p === "parchment") {
+        document.documentElement.setAttribute("data-palette", p);
+      } else {
+        document.documentElement.setAttribute("data-palette", "seaglass");
+      }
+    } catch (e) {
+      document.documentElement.setAttribute("data-palette", "seaglass");
+    }
+  })();
+</script>
 
-        document.documentElement.setAttribute("data-theme", theme);
-      })();
-    </script>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="site-nav">
-      <div class="container">
-        <a class="brand" href="#top" aria-label="Beamcove home">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-name">beamcove</span>
+<link rel="stylesheet" href="styles.css" />
+</head>
+
+<body data-motion="on" data-grain="on" data-hero="map" data-fleet="cards">
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="Beamcove home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M16 4 L18.6 14 L26 16 L18.6 18 L16 28 L13.4 18 L6 16 L13.4 14 Z" fill="currentColor"/>
+          <circle cx="16" cy="16" r="2.2" fill="var(--bg)" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      </span>
+      <span class="brand-name"><b>Beamcove</b></span>
+    </a>
+
+    <nav class="nav-links" aria-label="Main">
+      <a class="nav-link" href="#fleet">The Fleet</a>
+      <a class="nav-link" href="#values">Charter</a>
+      <a class="nav-link" href="#logbook">Logbook</a>
+      <a class="nav-link" href="#crew">Join the Crew</a>
+      <span class="nav-cta">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg class="moon" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8 8 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M4.5 19.5l2-2M17.5 6.5l2-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </span>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy-col">
+      <div class="hero-eyebrow">
+        <span class="eyebrow">Established 2026</span>
+        <span class="coords">32°N · 17°W · Fair winds</span>
+      </div>
+
+      <h1 class="hero-title">
+        A small cove for <em>delightful</em> digital <span class="ampersand">&amp;</span> a little weird software.
+      </h1>
+
+      <p class="hero-copy">
+        Beamcove is the umbrella for a fleet of creative ventures — apps that help you navigate the day, tools that uncover quiet productivity, and one or two stranger experiments. Quality craftsmanship, with a salt breeze.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#crew">
+          Join the Crew
+          <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-
-        <nav class="nav-links" aria-label="Main navigation">
-          <a class="nav-link" href="#ventures">Ventures</a>
-          <a class="nav-link" href="#mission">Mission</a>
-          <a class="nav-link" href="https://github.com/beamcove">GitHub</a>
-          <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
-            Dark mode
-          </button>
-        </nav>
+        <a class="btn btn-ghost" href="#fleet">See the Fleet</a>
       </div>
-    </header>
 
-    <main id="top">
-      <section class="hero">
-        <div class="container hero-grid">
-          <div>
-            <span class="eyebrow">
-              <span class="eyebrow-dot" aria-hidden="true"></span>
-              Friendly neighborhood pirate cove for digital treasures
-            </span>
-            <h1 class="hero-title">
-              Beamcove builds <span class="accent">delightful software voyages</span>
-            </h1>
-            <p class="hero-copy">
-              We are the playful umbrella behind a fleet of apps, tools, and digital
-              products designed with quality craftsmanship, nautical charm, and a
-              curious spirit of adventure.
-            </p>
+      <div class="hero-meta">
+        <span><span class="dot live"></span>Currently charting</span>
+        <span>One ship in the water — Caskade</span>
+        <span>Solo captain, open deck</span>
+      </div>
+    </div>
 
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="https://github.com/beamcove">
-                Explore the Fleet
-              </a>
-              <a class="btn btn-secondary" href="#mission">Read Our Mission</a>
-            </div>
+    <aside class="chart-card-wrap" aria-hidden="true">
+      <div class="chart">
+        <div class="chart-grid"></div>
 
-            <p class="hero-note">
-              X marks the spot for future innovations. New voyages launching soon.
-            </p>
+        <div class="chart-meta">
+          <span>Chart № 001 — Beamcove Bay</span>
+          <span><b>Drawn</b> 02 May 2026</span>
+          <span>Scale 1 : 50 000</span>
+        </div>
 
-            <div class="capsules" aria-label="Beamcove highlights">
-              <div class="capsule">
-                <strong>Creative by design</strong>
-                <span>Human-first interfaces with personality</span>
-              </div>
-              <div class="capsule">
-                <strong>Built for utility</strong>
-                <span>Apps and tools that solve real daily friction</span>
-              </div>
-              <div class="capsule">
-                <strong>Quality craftsmanship</strong>
-                <span>Intentional product details that hold up</span>
-              </div>
-            </div>
+        <!-- Coastline + sea routes (simple shapes only) -->
+        <svg class="chart-coast" viewBox="0 0 400 500" preserveAspectRatio="none">
+          <defs>
+            <pattern id="dots" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="0.7" fill="currentColor" opacity="0.25"/>
+            </pattern>
+          </defs>
+          <!-- water dots -->
+          <rect width="400" height="500" fill="url(#dots)" color="var(--ink)"/>
+          <!-- island/coast: an ellipse -->
+          <ellipse cx="240" cy="290" rx="130" ry="110"
+                   fill="color-mix(in oklab, var(--brass) 18%, transparent)"
+                   stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.7"/>
+          <ellipse cx="100" cy="120" rx="44" ry="32"
+                   fill="color-mix(in oklab, var(--brass) 14%, transparent)"
+                   stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3" opacity="0.6"/>
+          <!-- dashed sea route -->
+          <path d="M40 460 Q 180 380 200 280 T 360 80"
+                fill="none" stroke="var(--rust)" stroke-width="1.4"
+                stroke-dasharray="2 5" stroke-linecap="round" opacity="0.85"/>
+          <!-- compass pivots -->
+          <circle cx="40" cy="460" r="4" fill="var(--rust)"/>
+          <circle cx="200" cy="280" r="3" fill="var(--rust)" opacity="0.7"/>
+        </svg>
+
+        <div class="chart-x" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 5 L19 19 M19 5 L5 19" stroke="var(--rust)" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="11" stroke="var(--rust)" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.7"/>
+          </svg>
+        </div>
+
+        <div class="logbook-entry">
+          <h4>Captain's Log — Day 001</h4>
+          <p>Sighted clear waters. Provisioned the studio with strong coffee and stronger fonts. Hull laid for <em>Caskade</em> — a home for home-server containers. Crew morale: high.</p>
+          <p class="signed">— A. Captain · Beamcove HQ</p>
+        </div>
+
+        <div class="compass-rose" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="var(--ink)" stroke-width="1"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--ink)" stroke-width="0.6" stroke-dasharray="1 3"/>
+            <g class="needle">
+              <polygon points="50,10 56,50 50,90 44,50" fill="var(--rust)" opacity="0.9"/>
+              <polygon points="10,50 50,56 90,50 50,44" fill="var(--ink)" opacity="0.7"/>
+              <circle cx="50" cy="50" r="3.5" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+            </g>
+            <text x="50" y="9" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6" fill="var(--ink)" letter-spacing="1">N</text>
+            <text x="50" y="98" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6" fill="var(--ink)" letter-spacing="1">S</text>
+            <text x="4" y="52" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6" fill="var(--ink)" letter-spacing="1">W</text>
+            <text x="96" y="52" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6" fill="var(--ink)" letter-spacing="1">E</text>
+          </svg>
+        </div>
+
+        <div class="chart-stamp">Beamcove<br/>Cartography<br/>MMXXVI</div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- wave divider -->
+<svg class="wave wave-line" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 14 Q 50 0 100 14 T 200 14 T 300 14 T 400 14 T 500 14 T 600 14 T 700 14 T 800 14 T 900 14 T 1000 14 T 1100 14 T 1200 14"
+        fill="none" stroke="currentColor" stroke-width="1.5"/>
+</svg>
+
+<!-- ================= MISSION RIBBON ================= -->
+<section class="ribbon" aria-label="Mission ribbon">
+  <div class="ribbon-track">
+    <span><em class="serif-italic">Adventure</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Integrity</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Balance</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Craft</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Curiosity</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Adventure</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Integrity</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Balance</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Craft</em><span class="sep"></span></span>
+    <span><em class="serif-italic">Curiosity</em><span class="sep"></span></span>
+  </div>
+</section>
+
+<!-- ================= FLEET ================= -->
+<section class="section" id="fleet">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">I. — The Fleet</div>
+        <h2 class="section-title">One ship in the water, <em>more to come.</em></h2>
+      </div>
+      <p class="section-desc">
+        Each Beamcove venture is its own small ship — a focused product solving one real thing well, designed with care, and shipped when it's ready. Here's what's on the slipway today.
+      </p>
+    </div>
+
+    <div class="fleet">
+      <article class="fleet-card feature">
+        <div class="body">
+          <span class="ship-no">Vessel № 01 · Flagship</span>
+          <h3>Caskade — your home machine, captain's chair.</h3>
+          <p>A platform for running Docker containers on the machines you already own at home, managed through a friendly web dashboard. Self-hosted, sovereign, and designed so the wheelhouse stays comfortable.</p>
+          <p>Spin up services, watch them sail, restart the stragglers — all from anywhere, without renting cloud you don't need.</p>
+          <div class="footer">
+            <span class="tag teal live"><span class="pulse"></span>In active development</span>
+            <a class="arrow-link" href="#crew">Get notified at launch →</a>
           </div>
+        </div>
+        <div class="visual stripes">
+          <span class="meta">[ DASHBOARD · 16:9 ]</span>
+          <span class="glyph">⛵</span>
+        </div>
+      </article>
 
-          <aside class="hero-art" aria-hidden="true">
-            <svg viewBox="0 0 640 480" role="presentation">
-              <defs>
-                <linearGradient id="ringOuter" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#fff4c2" />
-                  <stop offset="100%" stop-color="#ffe28a" />
-                </linearGradient>
-                <linearGradient id="starMain" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#2b8f9f" />
-                  <stop offset="100%" stop-color="#1f6f7f" />
-                </linearGradient>
-                <linearGradient id="starInner" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#ff8b72" />
-                  <stop offset="100%" stop-color="#f4765e" />
-                </linearGradient>
-              </defs>
+      <article class="fleet-card">
+        <div class="visual">
+          <span class="meta">[ FUTURE BERTH ]</span>
+          <span class="glyph">?</span>
+        </div>
+        <span class="ship-no">Vessel № 02 · Reserved</span>
+        <h3>Charts being drawn.</h3>
+        <p>The fleet is small on purpose — one ship done well before the next one launches. New ventures will dock here when they're ready to weigh anchor.</p>
+        <div class="footer">
+          <span class="tag"><span class="pulse"></span>Below the horizon</span>
+          <a class="arrow-link" href="#crew">Hear it first →</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
 
-              <circle cx="320" cy="240" r="174" fill="#d4f3eb" opacity="0.74" />
-              <circle cx="320" cy="240" r="150" fill="url(#ringOuter)" stroke="#13394d" stroke-width="8" />
-              <circle cx="320" cy="240" r="120" fill="#fff8de" stroke="#13394d" stroke-width="6" />
+<!-- ================= VALUES ================= -->
+<section class="section values" id="values">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">II. — The Charter</div>
+        <h2 class="section-title">Three things <em>we sail by.</em></h2>
+      </div>
+      <p class="section-desc">
+        Every ship needs a charter. Ours is short, on purpose — three pole stars to hold a course by when the work gets tangled.
+      </p>
+    </div>
+  </div>
 
-              <g stroke="#13394d" stroke-width="6" stroke-linecap="round">
-                <path d="M320 82 V108" />
-                <path d="M320 372 V398" />
-                <path d="M162 240 H188" />
-                <path d="M452 240 H478" />
-              </g>
+  <div class="container">
+    <div class="values-grid">
+      <article class="value">
+        <span class="icon-tiny">N</span>
+        <span class="num">01</span>
+        <h3>Adventure</h3>
+        <p>We build things we want to find out about. New mediums, new metaphors, the occasional left turn — kept honest by the next two values.</p>
+      </article>
+      <article class="value">
+        <span class="icon-tiny">E</span>
+        <span class="num">02</span>
+        <h3>Integrity</h3>
+        <p>We don't ship dishonest software. No dark patterns, no sneaky pricing, no tracking that makes us flinch. Quality you can sleep on.</p>
+      </article>
+      <article class="value">
+        <span class="icon-tiny">S</span>
+        <span class="num">03</span>
+        <h3>Balance</h3>
+        <p>Slow enough to make it good. Fast enough to make it real. The cove is meant to be a sustainable place to keep working from for a long time.</p>
+      </article>
+    </div>
+  </div>
+</section>
 
-              <g class="compass-cardinals" fill="#12384c" font-family="Space Grotesk, Manrope, sans-serif" font-size="38" font-weight="700" text-anchor="middle" stroke="#ffffff" stroke-width="7" paint-order="stroke">
-                <text x="320" y="68">N</text>
-                <text x="320" y="432">S</text>
-                <text x="112" y="252">W</text>
-                <text x="528" y="252">E</text>
-              </g>
+<!-- ================= LOGBOOK ================= -->
+<section class="section logbook" id="logbook">
+  <span class="logbook-deco" aria-hidden="true"></span>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">III. — The Logbook</div>
+        <h2 class="section-title">Recent <em>entries</em> from the cove.</h2>
+      </div>
+      <p class="section-desc">
+        A short, honest record of what's happening on the boat. Updated as things actually happen — not when marketing wants a moment.
+      </p>
+    </div>
 
-              <g class="hero-compass">
-                <polygon
-                  points="320,86 353,207 474,240 353,273 320,394 287,273 166,240 287,207"
-                  fill="url(#starMain)"
-                  stroke="#12384c"
-                  stroke-width="8"
-                  stroke-linejoin="round"
-                />
-                <polygon
-                  points="320,124 344,215 436,240 344,265 320,356 296,265 204,240 296,215"
-                  fill="url(#starInner)"
-                  stroke="#12384c"
-                  stroke-width="7"
-                  stroke-linejoin="round"
-                />
-                <circle cx="320" cy="240" r="30" fill="#fff8de" stroke="#12384c" stroke-width="6" />
-                <circle cx="308" cy="236" r="4.5" fill="#12384c" />
-                <circle cx="332" cy="236" r="4.5" fill="#12384c" />
-                <path d="M307 254 C314 261, 326 261, 333 254" fill="none" stroke="#12384c" stroke-width="4" stroke-linecap="round" />
-              </g>
+    <ul class="logbook-list">
+      <li class="log-entry">
+        <span class="date">07 May 2026</span>
+        <span class="what">Brand identity refit. New chart, new compass, <em>same north star.</em></span>
+        <span class="who">Studio</span>
+      </li>
+      <li class="log-entry">
+        <span class="date">22 Apr 2026</span>
+        <span class="what">First container fleet sailing under the <em>Caskade</em> dashboard.</span>
+        <span class="who">Caskade</span>
+      </li>
+      <li class="log-entry">
+        <span class="date">14 Apr 2026</span>
+        <span class="what">Working name confirmed: <em>Caskade</em>. Domain secured, repo opened.</span>
+        <span class="who">Caskade</span>
+      </li>
+      <li class="log-entry">
+        <span class="date">02 Apr 2026</span>
+        <span class="what">Beamcove harbour officially open for business.</span>
+        <span class="who">Studio</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= SIGNUP ================= -->
+<section class="signup" id="crew">
+  <div class="container">
+    <div class="signup-card">
+      <div>
+        <div class="kicker" style="margin-bottom:14px;">IV. — Sign the manifest</div>
+        <h2>Join the crew. <em>One letter</em> per voyage.</h2>
+        <p>An occasional dispatch from the cove — when a ship launches, when a thing is finished, when there's something genuinely worth opening. No more often than that.</p>
+
+        <form class="signup-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent = 'Welcomed aboard ⚓';">
+          <input type="email" required placeholder="captain@yourship.com" aria-label="Email" />
+          <button type="submit">Sign on</button>
+        </form>
+
+        <div class="signup-meta">
+          <span>· No spam</span>
+          <span>· Unsubscribe anytime</span>
+          <span>· ~6 letters / year</span>
+        </div>
+      </div>
+
+      <div class="signup-art" aria-hidden="true">
+        <div class="seal">
+          <svg class="seal-text" viewBox="0 0 200 200">
+            <defs>
+              <path id="sealCircle" d="M 100,100 m -82,0 a 82,82 0 1,1 164,0 a 82,82 0 1,1 -164,0" />
+            </defs>
+            <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="6" fill="currentColor">
+              <textPath xlink:href="#sealCircle" startOffset="0">BEAMCOVE · TRADING CO · EST. MMXXVI · BY HAND ·</textPath>
+            </text>
+          </svg>
+          <div class="seal-inner">
+            <span class="big">X</span>
+            <span class="label">marks the spot</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M16 4 L18.6 14 L26 16 L18.6 18 L16 28 L13.4 18 L6 16 L13.4 14 Z" fill="currentColor"/>
             </svg>
-          </aside>
-        </div>
-      </section>
-
-      <section class="ventures" id="ventures">
-        <div class="container">
-          <h2 class="section-title">A fleet of creative ventures</h2>
-          <p class="section-intro">
-            Beamcove is the playful umbrella company for projects sailing across
-            mobile, productivity, and digital tooling. Every build blends practical
-            value with a little seafaring character.
-          </p>
-
-          <div class="ventures-grid">
-            <article class="venture-card">
-              <div class="venture-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <rect x="4" y="2" width="14" height="18" rx="3" stroke="#0f2432" stroke-width="1.6" />
-                  <path d="M8 6.5h6M8 10.5h6M8 14.5h3" stroke="#0f2432" stroke-width="1.6" stroke-linecap="round" />
-                </svg>
-              </div>
-              <h3>Mobile Adventures</h3>
-              <p>
-                Handy mobile apps that navigate day-to-day life with clear UX,
-                gentle personality, and dependable performance.
-              </p>
-            </article>
-
-            <article class="venture-card">
-              <div class="venture-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <path d="M3 16L8.5 10.5 12 14 18.5 7.5" stroke="#0f2432" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-                  <circle cx="3" cy="16" r="2" fill="#0f2432" />
-                  <circle cx="8.5" cy="10.5" r="2" fill="#0f2432" />
-                  <circle cx="12" cy="14" r="2" fill="#0f2432" />
-                  <circle cx="18.5" cy="7.5" r="2" fill="#0f2432" />
-                </svg>
-              </div>
-              <h3>Productivity Treasures</h3>
-              <p>
-                Software that uncovers hidden efficiency so teams can focus,
-                automate friction, and move with confidence.
-              </p>
-            </article>
-
-            <article class="venture-card">
-              <div class="venture-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <path d="M11 2L13.8 7.2 20 8.1 15.5 12.4 16.6 18.4 11 15.5 5.4 18.4 6.5 12.4 2 8.1 8.2 7.2 11 2Z" stroke="#0f2432" stroke-width="1.5" stroke-linejoin="round" />
-                </svg>
-              </div>
-              <h3>Uncharted Creations</h3>
-              <p>
-                New digital bounties in development, each shaped by modern tech,
-                craft discipline, and playful experimentation.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="mission" id="mission">
-        <div class="container">
-          <div class="mission-wrap">
-            <div class="mission-grid">
-              <div class="mission-copy">
-                <h2>Our mission: chart delightful digital experiences</h2>
-                <p>
-                  Founded with a spirit of adventure, Beamcove builds software with
-                  nautical charm and serious product standards. We design for joy,
-                  engineer for reliability, and ship with the confidence of a crew
-                  that knows where it is headed.
-                </p>
-              </div>
-
-              <ul class="mission-list">
-                <li class="mission-item">
-                  <strong>Adventure with intent</strong>
-                  <span>We explore emerging ideas but always anchor in user value.</span>
-                </li>
-                <li class="mission-item">
-                  <strong>Craft over noise</strong>
-                  <span>Polished interaction details are treated as product fundamentals.</span>
-                </li>
-                <li class="mission-item">
-                  <strong>Playful, not gimmicky</strong>
-                  <span>Quirky brand character meets clean, professional execution.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="cta-strip">
-        <div class="container">
-          <div class="cta-panel">
-            <div>
-              <h3>Stay tuned while we hoist our sails.</h3>
-              <p>
-                Beamcove is actively preparing new voyages. Follow along as we launch
-                our next set of digital treasures.
-              </p>
-            </div>
-            <a class="btn btn-primary" href="https://github.com/beamcove">
-              Follow on GitHub
-            </a>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container">
-        <p class="small-note">Copyright 2026 Beamcove. All rights reserved.</p>
-        <div class="footer-links">
-          <a class="footer-link" href="#top">Back to top</a>
-          <a class="footer-link" href="https://github.com/beamcove">GitHub</a>
-        </div>
+          </span>
+          <span class="brand-name"><b>Beamcove</b></span>
+        </a>
+        <p>A friendly cove for digital treasures. Apps, tools, and one or two stranger things, made by a small crew with a long horizon.</p>
       </div>
-    </footer>
-    <script src="theme-toggle.js" defer></script>
-  </body>
+
+      <div>
+        <h5>The Fleet</h5>
+        <ul>
+          <li><a href="#fleet">Caskade — flagship</a></li>
+          <li><a href="#fleet">Future ventures</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>The Cove</h5>
+        <ul>
+          <li><a href="#values">Charter</a></li>
+          <li><a href="#logbook">Logbook</a></li>
+          <li><a href="#crew">Newsletter</a></li>
+          <li><a href="/cdn-cgi/l/email-protection#9af2fff6f6f5daf8fffbf7f9f5ecffb4f9f5f7">Get in touch</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Elsewhere</h5>
+        <ul>
+          <li><a href="https://github.com/beamcove">GitHub</a></li>
+          <li><a href="#">Mastodon</a></li>
+          <li><a href="#">RSS</a></li>
+          <li><a href="#">Press kit</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© MMXXVI Beamcove Trading Co.</span>
+      <span>Made carefully · 32°N 17°W</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= REACT TWEAKS ================= -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // tiny vanilla theme toggle (kept independent of React)
+  (function(){
+    var btn = document.getElementById('theme-toggle');
+    var html = document.documentElement;
+    btn && btn.addEventListener('click', function(){
+      var current = html.getAttribute('data-palette') || 'seaglass';
+      var next = current === 'inkwell' ? 'seaglass' : 'inkwell';
+      html.setAttribute('data-palette', next);
+      try { localStorage.setItem('beamcove-palette', next); } catch(e){}
+    });
+  })();
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks.jsx"></script>
+
+<div id="tweaks-root"></div>
+
+</body>
 </html>
