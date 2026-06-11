@@ -1,0 +1,75 @@
+{
+    // Full TSConfig reference: https://www.typescriptlang.org/tsconfig
+    "compilerOptions": {
+        // Compile TypeScript down to ES2020 JavaScript syntax (e.g. BigInt, Promise.allSettled, optional chaining).
+        // Vite handles further transpilation for older browsers if needed.
+        "target": "ES2020",
+
+        // Use Object.defineProperty semantics for class fields instead of simple assignment.
+        // Required to match the ECMAScript spec; recommended when target >= ES2022 or when using decorators.
+        "useDefineForClassFields": true,
+
+        // Type definitions available globally. ES2020 adds built-in JS APIs, DOM adds browser globals
+        // (window, document, etc.), and DOM.Iterable adds iterable support for DOM collections.
+        // ES2022.Error adds the standard `Error.cause` option (supported in every evergreen
+        // browser and Node 18+) without pulling the rest of ES2022 into the syntax target.
+        "lib": ["ES2020", "ES2022.Error", "DOM", "DOM.Iterable"],
+
+        // Emit ES module syntax (import/export). ESNext means the latest supported module format.
+        // Vite expects this — it natively understands ESM.
+        "module": "ESNext",
+
+        // How TypeScript resolves module paths. "bundler" mode matches how Vite/webpack/esbuild resolve
+        // imports — allows extensionless imports and package.json "exports" fields.
+        "moduleResolution": "bundler",
+
+        // Allow importing .ts/.tsx files with their extensions (e.g. import './foo.ts').
+        // Only safe with "moduleResolution": "bundler"; requires "noEmit": true.
+        "allowImportingTsExtensions": true,
+
+        // Each file is type-checked in isolation, matching how bundlers like Vite process files.
+        // Disallows features that require cross-file type information (e.g. const enum, ambient namespaces).
+        "isolatedModules": true,
+
+        // Treat every file as a module (even those without import/export), preventing accidental
+        // global scope pollution. "force" is more aggressive than "auto".
+        "moduleDetection": "force",
+
+        // Emit React 17+ JSX transform (<React.createElement> is NOT required in scope).
+        // "react-jsx" maps JSX to the new automatic runtime instead of React.createElement.
+        "jsx": "react-jsx",
+
+        // Do not emit any JavaScript output — Vite handles transpilation and bundling.
+        "noEmit": true,
+
+        // Enable all strict type-checking flags (strictNullChecks, noImplicitAny, etc.).
+        // Highly recommended; catches a wide class of bugs at compile time.
+        "strict": true,
+
+        // Beyond `strict`: treat indexed access (arr[i], obj[key]) as possibly
+        // undefined, and require every code path to return.
+        "noUncheckedIndexedAccess": true,
+        "noImplicitReturns": true,
+
+        // Skip type-checking .d.ts files in node_modules. Speeds up compilation and avoids
+        // errors from third-party types that may not be perfectly authored.
+        "skipLibCheck": true,
+
+        // Ambient types injected globally — Vitest globals (describe/it/expect/vi) and the
+        // jest-dom matchers (toBeInTheDocument, etc.) used by colocated *.test.ts(x) files.
+        "types": ["vitest/globals", "@testing-library/jest-dom"],
+
+        // Path aliases. `@/*` maps to `src/*`, so any module is reachable as
+        // `@/<module>/...` regardless of the importing file's depth.
+        // `vite-tsconfig-paths` reads this single source of truth, so Vite, Vitest,
+        // and `tsc` all resolve it identically with no per-tool duplication.
+        // (No `baseUrl` — deprecated in TS 6; `paths` entries resolve relative
+        // to this tsconfig file on their own since TS 5.0.)
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+
+    // Only include files under src/ and tests/ when type-checking this config.
+    "include": ["src", "tests"]
+}

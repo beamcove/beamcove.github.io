@@ -1,0 +1,19 @@
+# Lefthook is auto-installed via the `prepare` script in package.json on
+# `npm install`. To opt out, set `LEFTHOOK=0`. To run hooks manually:
+#   npx lefthook run pre-commit
+#
+# `{staged_files}` runs the tool only on staged files, so the pre-commit
+# stays fast even in large diffs.
+
+pre-commit:
+    parallel: true
+    commands:
+        prettier:
+            glob: "*.{ts,tsx,js,jsx,json,md,css,yml,yaml}"
+            run: npx prettier --check {staged_files}
+        eslint:
+            glob: "*.{ts,tsx,js,jsx}"
+            run: npx eslint {staged_files}
+
+# Heavier checks (typecheck, tests, build) run in CI rather than on every
+# commit — keeps `git commit` responsive on a laptop.

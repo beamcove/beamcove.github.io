@@ -1,0 +1,849 @@
+/* ============================================================
+   Beamcove landing — page styles (built on the V2 token layer)
+   Only semantic tokens + a couple of raw palette refs for the
+   brand horizon motif. No new colors invented.
+   ============================================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+body {
+    overflow-x: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* ============================================================
+   BUTTONS-AS-LINKS — design-system fidelity guard
+   Every .bc-btn on this page is an <a>. The global `a:hover` color
+   (link teal, specificity 0,1,1) outranks each variant's base color
+   (0,1,0), and the kit's :hover rules only restyle the background — so
+   without this the label flips to dark link-teal on hover/press and goes
+   unreadable. Re-assert the kit's intended colors and drop the link
+   underline for every variant EXCEPT .bc-btn--link (which is meant to
+   look like a link). This adds no new styles — it just keeps anchor
+   buttons identical to the source design-system button in all states.
+   ============================================================ */
+a.bc-btn {
+    text-decoration: none;
+}
+a.bc-btn.bc-btn--primary,
+a.bc-btn.bc-btn--primary:hover {
+    color: var(--primary-foreground);
+}
+a.bc-btn.bc-btn--secondary,
+a.bc-btn.bc-btn--secondary:hover {
+    color: var(--secondary-foreground);
+}
+a.bc-btn.bc-btn--outline,
+a.bc-btn.bc-btn--outline:hover {
+    color: var(--foreground);
+}
+a.bc-btn.bc-btn--ghost,
+a.bc-btn.bc-btn--ghost:hover {
+    color: var(--foreground);
+}
+a.bc-btn.bc-btn--pop,
+a.bc-btn.bc-btn--pop:hover {
+    color: var(--pop-foreground);
+}
+a.bc-btn.bc-btn--destructive,
+a.bc-btn.bc-btn--destructive:hover {
+    color: var(--destructive-foreground);
+}
+
+/* shared container */
+.lp-container {
+    width: 100%;
+    max-width: 1140px;
+    margin-inline: auto;
+    padding-inline: var(--s-5);
+}
+@media (max-width: 640px) {
+    .lp-container {
+        padding-inline: var(--s-4);
+    }
+}
+
+/* generic section rhythm */
+.lp-section {
+    padding-block: clamp(72px, 9vw, 128px);
+}
+.lp-section--tight {
+    padding-block: clamp(56px, 7vw, 96px);
+}
+
+.lp-head {
+    max-width: 660px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin-bottom: var(--s-7);
+}
+.lp-head--center {
+    margin-inline: auto;
+    text-align: center;
+    align-items: center;
+}
+.lp-head h2 {
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+}
+.lp-head .lead {
+    font-size: var(--text-lg);
+}
+
+/* the brand horizon motif — a stack of thin stripes echoing the logo */
+.lp-horizon {
+    display: flex;
+    flex-direction: column;
+    width: 56px;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+}
+.lp-horizon i {
+    display: block;
+    height: 4px;
+}
+.lp-horizon i:nth-child(1) {
+    background: var(--coral-400);
+}
+.lp-horizon i:nth-child(2) {
+    background: var(--coral-300);
+}
+.lp-horizon i:nth-child(3) {
+    background: var(--buoy-300);
+}
+.lp-horizon i:nth-child(4) {
+    background: var(--harbor-300);
+}
+.lp-horizon i:nth-child(5) {
+    background: var(--harbor-500);
+}
+.lp-horizon i:nth-child(6) {
+    background: var(--harbor-800);
+}
+
+/* reveal-on-scroll */
+.lp-reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+        opacity 0.6s var(--ease-out),
+        transform 0.6s var(--ease-out);
+}
+.lp-reveal.in {
+    opacity: 1;
+    transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+    .lp-reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.lp-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+    background: color-mix(in oklab, var(--background) 72%, transparent);
+    border-bottom: 1px solid transparent;
+    transition:
+        border-color var(--dur-base) var(--ease-out),
+        background var(--dur-base) var(--ease-out);
+}
+.lp-nav.is-scrolled {
+    border-bottom-color: var(--rule);
+    background: color-mix(in oklab, var(--background) 90%, transparent);
+}
+.lp-nav__inner {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+}
+.lp-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+.lp-brand img {
+    height: 30px;
+    width: auto;
+    display: block;
+}
+.lp-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.lp-navlink {
+    text-decoration: none;
+    color: var(--muted-foreground);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: var(--r-sm);
+    transition:
+        color var(--dur-fast) var(--ease-out),
+        background var(--dur-fast) var(--ease-out);
+}
+.lp-navlink:hover {
+    color: var(--foreground);
+    background: var(--secondary);
+    text-decoration: none;
+}
+.lp-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+}
+@media (max-width: 860px) {
+    .lp-nav__links {
+        display: none;
+    }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.lp-hero {
+    position: relative;
+    --ink-blur: 56px;
+    --ink-size: 64%;
+}
+.lp-hero .ink-bg__content {
+    min-height: clamp(540px, 82vh, 820px);
+    display: grid;
+    place-items: center;
+    padding-block: clamp(64px, 10vw, 120px);
+}
+.lp-hero__inner {
+    max-width: 840px;
+    margin-inline: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-5);
+    padding-inline: var(--s-5);
+}
+.lp-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: color-mix(in oklab, var(--card) 78%, transparent);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: 6px 14px 6px 10px;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--foreground);
+    box-shadow: var(--shadow-xs);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+.lp-status .pulse {
+    position: relative;
+    width: 8px;
+    height: 8px;
+}
+.lp-status .pulse i {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--success);
+}
+.lp-status .pulse i:first-child {
+    animation: lp-ping 1.8s var(--ease-out) infinite;
+    opacity: 0.6;
+}
+@keyframes lp-ping {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    80%,
+    100% {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+}
+.lp-hero h1 {
+    font-size: clamp(2.6rem, 6.4vw, 4.6rem);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.04;
+}
+.lp-hero h1 em {
+    font-style: normal;
+    color: var(--primary);
+}
+.lp-hero .lead {
+    max-width: 580px;
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+}
+.lp-hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    justify-content: center;
+    margin-top: var(--s-2);
+}
+.lp-scrollcue {
+    margin-top: var(--s-6);
+    color: var(--muted-foreground);
+    text-decoration: none;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--text-2xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-allcaps);
+}
+.lp-scrollcue:hover {
+    color: var(--foreground);
+    text-decoration: none;
+}
+.lp-scrollcue svg {
+    width: 18px;
+    height: 18px;
+    animation: lp-bob 2.2s var(--ease-wave) infinite;
+}
+@keyframes lp-bob {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(4px);
+    }
+}
+
+/* ============================================================
+   WHAT WE DO
+   ============================================================ */
+.lp-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-5);
+}
+@media (max-width: 880px) {
+    .lp-grid-3 {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin-inline: auto;
+    }
+}
+
+.lp-feature {
+    padding: var(--s-6);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+}
+.lp-feature__icon {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--r-lg);
+    background: var(--accent);
+    color: var(--accent-foreground);
+    display: grid;
+    place-items: center;
+    margin-bottom: var(--s-2);
+}
+.lp-feature__icon svg {
+    width: 22px;
+    height: 22px;
+}
+.lp-feature h3 {
+    font-size: var(--text-xl);
+}
+.lp-feature p {
+    color: var(--muted-foreground);
+    line-height: var(--leading-normal);
+}
+
+/* ============================================================
+   THE FLEET (featured venture spotlight)
+   ============================================================ */
+.lp-spotlight {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    border: 1px solid var(--border);
+    border-radius: var(--r-2xl);
+    overflow: hidden;
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    transition:
+        box-shadow var(--dur-base) var(--ease-out),
+        transform var(--dur-base) var(--ease-out);
+}
+.lp-spotlight:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+@media (max-width: 720px) {
+    .lp-spotlight {
+        grid-template-columns: 1fr;
+    }
+}
+
+.lp-spotlight__plate {
+    --ink-size: 120%;
+    --ink-blur: 48px;
+    min-height: 300px;
+    display: grid;
+    place-items: center;
+}
+@media (max-width: 720px) {
+    .lp-spotlight__plate {
+        min-height: 200px;
+    }
+}
+.lp-spotlight__plate-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-4);
+}
+.lp-spotlight__plate-inner svg {
+    width: 56px;
+    height: 56px;
+    color: var(--harbor-700);
+    stroke-width: 1.25;
+}
+.lp-spotlight__horizon {
+    width: 84px;
+}
+
+.lp-spotlight__body {
+    padding: clamp(28px, 4vw, 48px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+}
+.lp-spotlight__body .eyebrow {
+    margin-bottom: calc(var(--s-1) * -1);
+}
+.lp-spotlight__body h3 {
+    font-size: var(--text-2xl);
+}
+.lp-spotlight__body > p {
+    color: var(--muted-foreground);
+    line-height: var(--leading-normal);
+    max-width: 46ch;
+}
+.lp-spotlight__foot {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+    margin-top: var(--s-2);
+}
+.lp-spotlight__hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--text-sm);
+    color: var(--muted-foreground);
+}
+.lp-spotlight__hint svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* gentle pulse on the status dot — signals "incoming" */
+.lp-pulse {
+    animation: lp-pulse 1.8s var(--ease-out, ease-in-out) infinite;
+}
+@keyframes lp-pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.45;
+        transform: scale(0.7);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .lp-pulse {
+        animation: none;
+    }
+}
+
+.lp-fleet-note {
+    margin-top: var(--s-6);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted-foreground);
+    font-size: var(--text-sm);
+    justify-content: center;
+}
+.lp-fleet-note svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ============================================================
+   VALUES
+   ============================================================ */
+.lp-values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+}
+@media (max-width: 760px) {
+    .lp-values {
+        grid-template-columns: 1fr;
+    }
+}
+.lp-value {
+    padding: var(--s-6) var(--s-5);
+    border-bottom: 1px solid var(--rule);
+}
+.lp-value:not(:last-child) {
+    border-right: 1px solid var(--rule);
+}
+@media (max-width: 760px) {
+    .lp-value:not(:last-child) {
+        border-right: 0;
+    }
+}
+.lp-value__n {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--primary);
+    font-weight: 600;
+}
+.lp-value h3 {
+    font-size: var(--text-xl);
+    margin-top: var(--s-3);
+}
+.lp-value p {
+    color: var(--muted-foreground);
+    margin-top: var(--s-2);
+    line-height: var(--leading-normal);
+}
+
+/* ============================================================
+   CREW
+   ============================================================ */
+.lp-crew-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-4);
+}
+@media (max-width: 900px) {
+    .lp-crew-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 480px) {
+    .lp-crew-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.lp-crew-card {
+    padding: var(--s-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    align-items: flex-start;
+}
+.lp-crew-card .bc-avatar {
+    width: 52px;
+    height: 52px;
+    font-size: var(--text-lg);
+    margin-bottom: var(--s-2);
+}
+.lp-crew-card h3 {
+    font-size: var(--text-md);
+}
+.lp-crew-card .role {
+    font-size: var(--text-sm);
+    color: var(--primary);
+    font-weight: 600;
+}
+.lp-crew-card p {
+    font-size: var(--text-sm);
+    color: var(--muted-foreground);
+    line-height: var(--leading-snug);
+}
+.lp-crew-card__links {
+    display: flex;
+    gap: 4px;
+    margin-top: auto;
+    padding-top: var(--s-2);
+}
+.lp-crew-card__links a {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--r-sm);
+    display: grid;
+    place-items: center;
+    color: var(--muted-foreground);
+    transition:
+        color var(--dur-fast) var(--ease-out),
+        background var(--dur-fast) var(--ease-out),
+        transform var(--dur-fast) var(--ease-out);
+}
+.lp-crew-card__links a:hover {
+    color: var(--primary);
+    background: var(--secondary);
+    transform: translateY(-1px);
+}
+.lp-crew-card__links svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+.lp-crew-open {
+    border: 1px dashed var(--border-strong);
+    background: transparent;
+    align-items: flex-start;
+    justify-content: center;
+    text-decoration: none;
+}
+.lp-crew-open .seat {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--r-pill);
+    border: 1px dashed var(--border-strong);
+    display: grid;
+    place-items: center;
+    color: var(--muted-foreground);
+    margin-bottom: var(--s-2);
+}
+.lp-crew-open .seat svg {
+    width: 22px;
+    height: 22px;
+}
+.lp-crew-open:hover {
+    border-color: var(--primary);
+}
+
+/* ============================================================
+   NEWSLETTER / COME ABOARD
+   ============================================================ */
+.lp-cta {
+    position: relative;
+    --ink-blur: 60px;
+    --ink-size: 70%;
+    border-radius: var(--r-2xl);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+.lp-cta .ink-bg__content {
+    padding: clamp(48px, 7vw, 88px) var(--s-5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--s-4);
+}
+.lp-cta .eyebrow {
+    color: var(--primary);
+}
+.lp-cta h2 {
+    color: var(--foreground);
+    font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+    max-width: 16ch;
+}
+.lp-cta .lead {
+    color: var(--muted-foreground);
+    max-width: 460px;
+    font-size: var(--text-lg);
+}
+.lp-form {
+    display: flex;
+    gap: var(--s-3);
+    width: 100%;
+    max-width: 460px;
+    margin-top: var(--s-3);
+}
+.lp-form__field {
+    flex: 1;
+    position: relative;
+}
+/* Use the design-system .bc-input verbatim — only bump the height so the
+   field sits flush with the lg button. Focus ring is the kit's harbor ring. */
+.lp-form .bc-input {
+    height: 46px;
+    font-size: var(--text-md);
+    padding: 0 16px;
+}
+.lp-form .bc-btn--lg {
+    flex: none;
+}
+.lp-cta__error {
+    color: var(--danger-foreground);
+    font-size: var(--text-sm);
+    min-height: 1.2em;
+    font-weight: 500;
+}
+.lp-cta__success {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid color-mix(in oklab, var(--pop-strong) 60%, var(--border));
+    color: var(--foreground);
+    padding: 14px 22px;
+    border-radius: var(--r-pill);
+    font-weight: 600;
+    margin-top: var(--s-3);
+    box-shadow: var(--shadow-xs);
+}
+.lp-cta__success svg {
+    width: 20px;
+    height: 20px;
+    color: var(--primary);
+}
+.lp-cta__fine {
+    color: var(--muted-foreground);
+    font-size: var(--text-xs);
+    margin-top: var(--s-1);
+}
+@media (max-width: 520px) {
+    .lp-form {
+        flex-direction: column;
+    }
+    .lp-form .bc-btn--lg {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.lp-footer {
+    border-top: 1px solid var(--border);
+    background: var(--card);
+}
+.lp-footer__top {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: var(--s-6);
+    padding-block: var(--s-8) var(--s-7);
+}
+@media (max-width: 860px) {
+    .lp-footer__top {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 480px) {
+    .lp-footer__top {
+        grid-template-columns: 1fr;
+        gap: var(--s-5);
+    }
+}
+.lp-footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    max-width: 280px;
+}
+.lp-footer__brand img {
+    height: 30px;
+    width: auto;
+}
+.lp-footer__brand p {
+    color: var(--muted-foreground);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+}
+.lp-footcol h4 {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-allcaps);
+    color: var(--muted-foreground);
+    margin-bottom: var(--s-4);
+}
+.lp-footcol ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+}
+.lp-footcol a {
+    color: var(--foreground);
+    text-decoration: none;
+    font-size: var(--text-sm);
+}
+.lp-footcol a:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+.lp-footer__bar {
+    border-top: 1px solid var(--rule);
+    padding-block: var(--s-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+}
+.lp-footer__bar .small {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.lp-footer__bar .tag {
+    font-family: var(--font-mono);
+    color: var(--muted-foreground);
+    font-size: var(--text-xs);
+}
+.lp-social {
+    display: flex;
+    gap: var(--s-2);
+}
+.lp-social a {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--r-sm);
+    display: grid;
+    place-items: center;
+    color: var(--muted-foreground);
+    border: 1px solid var(--border);
+    background: var(--background);
+    text-decoration: none;
+    transition:
+        color var(--dur-fast) var(--ease-out),
+        border-color var(--dur-fast) var(--ease-out),
+        transform var(--dur-fast) var(--ease-out);
+}
+.lp-social a:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+.lp-social svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}

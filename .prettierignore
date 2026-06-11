@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+pnpm-lock.yaml
+yarn.lock
+
+# Build outputs
+dist
+build
+
+# Type checking
+*.tsbuildinfo
+
+# Coverage
+coverage
+lcov-report
+.nyc_output
+
+# Repository files
+.git
+
+# Lock files
+package-lock.json
+
+# Static files served verbatim (CNAME, SVGs)
+public
+
+# OS
+.DS_Store
+Thumbs.db
