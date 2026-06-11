@@ -1,55 +1,15 @@
 /* Beamcove landing — app root.
-   Assembles the sections, wires the Tweaks panel (ink preset, hero copy,
-   section visibility), and keeps lucide icons + scroll reveals in sync. */
+   Assembles the sections and keeps lucide icons + scroll reveals in sync. */
 
 import { useEffect } from "react";
 
 import { Newsletter } from "@/app/components/newsletter";
 import { Crew, Fleet, Footer, Hero, Nav, Values, What } from "@/app/components/sections";
 import { refreshIcons } from "@/app/utils/icons";
-import {
-    TweakSection,
-    TweakSelect,
-    TweaksPanel,
-    TweakText,
-    TweakToggle,
-} from "@/tweaks/tweaks-panel";
-import { useTweaks } from "@/tweaks/use-tweaks";
 
-type LandingTweaks = {
-    inkPreset: string;
-    heroEyebrow: string;
-    heroHeadline: string;
-    heroSubhead: string;
-    showWhat: boolean;
-    showFleet: boolean;
-    showValues: boolean;
-    showCrew: boolean;
-};
-
-// prettier-ignore
-const TWEAK_DEFAULTS: LandingTweaks = /*EDITMODE-BEGIN*/ {
-  inkPreset: "shore",
-  heroEyebrow: "A fleet of creative ventures",
-  heroHeadline: "Charting new horizons in the digital sea.",
-  heroSubhead:
-    "Beamcove is home to a fleet of creative digital ventures — apps, tools, and other bounties, each built with craft and a little seafaring fun.",
-  showWhat: true,
-  showFleet: true,
-  showValues: true,
-  showCrew: true,
-}; /*EDITMODE-END*/
-
-const INK_PRESETS = [
-    { value: "shore", label: "Shore" },
-    { value: "reef", label: "Reef" },
-    { value: "dusk", label: "Dusk" },
-    { value: "calm", label: "Calm" },
-];
+const INK_PRESET = "shore";
 
 export default function App() {
-    const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-
     // re-stamp lucide icons whenever the rendered tree changes
     useEffect(() => {
         refreshIcons();
@@ -94,67 +54,18 @@ export default function App() {
             <Nav />
             <main>
                 <Hero
-                    inkPreset={t.inkPreset}
-                    eyebrow={t.heroEyebrow}
-                    headline={t.heroHeadline}
-                    subhead={t.heroSubhead}
+                    inkPreset={INK_PRESET}
+                    eyebrow="A fleet of creative ventures"
+                    headline="Charting new horizons in the digital sea."
+                    subhead="Beamcove is home to a fleet of creative digital ventures — apps, tools, and other bounties, each built with craft and a little seafaring fun."
                 />
-                {t.showWhat && <What />}
-                {t.showFleet && <Fleet />}
-                {t.showValues && <Values />}
-                {t.showCrew && <Crew />}
-                <Newsletter inkPreset={t.inkPreset} />
+                <What />
+                <Fleet />
+                <Values />
+                <Crew />
+                <Newsletter inkPreset={INK_PRESET} />
             </main>
             <Footer />
-
-            <TweaksPanel>
-                <TweakSection label="Ink background" />
-                <TweakSelect
-                    label="Preset"
-                    value={t.inkPreset}
-                    options={INK_PRESETS}
-                    onChange={(v) => setTweak("inkPreset", v)}
-                />
-
-                <TweakSection label="Hero copy" />
-                <TweakText
-                    label="Eyebrow"
-                    value={t.heroEyebrow}
-                    onChange={(v) => setTweak("heroEyebrow", v)}
-                />
-                <TweakText
-                    label="Headline"
-                    value={t.heroHeadline}
-                    onChange={(v) => setTweak("heroHeadline", v)}
-                />
-                <TweakText
-                    label="Subhead"
-                    value={t.heroSubhead}
-                    onChange={(v) => setTweak("heroSubhead", v)}
-                />
-
-                <TweakSection label="Sections" />
-                <TweakToggle
-                    label="What we do"
-                    value={t.showWhat}
-                    onChange={(v) => setTweak("showWhat", v)}
-                />
-                <TweakToggle
-                    label="The fleet"
-                    value={t.showFleet}
-                    onChange={(v) => setTweak("showFleet", v)}
-                />
-                <TweakToggle
-                    label="Values"
-                    value={t.showValues}
-                    onChange={(v) => setTweak("showValues", v)}
-                />
-                <TweakToggle
-                    label="The crew"
-                    value={t.showCrew}
-                    onChange={(v) => setTweak("showCrew", v)}
-                />
-            </TweaksPanel>
         </>
     );
 }

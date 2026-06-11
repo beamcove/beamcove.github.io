@@ -2,9 +2,11 @@
 
 The Beamcove landing page, served at [beamcove.com](https://beamcove.com) via GitHub Pages.
 
-A Vite + React + TypeScript single-page site. Sections live in `src/app/components/`, the
-reusable Tweaks panel (live-edit UI driven by a host page over `postMessage`) in `src/tweaks/`,
-and stylesheets in `src/app/styles/` (imported in cascade order from `src/main.tsx`).
+A Vite + React + TypeScript single-page site. Sections live in `src/app/components/` and
+stylesheets in `src/app/styles/` (imported in cascade order from `src/main.tsx`).
+
+Deeper documentation lives in [docs/](docs/): [architecture](docs/architecture.md),
+[development workflow](docs/development.md), and [deployment](docs/deployment.md).
 
 ## Development
 

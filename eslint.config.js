@@ -50,25 +50,6 @@ export default tseslint.config(
     },
 
     /**
-     * Tweaks panel exceptions
-     *
-     * The panel header is a mouse-only drag handle and the segmented control is
-     * a pointer-driven radiogroup — intentional prototyping UI that predates the
-     * refactor. The rendered markup must stay identical, so relax the a11y rules
-     * here rather than change the DOM. Likewise the panel reads its drag-offset
-     * ref during render (initial position) and TweakRadio keeps a "latest value"
-     * ref in sync during render — deliberate patterns the refs rule flags.
-     */
-    {
-        files: ["src/tweaks/tweaks-panel.tsx"],
-        rules: {
-            "jsx-a11y/no-static-element-interactions": "off",
-            "jsx-a11y/no-noninteractive-element-interactions": "off",
-            "react-hooks/refs": "off",
-        },
-    },
-
-    /**
      * Prettier Integration
      * @see https://github.com/prettier/eslint-config-prettier
      *

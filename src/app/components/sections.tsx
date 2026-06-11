@@ -1,7 +1,7 @@
 /* Beamcove landing — section components.
-   Stateless & presentational; copy comes in via props from app.tsx so the
-   Tweaks panel can edit hero text live. Each section is self-contained so
-   adding/removing one is a single line in app.tsx's render. */
+   Stateless & presentational; hero copy comes in via props from app.tsx.
+   Each section is self-contained so adding/removing one is a single line
+   in app.tsx's render. */
 
 import { useEffect, useState } from "react";
 

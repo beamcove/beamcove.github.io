@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import App from "@/app/app";
 
 describe("App", () => {
-    it("renders the landing page with the default tweak copy", () => {
+    it("renders the landing page", () => {
         render(<App />);
         expect(
             screen.getByRole("heading", { level: 1, name: /charting new horizons/i }),
