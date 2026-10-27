@@ -79,7 +79,7 @@ to production, see [deployment.md](deployment.md).
 | Section       | File                        | Design-system pieces and motion                                        |
 | ------------- | --------------------------- | ---------------------------------------------------------------------- |
 | Header        | `site-header.tsx`           | Wordmark, ghost theme toggle, secondary Button; hairline once scrolled |
-| Hero          | `hero.tsx`, `beam-dots.tsx` | Overprint `Splash` + glass `Card` (latest log entry); lighthouse dots  |
+| Hero          | `hero.tsx`, `beam-dots.tsx` | Overprint `Splash`; shapes print in once; lighthouse dots              |
 | Ticker        | `ticker.tsx`                | Mono studio lines with beacon dots, slow marquee                       |
 | What we build | `what-we-build.tsx`         | Band `Card`s (band tone = kind of venture), staggered reveal           |
 | Our story     | `story.tsx`                 | Section head + `Stat` row (founded, home port, crew)                   |

@@ -353,7 +353,7 @@ main > .section:last-child {
     box-shadow: inset 0 1px 0 var(--line);
 }
 
-/* ── Hero art: lighthouse dots + glass card ────────── */
+/* ── Hero art: lighthouse dots ────────────────────── */
 .beam-dots {
     position: absolute;
     inset: 0;
@@ -362,21 +362,6 @@ main > .section:last-child {
     z-index: -1;
     pointer-events: none;
     mix-blend-mode: multiply;
-}
-.hero-glass {
-    position: absolute;
-    right: var(--space-12);
-    bottom: var(--space-12);
-    width: 280px;
-}
-.hero-glass .mono {
-    color: var(--ink-subtle);
-}
-.hero-glass time {
-    display: block;
-}
-.hero-glass-title {
-    margin: var(--space-1) 0 var(--space-4);
 }
 
 /* ── Ticker ───────────────────────────────────────── */
@@ -1063,7 +1048,7 @@ main > .section:last-child {
     }
 }
 
-/* hero: content rises, shapes print in, the glass card lands last */
+/* hero: content rises, shapes print in */
 .motion .hero .bc-splash-content > * {
     animation: bc-rise var(--reveal) var(--ease-out) both;
 }
@@ -1081,9 +1066,6 @@ main > .section:last-child {
 }
 .motion .hero .bc-splash-shapes .bar {
     animation: bc-print-bar 1200ms var(--ease-out) 420ms both;
-}
-.motion .hero-glass {
-    animation: bc-rise 900ms var(--ease-out) 900ms both;
 }
 
 /* scroll reveals */
@@ -1124,11 +1106,6 @@ main > .section:last-child {
 }
 
 /* ── Responsive ───────────────────────────────────── */
-@media (max-width: 1080px) {
-    .hero-glass {
-        display: none;
-    }
-}
 @media (max-width: 960px) {
     .story,
     .value-row {

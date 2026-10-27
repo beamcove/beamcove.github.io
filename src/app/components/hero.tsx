@@ -2,13 +2,10 @@ import { ArrowRight } from "lucide";
 
 import { BeamDots } from "@/app/components/beam-dots";
 import { Icon } from "@/app/components/icon";
-import { MoreLink } from "@/app/components/more-link";
-import { LOGBOOK } from "@/content/logbook";
-import { formatDate, ROUTES, SITE } from "@/content/site";
-import { Button, Card, Splash } from "@/design-system";
+import { ROUTES, SITE } from "@/content/site";
+import { Button, Splash } from "@/design-system";
 
 export function Hero() {
-    const latest = LOGBOOK.find((entry) => entry.date);
     return (
         <div className="container hero-wrap" id="top">
             <Splash
@@ -17,24 +14,7 @@ export function Hero() {
                 titleAs="h1"
                 eyebrow="A fleet of creative ventures"
                 title="Charting new horizons in the digital sea."
-                art={
-                    <>
-                        <BeamDots />
-                        {latest?.date && (
-                            <Card
-                                variant="glass"
-                                className="hero-glass"
-                                eyebrow="Latest from the logbook"
-                            >
-                                <time className="mono" dateTime={latest.date}>
-                                    {formatDate(latest.date)}
-                                </time>
-                                <p className="headline hero-glass-title">{latest.title}</p>
-                                <MoreLink href={ROUTES.logbook}>See the logbook</MoreLink>
-                            </Card>
-                        )}
-                    </>
-                }
+                art={<BeamDots />}
                 actions={
                     <>
                         <Button
