@@ -50,7 +50,7 @@ export function FleetPage() {
                                         <Icon node={KIND_ICONS[i] ?? Sparkles} size={20} />
                                     </span>
                                     <h3 className="bc-card-title">{kind.title}</h3>
-                                    <p className="bc-card-body">{kind.more}</p>
+                                    <p className="bc-card-body">{kind.body}</p>
                                 </Card>
                             </li>
                         ))}

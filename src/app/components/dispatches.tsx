@@ -54,7 +54,7 @@ export function Dispatches() {
                     title={<span id="dispatches-title">Get word when we set sail.</span>}
                 >
                     <p className="bc-splash-body">
-                        An occasional note when a new ship launches. No noise, and you can leave any
+                        Only when there’s something worth sharing. No noise, and you can leave any
                         time.
                     </p>
                     {done ? (

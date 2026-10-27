@@ -14,7 +14,7 @@ const CREW = [
         initials: "YD",
         name: SITE.founder,
         role: "Founder",
-        blurb: "Sets the course and keeps the horizon in view.",
+        blurb: "Founded Beamcove to explore what comes next in technology.",
     },
 ];
 
@@ -94,11 +94,13 @@ export function AboutPage() {
                         <li data-reveal style={{ "--d": 1 } as CSSProperties}>
                             <Card variant="plain" className="crew-card crew-card-open">
                                 <div>
-                                    <Badge>No open roles right now</Badge>
-                                    <h3 className="headline crew-open-title">Join the crew</h3>
+                                    <Badge>Not hiring yet</Badge>
+                                    <h3 className="headline crew-open-title">
+                                        Want to come aboard later?
+                                    </h3>
                                     <p className="muted crew-blurb">
-                                        There’s no hiring yet, but if you build with care, we’d
-                                        still like to hear from you.
+                                        We’re not hiring yet, but we like meeting curious people who
+                                        build with care.
                                     </p>
                                     <MoreLink href={ROUTES.contact}>Say hello</MoreLink>
                                 </div>

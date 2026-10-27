@@ -1,4 +1,4 @@
-import { ROUTES, SITE } from "@/content/site";
+import { ROUTES } from "@/content/site";
 
 export const QUESTIONS = [
     {
@@ -15,11 +15,7 @@ export const QUESTIONS = [
     },
     {
         q: "How often do dispatches go out?",
-        a: "Only when there’s something worth sharing, like a launch or a big update. There’s no schedule.",
-    },
-    {
-        q: "Can I suggest an idea?",
-        a: `Please do. Email ${SITE.email}. We can’t build everything, but we’d love to hear it.`,
+        a: "Only when there’s something worth sharing.",
     },
     {
         q: "What do you do with my data?",
