@@ -22,7 +22,7 @@ export function Principles() {
                                     {String(i + 1).padStart(2, "0")}
                                 </span>
                                 <h3 className="title-3">{value.title}</h3>
-                                <p className="muted">{value.short}</p>
+                                <p className="muted">{value.body}</p>
                             </li>
                         ))}
                     </ol>

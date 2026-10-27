@@ -203,66 +203,6 @@ main > .section:last-child {
     display: block;
 }
 
-/* ── Fleet ────────────────────────────────────────── */
-.fleet-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: var(--space-6);
-}
-.fleet-aside {
-    display: grid;
-    gap: var(--space-6);
-    align-content: start;
-}
-.ship-card > .bc-card-content {
-    padding: var(--space-6) var(--space-8) var(--space-8);
-}
-.ship-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-}
-.ship-name {
-    margin-top: var(--space-6);
-}
-.ship-blurb {
-    margin-top: var(--space-2);
-    max-width: 40ch;
-}
-.ship-meter {
-    margin-top: var(--space-8);
-    max-width: max-content;
-}
-.ship-card .bc-card-footer {
-    margin-top: var(--space-8);
-}
-.ship-name-small {
-    margin-top: var(--space-4);
-}
-.fleet-log > div {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-4);
-    padding-block: var(--space-3);
-    box-shadow: inset 0 -1px 0 var(--line);
-}
-.fleet-log > div:last-child {
-    box-shadow: none;
-    padding-bottom: 0;
-}
-.fleet-log dt {
-    color: var(--ink-muted);
-}
-.fleet-log dd {
-    font-family: var(--font-mono);
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-}
-
 /* ── Principles: a sunken well with the paper dot grid ── */
 .principles {
     border-radius: var(--radius-xl);
@@ -429,14 +369,14 @@ main > .section:last-child {
     bottom: var(--space-12);
     width: 280px;
 }
-.hero-glass-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: var(--space-4);
-}
 .hero-glass .mono {
     color: var(--ink-subtle);
+}
+.hero-glass time {
+    display: block;
+}
+.hero-glass-title {
+    margin: var(--space-1) 0 var(--space-4);
 }
 
 /* ── Ticker ───────────────────────────────────────── */
@@ -474,60 +414,6 @@ main > .section:last-child {
     height: 6px;
     border-radius: var(--radius-full);
     background: var(--flare);
-}
-
-/* ── Voyage ───────────────────────────────────────── */
-.voyage {
-    --marker: 44px;
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-6);
-}
-/* the route: square dots on the 4px base, drawn from left to right */
-.voyage::before {
-    content: "";
-    position: absolute;
-    top: calc(var(--marker) / 2 - 1px);
-    left: calc(var(--marker) / 2);
-    right: calc(25% - var(--marker));
-    height: 2px;
-    background-image: linear-gradient(90deg, var(--ink-subtle) 2px, transparent 2px);
-    background-size: 8px 2px;
-    transform-origin: left center;
-}
-.voyage li {
-    position: relative;
-}
-.voyage-marker {
-    display: grid;
-    place-items: center;
-    width: var(--marker);
-    height: var(--marker);
-    border-radius: var(--radius-full);
-    background-color: var(--beam);
-    background-image: var(--bc-speck-fine);
-    color: var(--on-beam);
-    transition:
-        background-color var(--duration-slow) ease-out,
-        color var(--duration-slow) ease-out,
-        box-shadow var(--duration-slow) ease-out;
-}
-.voyage li:last-child .voyage-marker {
-    background-color: var(--flare);
-    color: var(--ink-on-splash);
-}
-.voyage-num {
-    display: block;
-    margin-top: var(--space-6);
-    color: var(--flare-ink);
-}
-.voyage h3 {
-    margin-top: var(--space-2);
-}
-.voyage p {
-    margin-top: var(--space-2);
-    max-width: 32ch;
 }
 
 /* ── Manifesto: the night band ────────────────────── */
@@ -759,33 +645,15 @@ main > .section:last-child {
     box-shadow: inset 0 0 0 1px #10163a14;
 }
 
-/* ── Fleet page ───────────────────────────────────── */
-.ship-list {
+/* ── Fleet page: the empty shipyard ──────────────── */
+.shipyard-empty.bc-card {
+    padding: var(--space-8);
+}
+.shipyard-empty > div {
     display: grid;
-    gap: var(--space-16);
-}
-.ship-row {
-    display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: var(--space-12);
-    align-items: start;
-    padding-top: var(--space-12);
-    box-shadow: inset 0 1px 0 var(--line);
-}
-.ship-row:first-child {
-    padding-top: 0;
-    box-shadow: none;
-}
-.ship-story {
-    margin-top: var(--space-4);
-    max-width: 52ch;
-}
-.ship-notes-title {
-    margin-top: var(--space-8);
-}
-.fleet-log-wide {
-    max-width: 480px;
-    margin-top: var(--space-12);
+    justify-items: start;
+    gap: var(--space-3);
+    max-width: 60ch;
 }
 
 /* ── About page ───────────────────────────────────── */
@@ -833,6 +701,11 @@ main > .section:last-child {
 .stat-row > * {
     padding-top: var(--space-6);
     box-shadow: inset 0 1px 0 var(--line-strong);
+}
+.bearing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
 }
 .crew-grid {
     display: grid;
@@ -890,26 +763,9 @@ main > .section:last-child {
 .value-title {
     margin-top: var(--space-3);
 }
-.value-short {
-    margin-top: var(--space-4);
+.value-body {
     max-width: 36ch;
-}
-.value-practice-title {
-    margin-top: var(--space-6);
-}
-.promise-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-6);
-}
-.promise-grid li {
-    padding: var(--space-6);
-    border-radius: var(--radius-lg);
-    background: var(--surface-raised);
-    box-shadow: inset 0 0 0 1px var(--line);
-}
-.promise-grid p {
-    margin-top: var(--space-2);
+    padding-top: var(--space-6);
 }
 
 /* ── Logbook page ─────────────────────────────────── */
@@ -999,6 +855,13 @@ main > .section:last-child {
 /* ── Brand page ───────────────────────────────────── */
 .boilerplate {
     max-width: 880px;
+}
+.boilerplate-list {
+    display: grid;
+    gap: var(--space-6);
+}
+.boilerplate p + p {
+    margin-top: var(--space-3);
 }
 .boilerplate-actions {
     margin-top: var(--space-5);
@@ -1199,11 +1062,6 @@ main > .section:last-child {
         box-shadow: 0 0 0 7px transparent;
     }
 }
-@keyframes bc-route {
-    from {
-        scale: 0 1;
-    }
-}
 
 /* hero: content rises, shapes print in, the glass card lands last */
 .motion .hero .bc-splash-content > * {
@@ -1240,52 +1098,6 @@ main > .section:last-child {
     translate: 0 24px;
 }
 
-/* dot meters fill column by column once they're in view */
-.motion [data-reveal] .bc-meter-dot,
-.motion [data-reveal].bc-card .bc-meter-dot {
-    transition:
-        background-color var(--duration-base) ease-out,
-        box-shadow var(--duration-base) ease-out;
-    transition-delay: calc(500ms + var(--col, 0) * 32ms);
-}
-.motion .hero [data-reveal] .bc-meter-dot {
-    transition-delay: calc(1500ms + var(--col, 0) * 40ms);
-}
-.motion [data-reveal]:not(.is-in) .bc-meter-dot.is-on {
-    background: transparent;
-    box-shadow: inset 0 0 0 1px var(--line-strong);
-}
-
-/* voyage: the route draws, then each port lights up in turn */
-.motion .voyage::before {
-    transition: scale 1600ms var(--ease-out) 200ms;
-}
-.motion .voyage:not(.is-in)::before {
-    scale: 0 1;
-}
-.motion .voyage li {
-    transition:
-        opacity var(--reveal) var(--ease-out),
-        translate var(--reveal) var(--ease-out);
-    transition-delay: calc(200ms + var(--i) * 360ms);
-}
-.motion .voyage:not(.is-in) li {
-    opacity: 0;
-    translate: 0 16px;
-}
-.motion .voyage li .voyage-marker {
-    transition-delay: calc(400ms + var(--i) * 360ms);
-}
-.motion .voyage:not(.is-in) li .voyage-marker {
-    background-color: var(--surface-raised);
-    color: var(--ink-muted);
-    box-shadow: inset 0 0 0 1px var(--line-strong);
-}
-.motion .voyage.is-in li:last-child .voyage-marker {
-    animation: bc-beacon 2400ms ease-out 2000ms infinite;
-    color: var(--ink-on-splash);
-}
-
 /* live status dots breathe like a beacon */
 .motion .bc-badge-beam .bc-badge-dot {
     animation: bc-beacon 2400ms ease-out infinite;
@@ -1318,7 +1130,6 @@ main > .section:last-child {
     }
 }
 @media (max-width: 960px) {
-    .ship-row,
     .story,
     .value-row {
         grid-template-columns: minmax(0, 1fr);
@@ -1345,43 +1156,8 @@ main > .section:last-child {
         grid-template-columns: minmax(0, 1fr);
         gap: var(--space-16);
     }
-    .voyage {
-        grid-template-columns: minmax(0, 1fr);
-        gap: var(--space-8);
-    }
-    .voyage li {
-        display: grid;
-        grid-template-columns: var(--marker) minmax(0, 1fr);
-        column-gap: var(--space-5);
-    }
-    .voyage li > :not(.voyage-marker) {
-        grid-column: 2;
-    }
-    .voyage-marker {
-        grid-row: 1 / span 3;
-    }
-    .voyage-num {
-        margin-top: 0;
-    }
-    .voyage::before {
-        top: calc(var(--marker) / 2);
-        bottom: var(--space-16);
-        left: calc(var(--marker) / 2 - 1px);
-        right: auto;
-        width: 2px;
-        height: auto;
-        background-image: linear-gradient(180deg, var(--ink-subtle) 2px, transparent 2px);
-        background-size: 2px 8px;
-        transform-origin: center top;
-    }
-    .motion .voyage:not(.is-in)::before {
-        scale: 1 0;
-    }
     .kind-grid,
     .principle-list {
-        grid-template-columns: minmax(0, 1fr);
-    }
-    .fleet-grid {
         grid-template-columns: minmax(0, 1fr);
     }
     .section-head {
@@ -1399,7 +1175,7 @@ main > .section:last-child {
         display: inline-flex;
     }
     .crew-grid,
-    .promise-grid,
+    .bearing-grid,
     .channel-grid,
     .wordmark-grid,
     .do-dont,
@@ -1467,9 +1243,6 @@ main > .section:last-child {
     }
     .hero.bc-splash {
         padding: var(--space-8) var(--space-6);
-    }
-    .ship-card > .bc-card-content {
-        padding: var(--space-5) var(--space-6) var(--space-6);
     }
     .dispatches.bc-splash {
         padding: var(--space-12) var(--space-6) 128px;

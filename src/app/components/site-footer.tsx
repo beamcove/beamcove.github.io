@@ -47,8 +47,8 @@ export function SiteFooter() {
                 </p>
                 <div className="footer-bottom">
                     <span className="caption muted">
-                        © {new Date().getFullYear()} Beamcove · <a href={ROUTES.privacy}>Privacy</a>{" "}
-                        · <a href={ROUTES.terms}>Terms</a>
+                        © {new Date().getFullYear()} {SITE.legalName} ·{" "}
+                        <a href={ROUTES.privacy}>Privacy</a> · <a href={ROUTES.terms}>Terms</a>
                     </span>
                     <span className="mono muted">beamcove.com</span>
                 </div>

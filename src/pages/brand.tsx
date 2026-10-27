@@ -5,10 +5,21 @@ import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
+import { SITE } from "@/content/site";
 import { Button, Card } from "@/design-system";
 
-const BOILERPLATE =
-    "Beamcove is an independent software studio and home to a fleet of creative digital ventures: apps for daily life, tools for lighter work and other bounties, each built with craft and a little fun. Learn more at beamcove.com.";
+/** Approved boilerplate, from the company's About page. */
+const BOILERPLATE = [
+    { label: "Short", text: SITE.summary },
+    {
+        label: "Long",
+        text: [
+            "Beamcove is a home for promising projects to grow into thoughtful digital products. Founded as a safe harbor for ideas ready to become more than personal experiments, it gives each project a place within something bigger.",
+            "Its approach combines professional care with curiosity, adventure, and fun. Adventure means trying new things and leaving room for discovery. Integrity means keeping commitments and earning trust through actions that leave a lasting mark. Balance means doing meaningful work at a sustainable pace, with room for life and creativity.",
+            "At its heart, Beamcove is a cozy place to express ideas and grow. Its ambition is to become a trusted, well-regarded brand and a coveted place to be.",
+        ].join("\n\n"),
+    },
+];
 
 const SWATCHES = [
     {
@@ -63,14 +74,30 @@ export function BrandPage() {
                     <SectionHead
                         id="boilerplate"
                         eyebrow="Boilerplate"
-                        title="Beamcove in a paragraph."
-                    />
-                    <Card variant="plain" className="boilerplate" data-reveal>
-                        <p className="body-lg">{BOILERPLATE}</p>
-                        <div className="boilerplate-actions">
-                            <CopyButton text={BOILERPLATE} />
-                        </div>
-                    </Card>
+                        title="Beamcove in a few words."
+                    >
+                        For bios, press and app stores.
+                    </SectionHead>
+                    <div className="boilerplate-list">
+                        {BOILERPLATE.map((item) => (
+                            <Card
+                                key={item.label}
+                                variant="plain"
+                                eyebrow={item.label}
+                                className="boilerplate"
+                                data-reveal
+                            >
+                                {item.text.split("\n\n").map((paragraph, i) => (
+                                    <p key={paragraph} className={i === 0 ? "body-lg" : "muted"}>
+                                        {paragraph}
+                                    </p>
+                                ))}
+                                <div className="boilerplate-actions">
+                                    <CopyButton text={item.text} />
+                                </div>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
             </section>
 
@@ -103,7 +130,7 @@ export function BrandPage() {
                             <p className="headline">Don’t</p>
                             <ul className="cross-list">
                                 <li>Draw a symbol, ship or wave next to it.</li>
-                                <li>Print it in two colours or add shadows and outlines.</li>
+                                <li>Print it in two colors or add shadows and outlines.</li>
                                 <li>Stretch, skew or re-space the letters.</li>
                             </ul>
                         </div>
@@ -111,9 +138,9 @@ export function BrandPage() {
                 </div>
             </section>
 
-            <section className="section" aria-labelledby="colour-title">
+            <section className="section" aria-labelledby="color-title">
                 <div className="container">
-                    <SectionHead id="colour" eyebrow="Colour" title="Two inks on paper.">
+                    <SectionHead id="color" eyebrow="Color" title="Two inks on paper.">
                         Ink & tide is printed like a riso poster: paper, a blue ink, a fluorescent
                         red, and the navy you get where they overlap.
                     </SectionHead>
@@ -146,7 +173,7 @@ export function BrandPage() {
                         <Card variant="plain" data-reveal>
                             <p className="caption muted">JetBrains Mono · codes and data</p>
                             <p className="type-specimen type-specimen-mono">01</p>
-                            <p className="mono">BC-001 · Ready to sail · 72%</p>
+                            <p className="mono">Est. 2026 · beamcove.com</p>
                         </Card>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ export function WhatWeBuild() {
                     id="build"
                     eyebrow="What we build"
                     title="One cove, many ships."
-                    more={{ href: ROUTES.fleet, label: "See the whole fleet" }}
+                    more={{ href: ROUTES.fleet, label: "Visit the shipyard" }}
                 >
                     We make small, well-made software: things you keep in your pocket, things that
                     lighten your work, and things we build because they are fun.

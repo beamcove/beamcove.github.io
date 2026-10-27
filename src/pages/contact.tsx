@@ -11,18 +11,15 @@ import { QUESTIONS } from "@/content/faq";
 import { SITE, SOCIALS } from "@/content/site";
 
 const BEST_FOR: Record<string, string> = {
-    github: "Code, issues and anything open source.",
-    discord: "Chatting with the crew and other sailors.",
-    x: "Launches and short news.",
-    reddit: "Longer threads and feedback.",
+    x: "News and short updates.",
+    github: "Where Beamcove’s code lives.",
 };
 
 export function ContactPage() {
     return (
         <SiteLayout>
             <PageHero eyebrow="Contact" title="Hail the cove.">
-                Questions, ideas or a leak in one of our ships? Here’s where to find us. We read
-                everything.
+                Questions, ideas or press? Here’s where to find us.
             </PageHero>
 
             <section className="section section-tight" aria-labelledby="channels-title">
@@ -40,8 +37,7 @@ export function ContactPage() {
                                     <span className="headline">Email</span>
                                     <span className="mono channel-handle">{SITE.email}</span>
                                     <span className="muted">
-                                        Best for anything that needs a proper reply. We answer
-                                        within a few working days.
+                                        Best for anything that needs a proper reply.
                                     </span>
                                 </span>
                                 <Icon node={ArrowUpRight} size={18} />

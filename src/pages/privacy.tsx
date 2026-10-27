@@ -11,12 +11,13 @@ const SECTIONS: LegalSection[] = [
             <>
                 <p>
                     This policy covers beamcove.com and the dispatches newsletter. It explains what
-                    we collect, why, and what you can do about it. “We” means Beamcove; “you” means
-                    anyone visiting the site or reading dispatches.
+                    we collect, why, and what you can do about it. “We” means {SITE.legalName}, a
+                    limited liability company registered in Georgia, USA; “you” means anyone
+                    visiting the site or reading dispatches.
                 </p>
                 <p>
-                    Each ship in the fleet will have its own privacy notice when it launches,
-                    because each one handles different data. Those notices will link back here.
+                    Each Beamcove product will have its own privacy notice when it launches, because
+                    each one handles different data.
                 </p>
             </>
         ),

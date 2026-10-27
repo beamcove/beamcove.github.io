@@ -1,21 +1,25 @@
-import { ROUTES } from "@/content/site";
+import { ROUTES, SITE } from "@/content/site";
 
 export const QUESTIONS = [
     {
         q: "What is Beamcove?",
-        a: "A small, independent studio that builds and runs its own software: apps, tools and experiments. Together, they’re the fleet.",
+        a: "A home for promising projects to grow into thoughtful digital products: apps, tools and other bounties, each built with craft and a little seafaring fun.",
     },
     {
-        q: "When does Caskade launch?",
-        a: "When it’s seaworthy. Subscribe to dispatches and you’ll hear before anyone else.",
+        q: "What’s in the fleet?",
+        a: "Nothing at sea yet. Projects are still in the shipyard, and each one will be listed on the fleet page once it’s ready to be seen. Dispatches hear first.",
+    },
+    {
+        q: "Who’s behind Beamcove?",
+        a: "Beamcove LLC was founded by Yoan Dubuc in January 2026 in Georgia, USA. For now, it’s founder-operated.",
     },
     {
         q: "How often do dispatches go out?",
-        a: "Only when there’s news: a launch, a big update or something worth sharing. No schedule and no spam.",
+        a: "Only when there’s something worth sharing, like a launch or a big update. There’s no schedule.",
     },
     {
         q: "Can I suggest an idea?",
-        a: "Please do. Email us or find us on Discord. We read everything, even if we can’t build everything.",
+        a: `Please do. Email ${SITE.email}. We can’t build everything, but we’d love to hear it.`,
     },
     {
         q: "What do you do with my data?",
@@ -23,10 +27,6 @@ export const QUESTIONS = [
     },
     {
         q: "Can I write about Beamcove?",
-        a: "Of course. The brand kit has our boilerplate, wordmark rules and colours.",
-    },
-    {
-        q: "Why the nautical theme?",
-        a: "A cove is a sheltered harbour where ships are built and set out from. That’s what we want Beamcove to be for the things we make.",
+        a: "Of course. The brand kit has our boilerplate, wordmark rules and colors.",
     },
 ];

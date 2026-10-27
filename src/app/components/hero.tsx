@@ -2,9 +2,13 @@ import { ArrowRight } from "lucide";
 
 import { BeamDots } from "@/app/components/beam-dots";
 import { Icon } from "@/app/components/icon";
-import { Button, Card, DotMeter, Splash } from "@/design-system";
+import { MoreLink } from "@/app/components/more-link";
+import { LOGBOOK } from "@/content/logbook";
+import { formatDate, ROUTES, SITE } from "@/content/site";
+import { Button, Card, Splash } from "@/design-system";
 
 export function Hero() {
+    const latest = LOGBOOK.find((entry) => entry.date);
     return (
         <div className="container hero-wrap" id="top">
             <Splash
@@ -16,35 +20,38 @@ export function Hero() {
                 art={
                     <>
                         <BeamDots />
-                        <Card variant="glass" className="hero-glass" eyebrow="Now building">
-                            <div className="hero-glass-row">
-                                <span className="headline">Caskade</span>
-                                <span className="mono">BC-001</span>
-                            </div>
-                            <div data-reveal="fill">
-                                <DotMeter value={72} columns={18} label="Ready to sail" />
-                            </div>
-                        </Card>
+                        {latest?.date && (
+                            <Card
+                                variant="glass"
+                                className="hero-glass"
+                                eyebrow="Latest from the logbook"
+                            >
+                                <time className="mono" dateTime={latest.date}>
+                                    {formatDate(latest.date)}
+                                </time>
+                                <p className="headline hero-glass-title">{latest.title}</p>
+                                <MoreLink href={ROUTES.logbook}>See the logbook</MoreLink>
+                            </Card>
+                        )}
                     </>
                 }
                 actions={
                     <>
                         <Button
                             size="lg"
-                            href="#fleet"
+                            href={ROUTES.about}
                             className="btn-nudge"
                             iconRight={<Icon node={ArrowRight} />}
                         >
-                            Meet the fleet
-                        </Button>
-                        <Button size="lg" variant="secondary" href="/about/">
                             About the studio
+                        </Button>
+                        <Button size="lg" variant="secondary" href="#build">
+                            What we build
                         </Button>
                     </>
                 }
             >
-                Beamcove is home to a fleet of apps, tools and other bounties — each one built with
-                craft and a little fun.
+                {SITE.summary}
             </Splash>
         </div>
     );

@@ -2,79 +2,45 @@ import type { CSSProperties } from "react";
 import { Sparkles } from "lucide";
 
 import { Dispatches } from "@/app/components/dispatches";
-import { FleetLog, StatusBadge } from "@/app/components/fleet";
 import { Icon } from "@/app/components/icon";
+import { KIND_ICONS } from "@/app/components/kind-icons";
 import { PageHero } from "@/app/components/page-hero";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
-import { KIND_ICONS } from "@/app/components/kind-icons";
-import { KINDS, SHIPS } from "@/content/fleet";
-import { Card, DotMeter } from "@/design-system";
+import { KINDS } from "@/content/fleet";
+import { Badge, Card } from "@/design-system";
 
+/** The fleet is empty for now: an open shipyard and the kinds of ships it builds. */
 export function FleetPage() {
     return (
         <SiteLayout>
-            <PageHero tone="overprint" eyebrow="The fleet" title="Every ship in the cove.">
-                Apps, tools and other bounties: what’s sailing, what’s in the shipyard and what’s
-                still a sketch on the chart table.
+            <PageHero tone="overprint" eyebrow="The fleet" title="The shipyard is open.">
+                Nothing has left the harbor yet. When the first ship is ready to be seen, it’ll be
+                listed here.
             </PageHero>
 
-            <section className="section" aria-labelledby="ships-title">
+            <section className="section section-tight" aria-labelledby="ships-title">
                 <div className="container">
-                    <SectionHead id="ships" eyebrow="Ships" title="Where each one stands.">
-                        Every ship gets a code when its keel is laid. It gets a name when it floats.
-                    </SectionHead>
-                    <div className="ship-list">
-                        {SHIPS.map((ship) => (
-                            <article
-                                key={ship.id}
-                                id={ship.id}
-                                className="ship-row"
-                                data-reveal
-                                aria-labelledby={`${ship.id}-name`}
-                            >
-                                <div className="ship-row-main">
-                                    <div className="ship-meta">
-                                        <span className="mono muted">
-                                            {ship.code} · {ship.kind}
-                                        </span>
-                                        <StatusBadge ship={ship} />
-                                    </div>
-                                    <h3 className="title-2 ship-name" id={`${ship.id}-name`}>
-                                        {ship.name}
-                                    </h3>
-                                    {ship.story.map((p) => (
-                                        <p key={p} className="body-lg muted ship-story">
-                                            {p}
-                                        </p>
-                                    ))}
-                                </div>
-                                <Card variant="plain" className="ship-row-side">
-                                    <DotMeter
-                                        size="lg"
-                                        columns={20}
-                                        value={ship.readiness}
-                                        label="Ready to sail"
-                                    />
-                                    <p className="headline ship-notes-title">
-                                        What we can share so far
-                                    </p>
-                                    <ul className="tick-list">
-                                        {ship.notes.map((note) => (
-                                            <li key={note}>{note}</li>
-                                        ))}
-                                    </ul>
-                                </Card>
-                            </article>
-                        ))}
-                    </div>
+                    <h2 className="visually-hidden" id="ships-title">
+                        Ships
+                    </h2>
+                    <Card variant="plain" className="shipyard-empty" data-reveal>
+                        <Badge tone="beam" dot>
+                            In the shipyard
+                        </Badge>
+                        <p className="title-2">No ships at sea yet.</p>
+                        <p className="body-lg muted">
+                            Projects are being built in the cove right now. Each one joins the fleet
+                            once it’s ready, and dispatches hear about it first.
+                        </p>
+                    </Card>
                 </div>
             </section>
 
-            <section className="section" aria-labelledby="kinds-title">
+            <section className="section" id="kinds" aria-labelledby="kinds-title">
                 <div className="container">
-                    <SectionHead id="kinds" eyebrow="Kinds of ships" title="Three kinds of voyage.">
-                        The colour on each card is the ink we print that kind of ship in.
+                    <SectionHead id="kinds" eyebrow="What we build" title="Three kinds of voyage.">
+                        The color on each card is the ink we print that kind of ship in.
                     </SectionHead>
                     <ul className="kind-grid">
                         {KINDS.map((kind, i) => (
@@ -89,9 +55,6 @@ export function FleetPage() {
                             </li>
                         ))}
                     </ul>
-                    <div className="fleet-log-wide">
-                        <FleetLog />
-                    </div>
                 </div>
             </section>
 

@@ -57,8 +57,9 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 - `src/entries/` — `mount(<XPage />)` per page. `src/app/mount.tsx` — CSS + mount.
 - `src/pages/` — page components. `src/content/` — shared copy and data
   (routes, nav, fleet, logbook, values, faq). Edit facts there, not in sections.
+  No project is public yet: don't list one (a test guards this).
 - `src/app/components/` — layout (site-layout/header/footer, page-hero,
-  legal-page) and sections (hero, voyage, fleet, manifesto, …), plus beam-dots
+  legal-page) and sections (hero, story, manifesto, …), plus beam-dots
   (hero lighthouse canvas), icon (renders Lucide icon nodes), brand (social SVGs).
 - `src/design-system/` — Ink & tide tokens, CSS, fonts, typed component port.
 - `public/` — copied verbatim to dist (boot.js, CNAME, favicon).

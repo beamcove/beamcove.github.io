@@ -1,9 +1,11 @@
 import { useRef, type CSSProperties } from "react";
 
 import { useScrollProgress } from "@/app/utils/motion";
+import { MISSION } from "@/content/values";
 import { Splash } from "@/design-system";
 
-const LINE = "Small ships, built with care, made to sail a long way.";
+/** The vision, from the company's About page. */
+const LINE = "A trusted, well-regarded brand and a coveted place to be.";
 
 /** The night band: the line inks in word by word as it scrolls into view. */
 export function Manifesto() {
@@ -12,13 +14,13 @@ export function Manifesto() {
     const words = LINE.split(" ");
 
     return (
-        <section className="section" aria-label="Our bearing">
+        <section className="section" aria-label="Where we’re headed">
             <div className="container" ref={ref}>
                 <Splash
                     tone="night"
                     className="manifesto"
                     data-theme="light"
-                    eyebrow="Our bearing"
+                    eyebrow="Where we’re headed"
                     title={
                         <span
                             className="manifesto-line"
@@ -32,8 +34,7 @@ export function Manifesto() {
                         </span>
                     }
                 >
-                    Beamcove is independent and in no hurry. We’d rather make a few things people
-                    love than many they forget.
+                    Our mission: {MISSION}
                 </Splash>
             </div>
         </section>

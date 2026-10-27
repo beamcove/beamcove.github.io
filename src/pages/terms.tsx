@@ -8,12 +8,14 @@ const SECTIONS: LegalSection[] = [
         body: (
             <>
                 <p>
-                    These terms cover your use of beamcove.com and the dispatches newsletter. By
-                    using the site you agree to them. If you don’t agree, please don’t use the site.
+                    These terms are an agreement between you and {SITE.legalName}, a limited
+                    liability company registered in Georgia, USA. They cover your use of
+                    beamcove.com and the dispatches newsletter. By using the site you agree to them.
+                    If you don’t agree, please don’t use the site.
                 </p>
                 <p>
-                    Each ship in the fleet will have its own terms when it launches. Where those
-                    terms and these ones differ, the ship’s terms apply to that ship.
+                    Each Beamcove product will have its own terms when it launches. Where those
+                    terms and these ones differ, the product’s terms apply to that product.
                 </p>
             </>
         ),
@@ -49,10 +51,10 @@ const SECTIONS: LegalSection[] = [
         title: "Our content and name",
         body: (
             <p>
-                The text, design and code of this site belong to Beamcove unless we say otherwise.
-                The Beamcove name and wordmark are ours too. You’re welcome to use them to write
-                about us, following the <a href={ROUTES.brand}>brand kit</a>, but not in a way that
-                suggests we endorse you or your product.
+                The text, design and code of this site belong to {SITE.legalName} unless we say
+                otherwise. The Beamcove name and wordmark are ours too. You’re welcome to use them
+                to write about us, following the <a href={ROUTES.brand}>brand kit</a>, but not in a
+                way that suggests we endorse you or your product.
             </p>
         ),
     },
@@ -61,8 +63,8 @@ const SECTIONS: LegalSection[] = [
         title: "Links to other sites",
         body: (
             <p>
-                We link to places like GitHub, Discord, X and Reddit. We don’t control those sites
-                and aren’t responsible for them. Their own terms and policies apply when you visit.
+                We link to other sites, such as X and GitHub. We don’t control those sites and
+                aren’t responsible for them. Their own terms and policies apply when you visit.
             </p>
         ),
     },
@@ -72,8 +74,8 @@ const SECTIONS: LegalSection[] = [
         body: (
             <p>
                 We work hard to keep the site accurate and available, but we provide it “as is”,
-                without warranties of any kind. Plans for ships, including dates and features, can
-                change before launch.
+                without warranties of any kind. Plans for products, including dates and features,
+                can change before launch.
             </p>
         ),
     },
@@ -82,9 +84,19 @@ const SECTIONS: LegalSection[] = [
         title: "Limits on liability",
         body: (
             <p>
-                To the fullest extent the law allows, Beamcove isn’t liable for any indirect or
-                consequential loss arising from your use of the site. Nothing in these terms limits
-                liability that can’t be limited by law.
+                To the fullest extent the law allows, {SITE.legalName} isn’t liable for any indirect
+                or consequential loss arising from your use of the site. Nothing in these terms
+                limits liability that can’t be limited by law.
+            </p>
+        ),
+    },
+    {
+        id: "law",
+        title: "Governing law",
+        body: (
+            <p>
+                These terms are governed by the laws of the State of Georgia, USA, without regard to
+                its conflict-of-law rules.
             </p>
         ),
     },
@@ -120,7 +132,8 @@ export function TermsPage() {
                 "Use the site lawfully and kindly.",
                 "Dispatches are free and you can leave any time.",
                 "Our name and content are ours; the brand kit says how to use them.",
-                "Each ship will have its own terms when it launches.",
+                "Georgia law applies.",
+                "Each product will have its own terms when it launches.",
             ]}
             sections={SECTIONS}
         />

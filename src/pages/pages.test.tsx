@@ -42,6 +42,11 @@ describe.each(PAGES)("%s", (_route, renderPage) => {
         expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     });
 
+    it("lists no projects (none are public yet)", () => {
+        const { container } = render(renderPage());
+        expect(container.textContent).not.toMatch(/caskade|BC-\d{3}|ready to sail/i);
+    });
+
     it("only links to pages and sections that exist", () => {
         const { container } = render(renderPage());
         const own = new Set([...container.querySelectorAll("[id]")].map((el) => el.id));
@@ -68,7 +73,12 @@ describe("HomePage", () => {
         expect(
             screen.getByRole("heading", { level: 1, name: /charting new horizons/i }),
         ).toBeInTheDocument();
-        for (const name of [/see the whole fleet/i, /read our values/i, /open the logbook/i]) {
+        for (const name of [
+            /visit the shipyard/i,
+            /more about the studio/i,
+            /read our values/i,
+            /open the logbook/i,
+        ]) {
             expect(screen.getByRole("link", { name })).toBeInTheDocument();
         }
     });

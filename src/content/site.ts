@@ -3,8 +3,14 @@ import type { BrandName } from "@/app/components/brand";
 export const SITE = {
     name: "Beamcove",
     url: "https://beamcove.com",
+    legalName: "Beamcove LLC",
+    founder: "Yoan Dubuc",
+    /** Where the LLC is registered; the terms are governed by its law. */
+    homePort: "Georgia, USA",
     tagline: "Charting new horizons in the digital sea.",
-    // TODO: confirm the public contact address before launch.
+    /** Short boilerplate, as approved in the company's About page. */
+    summary:
+        "Beamcove is home to a fleet of creative digital ventures: apps, tools, and other bounties, each built with craft and a little seafaring fun.",
     email: "hello@beamcove.com",
     /** Effective date of the privacy policy and terms (ISO). */
     legalUpdated: "2026-10-27",
@@ -45,8 +51,8 @@ export const FOOTER_GROUPS: { title: string; links: { href: string; label: strin
     {
         title: "Fleet",
         links: [
-            { href: ROUTES.fleet, label: "All ships" },
-            { href: `${ROUTES.fleet}#caskade`, label: "Caskade" },
+            { href: ROUTES.fleet, label: "The shipyard" },
+            { href: `${ROUTES.fleet}#kinds`, label: "What we build" },
             { href: "/#dispatches", label: "Dispatches" },
         ],
     },
@@ -67,15 +73,8 @@ export const FOOTER_GROUPS: { title: string; links: { href: string; label: strin
 ];
 
 export const SOCIALS: { name: BrandName; href: string; label: string; handle: string }[] = [
-    { name: "github", href: "https://github.com/beamcove", label: "GitHub", handle: "beamcove" },
-    { name: "discord", href: "https://discord.gg/beamcove", label: "Discord", handle: "beamcove" },
     { name: "x", href: "https://x.com/beamcove", label: "X", handle: "@beamcove" },
-    {
-        name: "reddit",
-        href: "https://reddit.com/u/beamcove",
-        label: "Reddit",
-        handle: "u/beamcove",
-    },
+    { name: "github", href: "https://github.com/beamcove", label: "GitHub", handle: "beamcove" },
 ];
 
 /** "Oct 27, 2026" from "2026-10-27". */

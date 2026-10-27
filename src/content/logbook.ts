@@ -6,19 +6,13 @@ export interface LogEntry {
     body: string;
 }
 
-/** Newest first. Dates come from the studio's own history. */
+/** Newest first. Dates come from the company's own records and git history. */
 export const LOGBOOK: LogEntry[] = [
-    {
-        date: null,
-        tag: "Fleet",
-        title: "Caskade is in the shipyard",
-        body: "Final coat of paint on the hull. Launch news goes out by dispatch first.",
-    },
     {
         date: "2026-10-27",
         tag: "Site",
-        title: "The site grows into a harbour",
-        body: "beamcove.com gets pages of its own: the fleet, our values, this logbook, and plain-language privacy and terms.",
+        title: "The site grows into a harbor",
+        body: "beamcove.com gets pages of its own: about, our values, this logbook, and plain-language privacy and terms.",
     },
     {
         date: "2026-10-27",
@@ -30,7 +24,7 @@ export const LOGBOOK: LogEntry[] = [
         date: "2026-03-19",
         tag: "Site",
         title: "A new landing page",
-        body: "The first proper home for the studio, with the fleet, our values and a way to get dispatches.",
+        body: "The first proper home for the studio, with our values and a way to get dispatches.",
     },
     {
         date: "2026-01-31",
@@ -43,5 +37,11 @@ export const LOGBOOK: LogEntry[] = [
         tag: "Studio",
         title: "The first plank",
         body: "The Beamcove repository is laid down, along with a lot of plans.",
+    },
+    {
+        date: "2026-01-12",
+        tag: "Studio",
+        title: "Beamcove LLC is formed",
+        body: "Beamcove becomes a company, registered in Georgia, USA, and founded by Yoan Dubuc.",
     },
 ];

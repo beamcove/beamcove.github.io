@@ -4,16 +4,16 @@ import { MoreLink } from "@/app/components/more-link";
 import { PageHero } from "@/app/components/page-hero";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
-import { Voyage } from "@/app/components/voyage";
-import { SHIPS } from "@/content/fleet";
-import { ROUTES } from "@/content/site";
-import { Badge, Card, Stat } from "@/design-system";
+import { StudioFacts } from "@/app/components/studio-facts";
+import { ROUTES, SITE } from "@/content/site";
+import { MISSION, STORY, VISION } from "@/content/values";
+import { Badge, Card } from "@/design-system";
 
 const CREW = [
     {
         initials: "YD",
-        name: "Y. Dubuc",
-        role: "Captain",
+        name: SITE.founder,
+        role: "Founder",
         blurb: "Sets the course and keeps the horizon in view.",
     },
 ];
@@ -21,9 +21,8 @@ const CREW = [
 export function AboutPage() {
     return (
         <SiteLayout>
-            <PageHero tone="tide" eyebrow="About" title="A small studio with a big map.">
-                Beamcove is an independent software studio. We build our own ships, take our time
-                with them and keep them sailing.
+            <PageHero tone="tide" eyebrow="About" title="A safe harbor for promising projects.">
+                Beamcove is a home for promising projects to grow into thoughtful digital products.
             </PageHero>
 
             <section className="section" aria-labelledby="story-title">
@@ -31,50 +30,48 @@ export function AboutPage() {
                     <div data-reveal>
                         <p className="bc-eyebrow">Our story</p>
                         <h2 className="title-1 section-title" id="story-title">
-                            Why a cove?
+                            How it started.
                         </h2>
                     </div>
                     <div className="prose" data-reveal style={{ "--d": 1 } as CSSProperties}>
-                        <p className="body-lg">
-                            We started Beamcove in January 2026 with a simple idea: build our own
-                            products, give each one the care it deserves, and keep them running for
-                            a long time.
-                        </p>
-                        <p>
-                            A cove is a sheltered harbour, the kind of place where ships are built,
-                            launched and brought back in for repairs. That’s the studio we want to
-                            be. Each product is a ship, and together they’re the fleet.
-                        </p>
-                        <p>
-                            Some ships are apps you carry in your pocket. Some are tools for work.
-                            Some are experiments that may never leave the harbour, and that’s fine
-                            too. What they share is the craft that goes into them and a little fun
-                            along the way.
-                        </p>
+                        {STORY.map((paragraph, i) => (
+                            <p key={paragraph} className={i === 0 ? "body-lg" : undefined}>
+                                {paragraph}
+                            </p>
+                        ))}
                     </div>
                 </div>
-                <div className="container stat-row" data-reveal>
-                    <Stat label="Founded" value="2026" caption="In the cove since January" />
-                    <Stat
-                        label="Ships in the fleet"
-                        value={SHIPS.length}
-                        caption="One nearly ready to sail"
+                <StudioFacts />
+            </section>
+
+            <section className="section" aria-labelledby="bearing-title">
+                <div className="container">
+                    <SectionHead
+                        id="bearing"
+                        eyebrow="Mission and vision"
+                        title="Why Beamcove exists."
+                        more={{ href: ROUTES.values, label: "Read our values" }}
                     />
-                    <Stat label="Crew" value={CREW.length} caption="Small on purpose" />
+                    <div className="bearing-grid">
+                        <Card variant="plain" eyebrow="Mission" data-reveal>
+                            <p className="title-3">{MISSION}</p>
+                        </Card>
+                        <Card
+                            variant="plain"
+                            eyebrow="Vision"
+                            data-reveal
+                            style={{ "--d": 1 } as CSSProperties}
+                        >
+                            <p className="title-3">{VISION}</p>
+                        </Card>
+                    </div>
                 </div>
             </section>
 
-            <Voyage id="how-we-work" />
-
             <section className="section" aria-labelledby="crew-title">
                 <div className="container">
-                    <SectionHead
-                        id="crew"
-                        eyebrow="The crew"
-                        title="Who’s aboard."
-                        more={{ href: ROUTES.values, label: "How we work together" }}
-                    >
-                        A small crew with a big map. Small enough that everyone knows every ship.
+                    <SectionHead id="crew" eyebrow="The crew" title="Who’s aboard.">
+                        Beamcove is founder-operated for now.
                     </SectionHead>
                     <ul className="crew-grid">
                         {CREW.map((member) => (
@@ -97,8 +94,8 @@ export function AboutPage() {
                                     <Badge>No open roles right now</Badge>
                                     <h3 className="headline crew-open-title">Join the crew</h3>
                                     <p className="muted crew-blurb">
-                                        We like meeting people who build with care. When we open a
-                                        role, it’ll be in the logbook and in dispatches first.
+                                        There’s no hiring yet, but if you build with care, we’d
+                                        still like to hear from you.
                                     </p>
                                     <MoreLink href={ROUTES.contact}>Say hello</MoreLink>
                                 </div>
