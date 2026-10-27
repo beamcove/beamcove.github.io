@@ -6,7 +6,7 @@ import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { StudioFacts } from "@/app/components/studio-facts";
 import { ROUTES, SITE } from "@/content/site";
-import { MISSION, STORY, VISION } from "@/content/values";
+import { HORIZONS, MISSION, STORY, VISION } from "@/content/values";
 import { Badge, Card } from "@/design-system";
 
 const CREW = [
@@ -21,8 +21,9 @@ const CREW = [
 export function AboutPage() {
     return (
         <SiteLayout>
-            <PageHero tone="tide" eyebrow="About" title="A safe harbor for promising projects.">
-                Beamcove is a home for promising projects to grow into thoughtful digital products.
+            <PageHero tone="tide" eyebrow="About" title="A place for innovation.">
+                Beamcove explores new possibilities through software, challenges familiar
+                approaches, and turns original ideas into useful digital products.
             </PageHero>
 
             <section className="section" aria-labelledby="story-title">
@@ -51,7 +52,9 @@ export function AboutPage() {
                         eyebrow="Mission and vision"
                         title="Why Beamcove exists."
                         more={{ href: ROUTES.values, label: "Read our values" }}
-                    />
+                    >
+                        {HORIZONS}
+                    </SectionHead>
                     <div className="bearing-grid">
                         <Card variant="plain" eyebrow="Mission" data-reveal>
                             <p className="title-3">{MISSION}</p>

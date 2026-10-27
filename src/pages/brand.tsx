@@ -14,9 +14,9 @@ const BOILERPLATE = [
     {
         label: "Long",
         text: [
-            "Beamcove is a home for promising projects to grow into thoughtful digital products. Founded as a safe harbor for ideas ready to become more than personal experiments, it gives each project a place within something bigger.",
+            "Beamcove is an innovation company charting new horizons in the digital sea. It explores new possibilities through software, challenges familiar approaches, and turns original ideas into useful digital products. Its ambition is to set trends and open up better ways for people to work, live, and play.",
             "Its approach combines professional care with curiosity, adventure, and fun. Adventure means trying new things and leaving room for discovery. Integrity means keeping commitments and earning trust through actions that leave a lasting mark. Balance means doing meaningful work at a sustainable pace, with room for life and creativity.",
-            "At its heart, Beamcove is a cozy place to express ideas and grow. Its ambition is to become a trusted, well-regarded brand and a coveted place to be.",
+            "At its heart, Beamcove is a place for innovation. It aims to become a trusted, well-regarded brand and a coveted place for people who want to shape what comes next.",
         ].join("\n\n"),
     },
 ];

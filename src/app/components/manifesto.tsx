@@ -5,7 +5,7 @@ import { MISSION } from "@/content/values";
 import { Splash } from "@/design-system";
 
 /** The vision, from the company's About page. */
-const LINE = "A trusted, well-regarded brand and a coveted place to be.";
+const LINE = "Setting new directions in the digital world.";
 
 /** The night band: the line inks in word by word as it scrolls into view. */
 export function Manifesto() {

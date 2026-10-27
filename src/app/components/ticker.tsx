@@ -1,6 +1,6 @@
 const ITEMS = [
     "Charting new horizons",
-    "Apps, tools and other bounties",
+    "Better ways to work, live and play",
     "Adventure · Integrity · Balance",
     "The shipyard is open",
     "Built with craft and a little fun",

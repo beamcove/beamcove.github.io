@@ -6,7 +6,7 @@ import { KIND_ICONS } from "@/app/components/kind-icons";
 import { SectionHead } from "@/app/components/section-head";
 import { KINDS } from "@/content/fleet";
 import { ROUTES } from "@/content/site";
-import { Badge, Card } from "@/design-system";
+import { Card } from "@/design-system";
 
 export function WhatWeBuild() {
     return (
@@ -15,20 +15,16 @@ export function WhatWeBuild() {
                 <SectionHead
                     id="build"
                     eyebrow="What we build"
-                    title="One cove, many ships."
+                    title="New ways to work, live and play."
                     more={{ href: ROUTES.fleet, label: "Visit the shipyard" }}
                 >
-                    We make small, well-made software: things you keep in your pocket, things that
-                    lighten your work, and things we build because they are fun.
+                    Original ideas turned into useful digital products, built with care, curiosity
+                    and a sense of adventure.
                 </SectionHead>
                 <ul className="kind-grid">
                     {KINDS.map((kind, i) => (
                         <li key={kind.title} data-reveal style={{ "--d": i } as CSSProperties}>
-                            <Card
-                                tone={kind.tone}
-                                className="kind-card"
-                                footer={<Badge>{kind.tag}</Badge>}
-                            >
+                            <Card tone={kind.tone} className="kind-card">
                                 <span className="icon-tile">
                                     <Icon node={KIND_ICONS[i] ?? Sparkles} size={20} />
                                 </span>

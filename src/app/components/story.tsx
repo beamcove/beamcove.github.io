@@ -11,7 +11,7 @@ export function Story() {
                 <SectionHead
                     id="story"
                     eyebrow="Our story"
-                    title="A safe harbor for promising projects."
+                    title="A place for innovation."
                     more={{ href: ROUTES.about, label: "More about the studio" }}
                 >
                     {STORY[0]}

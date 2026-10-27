@@ -185,10 +185,6 @@ main > .section:last-child {
     display: flex;
     flex-direction: column;
 }
-.kind-card .bc-card-footer {
-    margin-top: auto;
-    padding-top: var(--space-6);
-}
 .icon-tile {
     display: grid;
     place-items: center;

@@ -12,7 +12,7 @@ export function Hero() {
                 className="hero"
                 data-theme="light"
                 titleAs="h1"
-                eyebrow="A fleet of creative ventures"
+                eyebrow="Exploring what comes next"
                 title="Charting new horizons in the digital sea."
                 art={<BeamDots />}
                 actions={

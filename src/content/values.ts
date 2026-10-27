@@ -18,11 +18,16 @@ export const VALUES = [
 ];
 
 export const MISSION =
-    "Give promising projects a home to grow into thoughtful digital products, built with care, curiosity, and a sense of adventure.";
+    "Create innovative software that opens up new ways for people to work, live, and play, built with care, curiosity, and a sense of adventure.";
 
-export const VISION = "Become a trusted, well-regarded brand and a coveted place to be.";
+export const VISION =
+    "Become a company known for setting new directions in the digital world: a trusted brand and a coveted place to innovate.";
+
+/** What the tagline means, from the company's About page. */
+export const HORIZONS =
+    "For Beamcove, charting new horizons means exploring possibilities, challenging conventions, and turning original ideas into digital products.";
 
 export const STORY = [
-    "Beamcove began as a safe harbor for projects ready to grow beyond personal experiments. It gives them a shared home where each can be part of something bigger.",
-    "Rooted in adventure and trying new things, Beamcove brings professional care to the work while keeping it fun: a cozy place to express ideas and grow.",
+    "Beamcove brings projects beyond personal experiments with the ambition to explore what comes next. It is a place for innovation, where curiosity becomes original ideas and ideas become useful digital products.",
+    "Rooted in adventure and trying new things, Beamcove challenges familiar approaches while bringing professional care and fun to the work.",
 ];
