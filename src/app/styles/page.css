@@ -112,6 +112,10 @@ a:focus-visible {
         color var(--duration-fast) ease-out,
         background-color var(--duration-fast) ease-out;
 }
+.site-nav a[aria-current="page"] {
+    color: var(--ink);
+    background: var(--surface-sunken);
+}
 .site-nav a:hover {
     color: var(--ink);
     background: var(--surface-sunken);
@@ -326,8 +330,37 @@ main > .section:last-child {
     margin-top: var(--space-2);
 }
 .footer-cols {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: var(--space-12);
+}
+.footer-socials {
     display: flex;
-    gap: var(--space-16);
+    gap: var(--space-1);
+    margin-top: var(--space-5);
+}
+.footer-socials a {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    color: var(--ink-muted);
+    transition:
+        color var(--duration-fast) ease-out,
+        background-color var(--duration-fast) ease-out;
+}
+.footer-socials a:hover {
+    color: var(--ink);
+    background: var(--surface-sunken);
+}
+.footer-socials svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+.footer-bottom a {
+    color: inherit;
 }
 .footer-heading {
     font-size: 13px;
@@ -613,6 +646,511 @@ main > .section:last-child {
     translate: 3px 0;
 }
 
+/* ── Shared bits for inner pages ──────────────────── */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+.section-tight {
+    padding-top: var(--space-12);
+}
+.section-aside {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+    justify-self: end;
+}
+.section-aside .section-lead {
+    justify-self: start;
+}
+.more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    color: var(--beam-ink);
+    text-decoration: none;
+}
+.more-link svg {
+    transition: translate var(--duration-base) ease-out;
+}
+.more-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.more-link:hover svg {
+    translate: 3px 0;
+}
+.split-more {
+    margin-top: var(--space-6);
+}
+.tick-list,
+.cross-list {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+}
+.tick-list li,
+.cross-list li {
+    position: relative;
+    padding-left: var(--space-6);
+    color: var(--ink-muted);
+}
+.tick-list li::before,
+.cross-list li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--beam);
+}
+.cross-list li::before {
+    background: var(--danger);
+    border-radius: 1px;
+}
+
+/* ── Page hero (inner pages) ─────────────────────── */
+.page-hero {
+    padding-top: var(--space-2);
+}
+.page-splash.bc-splash {
+    padding: var(--space-16);
+}
+.page-splash .bc-splash-content {
+    max-width: 36rem;
+}
+/* tide ink rises from the bottom: leave it room below the text */
+.page-splash.bc-tone-tide.bc-splash {
+    padding-bottom: 144px;
+}
+.page-hero-plain {
+    padding-top: var(--space-16);
+}
+.page-title {
+    margin-top: var(--space-4);
+    max-width: 18ch;
+    text-wrap: balance;
+}
+.page-lead {
+    margin-top: var(--space-4);
+    max-width: 52ch;
+}
+.page-meta {
+    margin-top: var(--space-6);
+}
+.page-hero-band {
+    display: block;
+    height: 48px;
+    margin-top: var(--space-12);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px #10163a14;
+}
+
+/* ── Fleet page ───────────────────────────────────── */
+.ship-list {
+    display: grid;
+    gap: var(--space-16);
+}
+.ship-row {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-12);
+    align-items: start;
+    padding-top: var(--space-12);
+    box-shadow: inset 0 1px 0 var(--line);
+}
+.ship-row:first-child {
+    padding-top: 0;
+    box-shadow: none;
+}
+.ship-story {
+    margin-top: var(--space-4);
+    max-width: 52ch;
+}
+.ship-notes-title {
+    margin-top: var(--space-8);
+}
+.fleet-log-wide {
+    max-width: 480px;
+    margin-top: var(--space-12);
+}
+
+/* ── About page ───────────────────────────────────── */
+.story {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-12);
+}
+.prose {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 64ch;
+}
+.prose p,
+.prose li {
+    color: var(--ink-muted);
+}
+.prose .body-lg {
+    color: var(--ink);
+}
+.prose strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+.prose ul {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: var(--space-5);
+    list-style: disc;
+}
+.prose code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 1px 6px;
+    border-radius: var(--radius-xs);
+    background: var(--surface-sunken);
+    color: var(--ink);
+}
+.stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-16);
+}
+.stat-row > * {
+    padding-top: var(--space-6);
+    box-shadow: inset 0 1px 0 var(--line-strong);
+}
+.crew-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+}
+.crew-card {
+    display: flex;
+    gap: var(--space-5);
+    align-items: flex-start;
+    height: 100%;
+}
+.crew-avatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    background-color: var(--beam);
+    background-image: var(--bc-speck-fine);
+    color: var(--on-beam);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+.crew-blurb {
+    margin-top: var(--space-2);
+}
+.crew-card-open {
+    background: var(--surface-sunken);
+}
+.crew-card-open .more-link {
+    margin-top: var(--space-4);
+}
+.crew-open-title {
+    margin-top: var(--space-4);
+}
+
+/* ── Values page ──────────────────────────────────── */
+.value-list {
+    display: grid;
+    gap: var(--space-16);
+}
+.value-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-12);
+    padding-top: var(--space-12);
+    box-shadow: inset 0 1px 0 var(--line);
+}
+.value-row:first-child {
+    padding-top: 0;
+    box-shadow: none;
+}
+.value-title {
+    margin-top: var(--space-3);
+}
+.value-short {
+    margin-top: var(--space-4);
+    max-width: 36ch;
+}
+.value-practice-title {
+    margin-top: var(--space-6);
+}
+.promise-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+}
+.promise-grid li {
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--surface-raised);
+    box-shadow: inset 0 0 0 1px var(--line);
+}
+.promise-grid p {
+    margin-top: var(--space-2);
+}
+
+/* ── Logbook page ─────────────────────────────────── */
+.log-years {
+    display: grid;
+    gap: var(--space-12);
+    max-width: 880px;
+}
+.log-year {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: var(--space-6);
+}
+.log-year .logbook {
+    margin-top: 0;
+}
+.log-tag {
+    margin-top: var(--space-3);
+}
+
+/* ── Contact page ─────────────────────────────────── */
+.channel-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+.channel-wide {
+    grid-column: 1 / -1;
+}
+.channel {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+    height: 100%;
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--surface-raised);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    transition: box-shadow var(--duration-fast) ease-out;
+}
+.channel:hover {
+    box-shadow:
+        inset 0 0 0 1px var(--line),
+        var(--shadow-md);
+}
+.channel .icon-tile {
+    flex: none;
+    margin-bottom: 0;
+}
+.channel .icon-tile svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+.channel .icon-tile svg[stroke] {
+    fill: none;
+}
+.channel > svg {
+    flex: none;
+    margin-left: auto;
+    color: var(--ink-subtle);
+    transition: translate var(--duration-base) ease-out;
+}
+.channel:hover > svg {
+    translate: 2px -2px;
+    color: var(--beam-ink);
+}
+.channel-text {
+    display: grid;
+    gap: 2px;
+}
+.channel-handle {
+    color: var(--beam-ink);
+}
+.faq-page {
+    max-width: 880px;
+}
+.faq-page .section-head {
+    grid-template-columns: minmax(0, 1fr);
+}
+.faq-page .section-aside {
+    justify-self: start;
+}
+
+/* ── Brand page ───────────────────────────────────── */
+.boilerplate {
+    max-width: 880px;
+}
+.boilerplate-actions {
+    margin-top: var(--space-5);
+}
+.wordmark-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+}
+.wordmark-sample {
+    display: grid;
+    place-items: center;
+    gap: var(--space-4);
+    margin: 0;
+    min-height: 240px;
+    padding: var(--space-8);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink);
+}
+.wordmark-sample-night {
+    background-color: var(--surface-inverse);
+    background-image: var(--bc-speck-fine), var(--splash-night);
+    background-blend-mode: soft-light, normal;
+    color: var(--ink-on-night);
+    box-shadow: none;
+}
+.wordmark-big {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.045em;
+}
+.do-dont {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+}
+.swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-6);
+    background: transparent;
+    color: var(--ink);
+}
+.swatch-chip {
+    display: block;
+    aspect-ratio: 1;
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius-lg);
+    box-shadow: inset 0 0 0 1px #10163a1f;
+    background-image: var(--bc-speck-fine);
+}
+.swatch-grid .muted {
+    color: var(--ink-muted);
+}
+.type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+}
+.type-specimen {
+    margin: var(--space-4) 0;
+    font-size: 120px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+}
+.type-specimen-mono {
+    font-family: var(--font-mono);
+    letter-spacing: -0.02em;
+}
+
+/* ── Legal pages ──────────────────────────────────── */
+.legal {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: var(--space-16);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-24);
+}
+.legal-toc {
+    position: sticky;
+    top: calc(var(--space-16) + var(--space-6));
+    align-self: start;
+}
+.legal-toc ol {
+    display: grid;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+}
+.legal-toc a {
+    display: block;
+    padding: var(--space-1) 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--ink-muted);
+    text-decoration: none;
+}
+.legal-toc a:hover {
+    color: var(--ink);
+}
+.legal-body {
+    gap: var(--space-12);
+    max-width: 68ch;
+}
+.legal-body section {
+    display: grid;
+    gap: var(--space-3);
+    scroll-margin-top: var(--space-24);
+}
+.legal-body h2 {
+    margin-bottom: var(--space-1);
+}
+
+/* ── 404 ──────────────────────────────────────────── */
+.not-found.bc-splash {
+    padding: var(--space-24) var(--space-6) 200px;
+}
+
+/* ── Mobile menu ──────────────────────────────────── */
+.menu-toggle {
+    display: none;
+}
+.mobile-menu {
+    box-shadow: inset 0 1px 0 var(--line);
+}
+.mobile-menu[hidden] {
+    display: none;
+}
+.mobile-menu ul {
+    display: grid;
+    padding-block: var(--space-2) var(--space-4);
+}
+.mobile-menu a {
+    display: block;
+    padding: var(--space-3) 0;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    box-shadow: inset 0 -1px 0 var(--line);
+}
+.mobile-menu a[aria-current="page"] {
+    color: var(--beam-ink);
+}
+.site-header.is-open {
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
+}
+
 /* ── Motion (only under html.motion: JS on, motion not reduced) ──
    Ease-out, no bounce. The splash ink itself never loops; the hero's
    shapes print in once, like two passes through the press. */
@@ -777,6 +1315,29 @@ main > .section:last-child {
     }
 }
 @media (max-width: 960px) {
+    .ship-row,
+    .story,
+    .value-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-8);
+    }
+    .swatch-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .legal {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-8);
+    }
+    .legal-toc {
+        position: static;
+    }
+    .footer-cols {
+        grid-template-columns: repeat(2, auto);
+        gap: var(--space-8) var(--space-12);
+    }
+    .section-aside {
+        justify-self: start;
+    }
     .logbook-grid {
         grid-template-columns: minmax(0, 1fr);
         gap: var(--space-16);
@@ -831,6 +1392,34 @@ main > .section:last-child {
     .site-nav {
         display: none;
     }
+    .menu-toggle {
+        display: inline-flex;
+    }
+    .crew-grid,
+    .promise-grid,
+    .channel-grid,
+    .wordmark-grid,
+    .do-dont,
+    .type-grid,
+    .stat-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .swatch-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .log-year {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-4);
+    }
+    .page-splash.bc-splash {
+        padding: var(--space-12) var(--space-8);
+    }
+    .page-hero-plain {
+        padding-top: var(--space-12);
+    }
+    .type-specimen {
+        font-size: 88px;
+    }
     .site-header-actions {
         margin-left: auto;
     }
@@ -863,6 +1452,15 @@ main > .section:last-child {
 @media (max-width: 560px) {
     .container {
         padding-inline: var(--space-4);
+    }
+    .header-cta {
+        display: none;
+    }
+    .page-splash.bc-splash {
+        padding: var(--space-8) var(--space-6);
+    }
+    .not-found.bc-splash {
+        padding: var(--space-16) var(--space-6) 160px;
     }
     .hero.bc-splash {
         padding: var(--space-8) var(--space-6);

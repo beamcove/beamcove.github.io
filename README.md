@@ -1,9 +1,10 @@
 # beamcove.github.io
 
-The Beamcove landing page, served at [beamcove.com](https://beamcove.com) via GitHub Pages.
+The Beamcove website, served at [beamcove.com](https://beamcove.com) via GitHub Pages.
 
-A Vite + React + TypeScript single-page site built on the Beamcove design system
-(Ink & tide), vendored in `src/design-system/`. Sections live in `src/app/components/`.
+A multi-page Vite + React + TypeScript site built on the Beamcove design system
+(Ink & tide), vendored in `src/design-system/`. Pages live in `src/pages/`, shared
+copy in `src/content/`.
 
 Deeper documentation lives in [docs/](docs/): [architecture](docs/architecture.md),
 [development workflow](docs/development.md), and [deployment](docs/deployment.md).

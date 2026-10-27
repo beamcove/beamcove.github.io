@@ -1,40 +1,23 @@
 import type { CSSProperties } from "react";
-import { Compass, Sparkles, Wrench, type IconNode } from "lucide";
+import { Sparkles } from "lucide";
 
 import { Icon } from "@/app/components/icon";
+import { KIND_ICONS } from "@/app/components/kind-icons";
 import { SectionHead } from "@/app/components/section-head";
-import { Badge, Card, type SplashTone } from "@/design-system";
-
-// The band tone marks the kind of venture; the fleet reuses it.
-const KINDS: { tone: SplashTone; icon: IconNode; title: string; body: string; tag: string }[] = [
-    {
-        tone: "tide",
-        icon: Compass,
-        title: "Apps for daily life",
-        body: "Calm, useful mobile apps that help you find your way through the everyday.",
-        tag: "Mobile",
-    },
-    {
-        tone: "overprint",
-        icon: Wrench,
-        title: "Tools for lighter work",
-        body: "Dependable software that clears away busywork, so you can get on with the part you care about.",
-        tag: "Desktop and web",
-    },
-    {
-        tone: "flare",
-        icon: Sparkles,
-        title: "Other bounties",
-        body: "Experiments, curiosities and side quests we chart as we go.",
-        tag: "Anything goes",
-    },
-];
+import { KINDS } from "@/content/fleet";
+import { ROUTES } from "@/content/site";
+import { Badge, Card } from "@/design-system";
 
 export function WhatWeBuild() {
     return (
         <section className="section" id="build" aria-labelledby="build-title">
             <div className="container">
-                <SectionHead id="build" eyebrow="What we build" title="One cove, many ships.">
+                <SectionHead
+                    id="build"
+                    eyebrow="What we build"
+                    title="One cove, many ships."
+                    more={{ href: ROUTES.fleet, label: "See the whole fleet" }}
+                >
                     We make small, well-made software: things you keep in your pocket, things that
                     lighten your work, and things we build because they are fun.
                 </SectionHead>
@@ -47,7 +30,7 @@ export function WhatWeBuild() {
                                 footer={<Badge>{kind.tag}</Badge>}
                             >
                                 <span className="icon-tile">
-                                    <Icon node={kind.icon} size={20} />
+                                    <Icon node={KIND_ICONS[i] ?? Sparkles} size={20} />
                                 </span>
                                 <h3 className="bc-card-title">{kind.title}</h3>
                                 <p className="bc-card-body">{kind.body}</p>

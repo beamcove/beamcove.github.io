@@ -29,6 +29,9 @@ cancels superseded in-flight runs, so rapid pushes deploy only the latest commit
 - [`public/CNAME`](../public/CNAME) is copied verbatim into `dist/` by Vite, so
   every deployment re-pins the domain. Don't delete it; if the domain ever
   changes, change it there _and_ in Settings → Pages.
+- Every page is its own `index.html` in a folder (`dist/about/index.html`), so
+  `beamcove.com/about/` works with no rewrites; Pages redirects `/about` to
+  `/about/`. Missing paths get `dist/404.html`.
 - `.nojekyll` is unnecessary — the Actions deploy path serves the artifact
   directly and never runs Jekyll.
 - Asset URLs in the markup are root-relative (e.g. `/assets/favicon.svg`),
@@ -40,7 +43,9 @@ cancels superseded in-flight runs, so rapid pushes deploy only the latest commit
 1. The _Deploy_ run is green in the Actions tab.
 2. beamcove.com serves the new build (hard-refresh; HTML is cached briefly).
 3. Spot-check: fonts (Onest / JetBrains Mono), the hero splash's grain and dot
-   grid, icons, the newsletter field, and the light/dark toggle.
+   grid, icons, the newsletter field, the light/dark toggle, a couple of inner
+   pages (e.g. `/fleet/`, `/privacy/`) and a missing path (should show “Off the
+   map”).
 
 ## Rollback
 

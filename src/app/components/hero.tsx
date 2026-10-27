@@ -37,8 +37,8 @@ export function Hero() {
                         >
                             Meet the fleet
                         </Button>
-                        <Button size="lg" variant="secondary" href="#dispatches">
-                            Get dispatches
+                        <Button size="lg" variant="secondary" href="/about/">
+                            About the studio
                         </Button>
                     </>
                 }

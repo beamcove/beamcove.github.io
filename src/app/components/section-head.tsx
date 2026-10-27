@@ -1,14 +1,19 @@
 import type { ReactNode } from "react";
 
+import { MoreLink } from "@/app/components/more-link";
+
 export function SectionHead({
     id,
     eyebrow,
     title,
+    more,
     children,
 }: {
     id: string;
     eyebrow: string;
     title: string;
+    /** Link to the full page this section summarises. */
+    more?: { href: string; label: string };
     children?: ReactNode;
 }) {
     return (
@@ -19,7 +24,12 @@ export function SectionHead({
                     {title}
                 </h2>
             </div>
-            {children && <p className="body-lg muted section-lead">{children}</p>}
+            {(children || more) && (
+                <div className="section-aside">
+                    {children && <p className="body-lg muted section-lead">{children}</p>}
+                    {more && <MoreLink href={more.href}>{more.label}</MoreLink>}
+                </div>
+            )}
         </header>
     );
 }

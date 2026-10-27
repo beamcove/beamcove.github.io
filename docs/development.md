@@ -5,17 +5,17 @@ lefthook git hooks via the `prepare` script.
 
 ## Commands
 
-| Command                             | What it does                                   |
-| ----------------------------------- | ---------------------------------------------- |
-| `npm run dev`                       | Vite dev server with HMR (localhost:5173)      |
-| `npm run build`                     | `tsc -b` (type-check) + `vite build` → `dist/` |
-| `npm run preview`                   | Serve the production build (localhost:4173)    |
-| `npm test` / `npm run test:watch`   | Vitest, jsdom + Testing Library                |
-| `npm run test:coverage`             | Coverage report (v8)                           |
-| `npm run lint` / `npm run lint:fix` | ESLint                                         |
-| `npm run format`                    | Prettier write + ESLint fix, whole repo        |
-| `npm run format:check`              | CI-style check, no writes                      |
-| `npm run size`                      | Bundle budget check (size-limit)               |
+| Command                             | What it does                                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `npm run dev`                       | Vite dev server with HMR (localhost:5173). Pages live at `/about/`, `/privacy/`, …; the 404 page is at `/404.html` |
+| `npm run build`                     | `tsc -b` (type-check) + `vite build` → `dist/`                                                                     |
+| `npm run preview`                   | Serve the production build (localhost:4173)                                                                        |
+| `npm test` / `npm run test:watch`   | Vitest, jsdom + Testing Library                                                                                    |
+| `npm run test:coverage`             | Coverage report (v8)                                                                                               |
+| `npm run lint` / `npm run lint:fix` | ESLint                                                                                                             |
+| `npm run format`                    | Prettier write + ESLint fix, whole repo                                                                            |
+| `npm run format:check`              | CI-style check, no writes                                                                                          |
+| `npm run size`                      | Bundle budget check (size-limit)                                                                                   |
 
 ## Formatting & linting
 
@@ -44,11 +44,12 @@ lefthook git hooks via the `prepare` script.
 
 ## Bundle budget
 
-`npm run size` (after a build) checks the main JS chunk against the 100 KB
-gzipped budget in [package.json](../package.json). The page currently ships
-~59 KB compressed (React 19 + a handful of Lucide icons + app code). If the
-budget trips, check what got imported — e.g. something that pulls in all of
-`lucide` instead of named icon imports. Fonts are separate files and don't count.
+`npm run size` (after a build) checks all page scripts in `dist/assets/` together
+against the 100 KB budget in [package.json](../package.json). They currently
+come to ~78 KB compressed (React 19, shared components, every page's own chunk,
+a handful of Lucide icons). If the budget trips, check what got imported —
+e.g. something that pulls in all of `lucide` instead of named icon imports.
+Fonts are separate files and don't count.
 
 ## Editor setup (VS Code)
 

@@ -1,19 +1,48 @@
 import type { CSSProperties } from "react";
 
 import { SectionHead } from "@/app/components/section-head";
+import { FLEET_COUNTS, SHIPS, STATUS_LABEL, type Ship } from "@/content/fleet";
+import { ROUTES } from "@/content/site";
 import { Badge, Button, Card, DotMeter } from "@/design-system";
 
-const LOG = [
-    { label: "Launched", value: 0 },
-    { label: "In the shipyard", value: 1 },
-    { label: "On the drawing board", value: 1 },
-];
+export function StatusBadge({ ship }: { ship: Ship }) {
+    if (ship.status === "launched") return <Badge tone="success">{STATUS_LABEL.launched}</Badge>;
+    if (ship.status === "shipyard")
+        return (
+            <Badge tone="beam" dot>
+                {STATUS_LABEL.shipyard}
+            </Badge>
+        );
+    return <Badge>{STATUS_LABEL[ship.status]}</Badge>;
+}
+
+export function FleetLog({ style }: { style?: CSSProperties }) {
+    return (
+        <Card variant="plain" eyebrow="Fleet log" data-reveal style={style}>
+            <dl className="fleet-log">
+                {FLEET_COUNTS.map((row) => (
+                    <div key={row.label}>
+                        <dt>{row.label}</dt>
+                        <dd>{row.value}</dd>
+                    </div>
+                ))}
+            </dl>
+        </Card>
+    );
+}
 
 export function Fleet() {
+    const [flagship, ...rest] = SHIPS;
+    if (!flagship) return null;
     return (
         <section className="section" id="fleet" aria-labelledby="fleet-title">
             <div className="container">
-                <SectionHead id="fleet" eyebrow="The fleet" title="Something’s on the horizon.">
+                <SectionHead
+                    id="fleet"
+                    eyebrow="The fleet"
+                    title="Something’s on the horizon."
+                    more={{ href: ROUTES.fleet, label: "Explore the fleet" }}
+                >
                     Our first ship is nearly ready to leave the harbour. Here’s where the fleet
                     stands today.
                 </SectionHead>
@@ -23,63 +52,49 @@ export function Fleet() {
                         tone="overprint"
                         className="ship-card"
                         footer={
-                            <Button variant="tonal" href="#dispatches">
-                                Get launch news
-                            </Button>
+                            <>
+                                <Button variant="tonal" href="#dispatches">
+                                    Get launch news
+                                </Button>
+                                <Button variant="ghost" href={`${ROUTES.fleet}#${flagship.id}`}>
+                                    Read more
+                                </Button>
+                            </>
                         }
                     >
                         <div className="ship-meta">
-                            <span className="mono muted">BC-001</span>
-                            <Badge tone="beam" dot>
-                                In the shipyard
-                            </Badge>
+                            <span className="mono muted">{flagship.code}</span>
+                            <StatusBadge ship={flagship} />
                         </div>
-                        <h3 className="title-2 ship-name">Caskade</h3>
-                        <p className="body-lg muted ship-blurb">
-                            A tool that makes everyday work lighter. We’re putting the final coat of
-                            paint on the hull.
-                        </p>
+                        <h3 className="title-2 ship-name">{flagship.name}</h3>
+                        <p className="body-lg muted ship-blurb">{flagship.summary}</p>
                         <DotMeter
                             className="ship-meter"
                             size="lg"
                             columns={24}
-                            value={72}
+                            value={flagship.readiness}
                             label="Ready to sail"
                         />
                     </Card>
 
                     <div className="fleet-aside">
-                        <Card
-                            variant="plain"
-                            className="ship-card ship-card-small"
-                            data-reveal
-                            style={{ "--d": 1 } as CSSProperties}
-                        >
-                            <div className="ship-meta">
-                                <span className="mono muted">BC-002</span>
-                                <Badge>On the drawing board</Badge>
-                            </div>
-                            <h3 className="headline ship-name-small">An app for daily life</h3>
-                            <p className="bc-card-body">
-                                Still a sketch on the chart table. It gets a name once it floats.
-                            </p>
-                        </Card>
-
-                        <Card
-                            variant="plain"
-                            eyebrow="Fleet log"
-                            data-reveal
-                            style={{ "--d": 2 } as CSSProperties}
-                        >
-                            <dl className="fleet-log">
-                                {LOG.map((row) => (
-                                    <div key={row.label}>
-                                        <dt>{row.label}</dt>
-                                        <dd>{row.value}</dd>
-                                    </div>
-                                ))}
-                            </dl>
-                        </Card>
+                        {rest.slice(0, 1).map((ship) => (
+                            <Card
+                                key={ship.id}
+                                variant="plain"
+                                className="ship-card ship-card-small"
+                                data-reveal
+                                style={{ "--d": 1 } as CSSProperties}
+                            >
+                                <div className="ship-meta">
+                                    <span className="mono muted">{ship.code}</span>
+                                    <StatusBadge ship={ship} />
+                                </div>
+                                <h3 className="headline ship-name-small">{ship.name}</h3>
+                                <p className="bc-card-body">{ship.summary}</p>
+                            </Card>
+                        ))}
+                        <FleetLog style={{ "--d": 2 } as CSSProperties} />
                     </div>
                 </div>
             </div>

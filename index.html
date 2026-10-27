@@ -9,31 +9,20 @@
             content="Beamcove is home to a fleet of creative digital ventures: apps, tools and other bounties, each built with craft and a little fun."
         />
         <meta name="theme-color" content="#f7f6f2" />
-        <meta property="og:title" content="Beamcove" />
-        <meta property="og:description" content="Charting new horizons in the digital sea." />
+        <meta property="og:site_name" content="Beamcove" />
+        <meta property="og:title" content="Beamcove — Charting new horizons in the digital sea" />
+        <meta
+            property="og:description"
+            content="Beamcove is home to a fleet of creative digital ventures: apps, tools and other bounties, each built with craft and a little fun."
+        />
+        <link rel="canonical" href="https://beamcove.com/" />
         <meta property="og:url" content="https://beamcove.com/" />
         <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
-        <script>
-            // Before first paint: light unless the visitor saved a choice, and flag
-            // motion so reveal animations never hide content when they can't run.
-            (function () {
-                var root = document.documentElement;
-                var theme = "light";
-                try {
-                    if (localStorage.getItem("bc-theme") === "dark") theme = "dark";
-                } catch (e) {}
-                root.dataset.theme = theme;
-                if (
-                    "IntersectionObserver" in window &&
-                    !matchMedia("(prefers-reduced-motion: reduce)").matches
-                ) {
-                    root.classList.add("motion");
-                }
-            })();
-        </script>
+        <!-- theme + motion flags before first paint (see public/boot.js) -->
+        <script src="/boot.js"></script>
     </head>
     <body>
         <div id="root"></div>
-        <script type="module" src="/src/main.tsx"></script>
+        <script type="module" src="/src/entries/home.tsx"></script>
     </body>
 </html>

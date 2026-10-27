@@ -1,9 +1,12 @@
 # Architecture
 
-The Beamcove landing page: a single-page Vite + React 19 + TypeScript site with no
-router, no backend of its own, and one external API call (newsletter signup). It is
-built to `dist/` and served as static files by GitHub Pages at
-[beamcove.com](https://beamcove.com).
+The Beamcove website: a multi-page Vite + React 19 + TypeScript static site with
+no client-side router, no backend of its own, and one external API call
+(newsletter signup). Each page is its own HTML file, built to `dist/` and served
+by GitHub Pages at [beamcove.com](https://beamcove.com).
+
+The landing page is the abstract: every section is a short summary that links
+to the page holding the full story (fleet, about, values, logbook, contact).
 
 It is built on the Beamcove design system, **Ink & tide** (riso paper, blue and
 red overprint splashes, the fitted dot grid, Onest + JetBrains Mono). A copy lives
@@ -15,29 +18,60 @@ to production, see [deployment.md](deployment.md).
 ## Repository layout
 
 ```
-├── index.html                    Head metadata, theme boot script, #root
+├── index.html, 404.html          Landing page and the Pages 404
+├── fleet/ about/ values/ logbook/ contact/ brand/ privacy/ terms/
+│                                 One index.html per page (title, description, canonical)
 ├── public/                       Copied verbatim into dist/
+│   ├── boot.js                   Theme + motion flags before first paint (every page)
 │   ├── CNAME                     Pins the custom domain in every Pages deployment
 │   └── assets/favicon.svg
 ├── src/
-│   ├── main.tsx                  Entry: CSS imports + React mount
+│   ├── entries/                  One tiny module per page: mount(<XPage />)
+│   ├── pages/                    Page components (home, fleet, about, …, not-found)
+│   ├── content/                  Copy and data shared by pages: site (routes, nav,
+│   │                             socials, email), fleet, logbook, values, faq, voyage
 │   ├── design-system/            Vendored Ink & tide (see its README)
-│   │   ├── tokens.css            Colour, type, space, radius, splash tokens + @font-face
-│   │   ├── components.css        Component CSS (bc-* classes), grain images
-│   │   ├── fonts/                Onest, JetBrains Mono (variable woff2)
-│   │   ├── components/           Typed TSX port of the component bundle
-│   │   └── index.ts              Badge, Button, Callout, Card, DotMeter, Splash, TextField
 │   └── app/
-│       ├── app.tsx               Composition root
-│       ├── links.ts              In-page nav links (header + footer)
-│       ├── components/           One file per section, plus icon / theme toggle / brand
+│       ├── mount.tsx             CSS imports (in order) + React mount
+│       ├── components/           Layout (site-layout/header/footer, page-hero,
+│       │                         legal-page) and sections (hero, voyage, fleet, …)
 │       ├── styles/page.css       Page layout + motion on top of the design system
-│       └── utils/theme.ts        Light/dark theme read + apply + persist
+│       └── utils/                theme.ts (light/dark), motion.ts (reveals, scroll progress)
 ├── tests/setup.ts                Vitest setup (jest-dom, RTL cleanup, storage polyfill)
 └── docs/                         You are here
 ```
 
-## Page structure
+## Pages
+
+| URL         | Component             | Header                  | What's on it                                         |
+| ----------- | --------------------- | ----------------------- | ---------------------------------------------------- |
+| `/`         | `pages/home.tsx`      | Overprint splash (hero) | The abstract: one summary per page, plus dispatches  |
+| `/fleet/`   | `pages/fleet.tsx`     | Overprint splash        | Every ship with status and readiness, kinds of ships |
+| `/about/`   | `pages/about.tsx`     | Tide splash             | Story, numbers, how we work, crew                    |
+| `/values/`  | `pages/values.tsx`    | Flare splash            | Values in depth, promises, manifesto band            |
+| `/logbook/` | `pages/logbook.tsx`   | Plain, overprint band   | Every log entry by year                              |
+| `/contact/` | `pages/contact.tsx`   | Plain, tide band        | Email + social channels, full FAQ                    |
+| `/brand/`   | `pages/brand.tsx`     | Plain, flare band       | Boilerplate, wordmark rules, colours, type           |
+| `/privacy/` | `pages/privacy.tsx`   | Plain (`LegalPage`)     | Privacy policy with contents sidebar                 |
+| `/terms/`   | `pages/terms.tsx`     | Plain (`LegalPage`)     | Terms of use with contents sidebar                   |
+| 404         | `pages/not-found.tsx` | Tide splash             | “Off the map”                                        |
+
+### Adding a page
+
+1. Add the route to `ROUTES` (and `NAV` / `FOOTER_GROUPS` if it should be
+   linked) in [`src/content/site.ts`](../src/content/site.ts).
+2. Write `src/pages/<name>.tsx` wrapping its content in `<SiteLayout>`.
+3. Add `src/entries/<name>.tsx` (`mount(<NamePage />)`).
+4. Add `<name>/index.html` (copy another page's; change title, description,
+   canonical and the entry script).
+5. Add `<name>` to `PAGES` in [`vite.config.ts`](../vite.config.ts).
+6. Add it to the `PAGES` list in `src/pages/pages.test.tsx`. That test checks
+   every page has one `<h1>` and that every internal link resolves.
+
+## Landing sections
+
+| Section | File | Design-system pieces and motion |
+| ------- | ---- | ------------------------------- |
 
 | Section       | File                        | Design-system pieces and motion                                          |
 | ------------- | --------------------------- | ------------------------------------------------------------------------ |
@@ -55,7 +89,7 @@ to production, see [deployment.md](deployment.md).
 
 ## Motion
 
-- `index.html` adds `motion` to `<html>` when IntersectionObserver exists and
+- `public/boot.js` adds `motion` to `<html>` when IntersectionObserver exists and
   the visitor hasn't asked for reduced motion. **Every hidden starting state is
   scoped under `.motion`**, so without it the page is simply static and fully
   visible (this is also why tests see everything).
@@ -74,7 +108,7 @@ to production, see [deployment.md](deployment.md).
 
 ## Styling
 
-[`main.tsx`](../src/main.tsx) imports `tokens.css`, then `components.css`, then
+[`mount.tsx`](../src/app/mount.tsx) imports `tokens.css`, then `components.css`, then
 `page.css`. Later files build on earlier ones; keep that order.
 
 - **Tokens, never hex.** `page.css` only uses `var(--…)` tokens.
@@ -87,7 +121,8 @@ to production, see [deployment.md](deployment.md).
 ## Theme
 
 The design system themes by `data-theme` on `<html>`. Light is the default. A
-small inline script in [`index.html`](../index.html) restores a saved dark
+small script, [`public/boot.js`](../public/boot.js), loaded in every page's
+`<head>`, restores a saved dark
 choice (`localStorage["bc-theme"]`) before first paint; the header's
 `ThemeToggle` flips and saves it.
 
@@ -124,4 +159,5 @@ a next step otherwise.
 | Vendor the design system instead of linking to it         | The design-system repo is separate; CI needs everything in this repo                              |
 | Port the components to TSX instead of loading bundle.js   | `bundle.js` expects a global `React` and has no types; the port is typed and tree-shaken          |
 | Self-hosted fonts                                         | Comes with the design system; no third-party font requests                                        |
-| No router / state library / data layer                    | One static page; the only state is the newsletter form and the theme                              |
+| One HTML file per page, no client-side router             | Real URLs and a real 404 on GitHub Pages, each page indexable, no SPA fallback hacks              |
+| Content in `src/content/`, not inline in sections         | The landing abstract and the full pages show the same facts, so they share one source             |

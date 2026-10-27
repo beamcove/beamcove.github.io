@@ -22,8 +22,8 @@
     },
     "size-limit": [
         {
-            "name": "main entry (gzipped)",
-            "path": "dist/assets/index-*.js",
+            "name": "all page scripts",
+            "path": "dist/assets/*.js",
             "limit": "100 KB"
         }
     ],

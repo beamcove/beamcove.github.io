@@ -1,0 +1,82 @@
+import type { ReactElement } from "react";
+import { render, screen } from "@testing-library/react";
+
+import { ROUTES } from "@/content/site";
+import { AboutPage } from "@/pages/about";
+import { BrandPage } from "@/pages/brand";
+import { ContactPage } from "@/pages/contact";
+import { FleetPage } from "@/pages/fleet";
+import { HomePage } from "@/pages/home";
+import { LogbookPage } from "@/pages/logbook";
+import { NotFoundPage } from "@/pages/not-found";
+import { PrivacyPage } from "@/pages/privacy";
+import { TermsPage } from "@/pages/terms";
+import { ValuesPage } from "@/pages/values";
+
+const PAGES: [string, () => ReactElement][] = [
+    [ROUTES.home, () => <HomePage />],
+    [ROUTES.fleet, () => <FleetPage />],
+    [ROUTES.about, () => <AboutPage />],
+    [ROUTES.values, () => <ValuesPage />],
+    [ROUTES.logbook, () => <LogbookPage />],
+    [ROUTES.contact, () => <ContactPage />],
+    [ROUTES.brand, () => <BrandPage />],
+    [ROUTES.privacy, () => <PrivacyPage />],
+    [ROUTES.terms, () => <TermsPage />],
+    ["/404.html", () => <NotFoundPage />],
+];
+
+/** Ids present on each route, for checking `/page/#id` links. */
+function idsOn(route: string) {
+    const page = PAGES.find(([path]) => path === route);
+    if (!page) return null;
+    const { container, unmount } = render(page[1]());
+    const ids = new Set([...container.querySelectorAll("[id]")].map((el) => el.id));
+    unmount();
+    return ids;
+}
+
+describe.each(PAGES)("%s", (_route, renderPage) => {
+    it("has exactly one h1", () => {
+        render(renderPage());
+        expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    });
+
+    it("only links to pages and sections that exist", () => {
+        const { container } = render(renderPage());
+        const own = new Set([...container.querySelectorAll("[id]")].map((el) => el.id));
+        const hrefs = [...container.querySelectorAll("a[href]")].map(
+            (a) => a.getAttribute("href")!,
+        );
+
+        for (const href of new Set(hrefs)) {
+            if (/^(https?:|mailto:)/.test(href)) continue;
+            if (href.startsWith("#")) {
+                expect(own.has(href.slice(1)), href).toBe(true);
+                continue;
+            }
+            const [path = "", hash] = href.split("#");
+            expect(Object.values(ROUTES) as string[], href).toContain(path);
+            if (hash) expect(idsOn(path)?.has(hash), href).toBe(true);
+        }
+    });
+});
+
+describe("HomePage", () => {
+    it("summarises every section and links to the full pages", () => {
+        render(<HomePage />);
+        expect(
+            screen.getByRole("heading", { level: 1, name: /charting new horizons/i }),
+        ).toBeInTheDocument();
+        for (const name of [/see the whole fleet/i, /read our values/i, /open the logbook/i]) {
+            expect(screen.getByRole("link", { name })).toBeInTheDocument();
+        }
+    });
+});
+
+describe("LogbookPage", () => {
+    it("dates entries the house way", () => {
+        render(<LogbookPage />);
+        expect(screen.getAllByText("Oct 27, 2026")[0]).toHaveAttribute("datetime", "2026-10-27");
+    });
+});

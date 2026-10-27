@@ -12,7 +12,7 @@ the rules: one printed splash per view, tokens never hex, sentence case, etc.
 | `components/`    | typed TSX port of `components/bundle.js` | yes, keep behaviour in sync |
 
 Only the components the site uses are ported (Badge, Button, Callout, Card,
-DotMeter, Splash, TextField). Port others from `bundle.js` when needed.
+DotMeter, Splash, Stat, TextField). Port others from `bundle.js` when needed.
 
 Differences from `bundle.js`: `Button` renders an `<a>` whenever it has an
 `href`; `Splash` takes `titleAs` (`h1` for the page hero) and renders non-string
