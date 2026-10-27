@@ -51,33 +51,34 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 
 /* ── Drifting ink ───────────────────────────────────
    On a Splash the ink blooms drift slowly; the grain, dots, shapes and text
-   stay put. Each bloom layer is printed 125% large and wanders within that
-   margin, so the edges never show. Off under reduced motion. */
+   stay put. Each bloom layer is printed larger than the splash (135%, or
+   125% for tide so the ink never climbs under the text) and wanders within
+   that margin, so the edges never show. Off under reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
-  .bc-splash.bc-tone-overprint { background-size: auto, 125% 125%, 125% 125%, auto; animation: bc-drift-overprint 26s ease-in-out infinite alternate; }
-  .bc-splash.bc-tone-tide { background-size: auto, 125% 125%, auto; animation: bc-drift-tide 22s ease-in-out infinite alternate; }
-  .bc-splash.bc-tone-flare { background-size: auto, 125% 125%, auto; animation: bc-drift-flare 22s ease-in-out infinite alternate; }
-  .bc-splash.bc-tone-night { background-size: auto, 125% 125%, 125% 125%, auto; animation: bc-drift-night 26s ease-in-out infinite alternate; }
+  .bc-splash.bc-tone-overprint { background-size: auto, 135% 135%, 135% 135%, auto; animation: bc-drift-overprint 18s ease-in-out infinite alternate; }
+  .bc-splash.bc-tone-tide { background-size: auto, 125% 125%, auto; animation: bc-drift-tide 15s ease-in-out infinite alternate; }
+  .bc-splash.bc-tone-flare { background-size: auto, 135% 135%, auto; animation: bc-drift-flare 15s ease-in-out infinite alternate; }
+  .bc-splash.bc-tone-night { background-size: auto, 135% 135%, 135% 135%, auto; animation: bc-drift-night 18s ease-in-out infinite alternate; }
 }
 @keyframes bc-drift-overprint {
-  0% { background-position: 0 0, 100% 0%, 40% 100%, 0 0; }
-  35% { background-position: 0 0, 70% 45%, 90% 75%, 0 0; }
-  70% { background-position: 0 0, 95% 60%, 55% 65%, 0 0; }
-  100% { background-position: 0 0, 60% 20%, 100% 100%, 0 0; }
+  0% { background-position: 0 0, 100% 0%, 15% 100%, 0 0; }
+  33% { background-position: 0 0, 50% 60%, 85% 55%, 0 0; }
+  66% { background-position: 0 0, 85% 70%, 40% 80%, 0 0; }
+  100% { background-position: 0 0, 40% 15%, 100% 100%, 0 0; }
 }
 @keyframes bc-drift-tide {
   0% { background-position: 0 0, 50% 100%, 0 0; }
-  50% { background-position: 0 0, 85% 70%, 0 0; }
-  100% { background-position: 0 0, 20% 85%, 0 0; }
+  50% { background-position: 0 0, 100% 85%, 0 0; }
+  100% { background-position: 0 0, 0% 95%, 0 0; }
 }
 @keyframes bc-drift-flare {
   0% { background-position: 0 0, 100% 0%, 0 0; }
-  50% { background-position: 0 0, 55% 55%, 0 0; }
-  100% { background-position: 0 0, 85% 25%, 0 0; }
+  50% { background-position: 0 0, 40% 65%, 0 0; }
+  100% { background-position: 0 0, 75% 20%, 0 0; }
 }
 @keyframes bc-drift-night {
   0% { background-position: 0 0, 100% 0%, 0% 100%, 0 0; }
-  50% { background-position: 0 0, 55% 50%, 55% 65%, 0 0; }
+  50% { background-position: 0 0, 45% 60%, 60% 55%, 0 0; }
   100% { background-position: 0 0, 80% 20%, 20% 90%, 0 0; }
 }
 

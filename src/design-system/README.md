@@ -1,7 +1,7 @@
 # Vendored design system
 
 A copy of the Beamcove design system ("Ink & tide") from the sibling
-`design-system` repository (branch `ink-drift-and-card-rings`, commit `a29b295`). Read that repo's README for
+`design-system` repository (branch `ink-drift-and-card-rings`, commit `f21010e`). Read that repo's README for
 the rules: one printed splash per view, tokens never hex, sentence case, etc.
 
 | file             | source                                   | edit here?                  |
