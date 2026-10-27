@@ -154,15 +154,15 @@ export function BrandPage() {
                             <span className="wordmark-big">Beamcove</span>
                             <figcaption className="caption muted">Ink on paper</figcaption>
                         </figure>
-                        <figure className="wordmark-sample wordmark-sample-night" data-reveal>
+                        <figure className="wordmark-sample wordmark-sample-overprint" data-reveal>
                             <span className="wordmark-big">Beamcove</span>
-                            <figcaption className="caption">Paper on night</figcaption>
+                            <figcaption className="caption">Paper on overprint</figcaption>
                         </figure>
                     </div>
                     <DoDont
                         dos={[
                             "Set it in Onest 600 with −0.045em tracking.",
-                            "Use ink on paper, and paper on night.",
+                            "Use ink on paper, and paper on a solid overprint block.",
                             "Write it as one word with a capital B. The company’s legal name is Beamcove LLC.",
                         ]}
                         donts={[

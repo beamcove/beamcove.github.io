@@ -11,7 +11,7 @@ export const QUESTIONS = [
     },
     {
         q: "Who’s behind Beamcove?",
-        a: "Beamcove LLC was founded by Yoan Dubuc in January 2026 in Georgia, USA. For now, it’s founder-operated.",
+        a: "Beamcove LLC was founded by Yoan Dubuc in January 2026.",
     },
     {
         q: "How often do dispatches go out?",

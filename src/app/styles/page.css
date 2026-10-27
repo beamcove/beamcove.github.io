@@ -397,7 +397,7 @@ main > .section:last-child {
     background: var(--flare);
 }
 
-/* ── Manifesto: the night band ────────────────────── */
+/* ── Manifesto: the vision band ───────────────────── */
 .manifesto.bc-splash {
     padding: var(--space-24) var(--space-16);
 }
@@ -414,7 +414,6 @@ main > .section:last-child {
 }
 .manifesto .bc-splash-body {
     max-width: 46ch;
-    opacity: 0.82;
 }
 
 /* ── Logbook + questions ──────────────────────────── */
@@ -673,16 +672,6 @@ main > .section:last-child {
     background: var(--surface-sunken);
     color: var(--ink);
 }
-.stat-row {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-6);
-    margin-top: var(--space-16);
-}
-.stat-row > * {
-    padding-top: var(--space-6);
-    box-shadow: inset 0 1px 0 var(--line-strong);
-}
 .bearing-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -864,10 +853,10 @@ main > .section:last-child {
     box-shadow: inset 0 0 0 1px var(--line);
     color: var(--ink);
 }
-.wordmark-sample-night {
-    background-color: var(--surface-inverse);
-    background-image: var(--bc-speck-fine), var(--splash-night);
-    background-blend-mode: soft-light, normal;
+.wordmark-sample-overprint {
+    background-color: var(--overprint);
+    background-image: var(--bc-speck-fine);
+    background-blend-mode: soft-light;
     color: var(--ink-on-night);
     box-shadow: none;
 }
@@ -1152,8 +1141,7 @@ main > .section:last-child {
     .channel-grid,
     .wordmark-grid,
     .do-dont,
-    .type-grid,
-    .stat-row {
+    .type-grid {
         grid-template-columns: minmax(0, 1fr);
     }
     .swatch-grid {

@@ -49,6 +49,38 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 .bc-on-splash.bc-tone-night { --bc-dot-color: var(--dot-on-night); --bc-dot-blend: normal; color: var(--ink-on-night);
   --ink: var(--ink-on-night); --ink-muted: var(--ink-on-night); --line-strong: var(--ink-on-night); --surface-sunken: #ffffff1f; }
 
+/* ── Drifting ink ───────────────────────────────────
+   On a Splash the ink blooms drift slowly; the grain, dots, shapes and text
+   stay put. Each bloom layer is printed 125% large and wanders within that
+   margin, so the edges never show. Off under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .bc-splash.bc-tone-overprint { background-size: auto, 125% 125%, 125% 125%, auto; animation: bc-drift-overprint 26s ease-in-out infinite alternate; }
+  .bc-splash.bc-tone-tide { background-size: auto, 125% 125%, auto; animation: bc-drift-tide 22s ease-in-out infinite alternate; }
+  .bc-splash.bc-tone-flare { background-size: auto, 125% 125%, auto; animation: bc-drift-flare 22s ease-in-out infinite alternate; }
+  .bc-splash.bc-tone-night { background-size: auto, 125% 125%, 125% 125%, auto; animation: bc-drift-night 26s ease-in-out infinite alternate; }
+}
+@keyframes bc-drift-overprint {
+  0% { background-position: 0 0, 100% 0%, 40% 100%, 0 0; }
+  35% { background-position: 0 0, 70% 45%, 90% 75%, 0 0; }
+  70% { background-position: 0 0, 95% 60%, 55% 65%, 0 0; }
+  100% { background-position: 0 0, 60% 20%, 100% 100%, 0 0; }
+}
+@keyframes bc-drift-tide {
+  0% { background-position: 0 0, 50% 100%, 0 0; }
+  50% { background-position: 0 0, 85% 70%, 0 0; }
+  100% { background-position: 0 0, 20% 85%, 0 0; }
+}
+@keyframes bc-drift-flare {
+  0% { background-position: 0 0, 100% 0%, 0 0; }
+  50% { background-position: 0 0, 55% 55%, 0 0; }
+  100% { background-position: 0 0, 85% 25%, 0 0; }
+}
+@keyframes bc-drift-night {
+  0% { background-position: 0 0, 100% 0%, 0% 100%, 0 0; }
+  50% { background-position: 0 0, 55% 50%, 55% 65%, 0 0; }
+  100% { background-position: 0 0, 80% 20%, 20% 90%, 0 0; }
+}
+
 /* ── Splash ─────────────────────────────────────────── */
 .bc-splash { overflow: hidden; border-radius: var(--radius-xl); padding: var(--space-12); box-sizing: border-box; box-shadow: inset 0 0 0 1px #10163a14; }
 .bc-splash-flat::before { display: none; }
@@ -140,7 +172,9 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 
 /* ── Card: printed band on top ── */
 .bc-card { box-sizing: border-box; background-color: var(--surface-raised); border-radius: var(--radius-lg); padding: var(--space-6); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; }
-.bc-card-band { padding: 0; }
+.bc-card-band { padding: 0; position: relative; }
+/* The ring sits above the band, so the card's edge stays visible where the ink fades to paper. */
+.bc-card-band::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px var(--line); pointer-events: none; }
 .bc-card-band > .bc-card-strip { display: block; height: 48px; box-shadow: inset 0 -1px 0 var(--line); }
 .bc-card-band > .bc-card-content { padding: var(--space-5) var(--space-6) var(--space-6); }
 .bc-card-splash { box-shadow: inset 0 0 0 1px #10163a1f; }

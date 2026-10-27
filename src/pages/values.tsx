@@ -35,7 +35,7 @@ export function ValuesPage() {
                 </div>
             </section>
 
-            <Manifesto />
+            <Manifesto tone="tide" />
         </SiteLayout>
     );
 }

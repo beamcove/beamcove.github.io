@@ -4,7 +4,6 @@ import { MoreLink } from "@/app/components/more-link";
 import { PageHero } from "@/app/components/page-hero";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
-import { StudioFacts } from "@/app/components/studio-facts";
 import { ROUTES, SITE } from "@/content/site";
 import { HORIZONS, MISSION, STORY, VISION } from "@/content/values";
 import { Badge, Card } from "@/design-system";
@@ -42,7 +41,6 @@ export function AboutPage() {
                         ))}
                     </div>
                 </div>
-                <StudioFacts />
             </section>
 
             <section className="section" aria-labelledby="bearing-title">
@@ -73,9 +71,7 @@ export function AboutPage() {
 
             <section className="section" aria-labelledby="crew-title">
                 <div className="container">
-                    <SectionHead id="crew" eyebrow="The crew" title="Who’s aboard.">
-                        Beamcove is founder-operated for now.
-                    </SectionHead>
+                    <SectionHead id="crew" eyebrow="The crew" title="Who’s aboard." />
                     <ul className="crew-grid">
                         {CREW.map((member) => (
                             <li key={member.name} data-reveal>

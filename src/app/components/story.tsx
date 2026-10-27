@@ -1,5 +1,4 @@
 import { SectionHead } from "@/app/components/section-head";
-import { StudioFacts } from "@/app/components/studio-facts";
 import { ROUTES } from "@/content/site";
 import { STORY } from "@/content/values";
 
@@ -17,7 +16,6 @@ export function Story() {
                     {STORY[0]}
                 </SectionHead>
             </div>
-            <StudioFacts />
         </section>
     );
 }

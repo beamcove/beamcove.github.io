@@ -87,8 +87,8 @@ to production, see [deployment.md](deployment.md).
 | Hero          | `hero.tsx`, `beam-dots.tsx` | Overprint `Splash`; shapes print in once; lighthouse dots              |
 | Ticker        | `ticker.tsx`                | Mono studio lines with beacon dots, slow marquee                       |
 | What we build | `what-we-build.tsx`         | Band `Card`s (band tone = kind of venture), staggered reveal           |
-| Our story     | `story.tsx`                 | Section head + `Stat` row (founded, home port, crew)                   |
-| Vision        | `manifesto.tsx`             | Night `Splash`; the vision inks in word by word with scroll            |
+| Our story     | `story.tsx`                 | Section head linking to About                                          |
+| Vision        | `manifesto.tsx`             | Flare `Splash` (tide on Values); the vision inks in word by word       |
 | Principles    | `principles.tsx`            | Sunken well with the `.bc-dots` paper grid                             |
 | Logbook + Qs  | `logbook.tsx`               | Dated log (real dates from git history), `details` accordion           |
 | Dispatches    | `dispatches.tsx`            | Tide `Splash`, `TextField`, `Button`, `Callout`                        |
@@ -109,9 +109,10 @@ to production, see [deployment.md](deployment.md).
 - `BeamDots` draws on a canvas laid exactly over a splash's fitted dot grid:
   a beam sweeps across every ~7 s and dots light under the mouse. Dots under the
   text stay dim. It only sweeps under `.motion` and while visible.
-- Ink rule: the design system says not to animate the ink. Splash gradients
-  never move; the hero's triangle and bar print in once on load, like two
-  passes through the press, and then stay put.
+- Drifting ink: every `Splash` lets its ink blooms drift slowly (a design-system
+  rule, off under reduced motion). Shapes, grain, dots and text never move; the
+  hero's triangle and bar print in once on load and then stay put. No dark
+  (night) splash is used on the site.
 
 ## Styling
 

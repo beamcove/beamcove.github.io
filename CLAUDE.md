@@ -33,7 +33,8 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 3. **Splashes carry `data-theme="light"`** — they print on paper in both themes.
 4. **Motion is opt-in via `html.motion`** (set by `public/boot.js`). Scope every
    hidden/start state under `.motion` so content shows without JS or with
-   reduced motion. Don't loop the splash ink.
+   reduced motion. Splash ink drifts (from the design system); never move the
+   shapes or text. Don't advertise crew size or location outside the legal pages.
 5. **A new page touches five places**: `ROUTES` in `src/content/site.ts`,
    `src/pages/`, `src/entries/`, `<name>/index.html`, and `PAGES` in
    `vite.config.ts` (+ the page list in `src/pages/pages.test.tsx` and a line in

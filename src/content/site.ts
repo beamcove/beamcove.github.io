@@ -5,8 +5,6 @@ export const SITE = {
     url: "https://beamcove.com",
     legalName: "Beamcove LLC",
     founder: "Yoan Dubuc",
-    /** Where the LLC is registered; the terms are governed by its law. */
-    homePort: "Georgia, USA",
     tagline: "Charting new horizons in the digital sea.",
     /** Short boilerplate, as approved in the company's About page. */
     summary:
