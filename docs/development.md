@@ -39,17 +39,16 @@ lefthook git hooks via the `prepare` script.
 - `describe`/`it`/`expect`/`vi` are ambient globals (configured in
   [vitest.config.ts](../vitest.config.ts) + the `types` array in
   [tsconfig.app.json](../tsconfig.app.json)).
-- jsdom has no IntersectionObserver; the app's scroll-reveal effect detects that
-  and reveals everything immediately, so tests don't need a polyfill.
+- jsdom has no ResizeObserver or matchMedia; the dot-grid fit and the theme
+  toggle check for them and skip, so tests don't need polyfills.
 
 ## Bundle budget
 
 `npm run size` (after a build) checks the main JS chunk against the 100 KB
 gzipped budget in [package.json](../package.json). The page currently ships
-~62 KB compressed (React 19 + 8 lucide icons + app code). If the budget trips,
-check what got imported — the most common cause would be importing broadly from
-`lucide` instead of registering individual icons in
-[`src/app/utils/icons.ts`](../src/app/utils/icons.ts).
+~59 KB compressed (React 19 + a handful of Lucide icons + app code). If the
+budget trips, check what got imported — e.g. something that pulls in all of
+`lucide` instead of named icon imports. Fonts are separate files and don't count.
 
 ## Editor setup (VS Code)
 

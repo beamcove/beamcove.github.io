@@ -27,3 +27,9 @@ public
 # OS
 .DS_Store
 Thumbs.db
+
+# vendored verbatim from the design-system repo
+src/design-system/*.css
+
+# third-party Claude skills
+.claude/skills

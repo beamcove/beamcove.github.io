@@ -1,14 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Beamcove — charting new horizons in the digital sea</title>
-        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <title>Beamcove — Charting new horizons in the digital sea</title>
         <meta
             name="description"
-            content="Beamcove is a playful umbrella for a fleet of creative digital ventures — apps, tools, and other bounties, built with craft and a little seafaring fun."
+            content="Beamcove is home to a fleet of creative digital ventures: apps, tools and other bounties, each built with craft and a little fun."
         />
+        <meta name="theme-color" content="#f7f6f2" />
+        <meta property="og:title" content="Beamcove" />
+        <meta property="og:description" content="Charting new horizons in the digital sea." />
+        <meta property="og:url" content="https://beamcove.com/" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <script>
+            // Before first paint: light unless the visitor saved a choice, and flag
+            // motion so reveal animations never hide content when they can't run.
+            (function () {
+                var root = document.documentElement;
+                var theme = "light";
+                try {
+                    if (localStorage.getItem("bc-theme") === "dark") theme = "dark";
+                } catch (e) {}
+                root.dataset.theme = theme;
+                if (
+                    "IntersectionObserver" in window &&
+                    !matchMedia("(prefers-reduced-motion: reduce)").matches
+                ) {
+                    root.classList.add("motion");
+                }
+            })();
+        </script>
     </head>
     <body>
         <div id="root"></div>

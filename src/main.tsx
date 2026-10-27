@@ -1,14 +1,12 @@
-// CSS import order replicates the old index.html <link> order — the cascade
-// depends on it (colors/type system → ink backgrounds → kit → page overrides).
-import "@/app/styles/colors-and-type.css";
-import "@/app/styles/ink.css";
-import "@/app/styles/kit.css";
+// Design system first (tokens declare the fonts), then the page layer on top.
+import "@/design-system/tokens.css";
+import "@/design-system/components.css";
 import "@/app/styles/page.css";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import App from "@/app/app";
+import { App } from "@/app/app";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error('Mount node "#root" not found');

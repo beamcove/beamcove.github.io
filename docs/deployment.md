@@ -31,7 +31,7 @@ cancels superseded in-flight runs, so rapid pushes deploy only the latest commit
   changes, change it there _and_ in Settings → Pages.
 - `.nojekyll` is unnecessary — the Actions deploy path serves the artifact
   directly and never runs Jekyll.
-- Asset URLs in the markup are root-relative (e.g. `assets/logo-lockup.svg`),
+- Asset URLs in the markup are root-relative (e.g. `/assets/favicon.svg`),
   which assumes the site is served at the domain root. Keep Vite's `base` at the
   default `/`.
 
@@ -39,8 +39,8 @@ cancels superseded in-flight runs, so rapid pushes deploy only the latest commit
 
 1. The _Deploy_ run is green in the Actions tab.
 2. beamcove.com serves the new build (hard-refresh; HTML is cached briefly).
-3. Spot-check: fonts (Hanken Grotesk / Outfit), ink background animation, lucide
-   icons stamped, newsletter field renders.
+3. Spot-check: fonts (Onest / JetBrains Mono), the hero splash's grain and dot
+   grid, icons, the newsletter field, and the light/dark toggle.
 
 ## Rollback
 

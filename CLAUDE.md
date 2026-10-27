@@ -22,14 +22,17 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 
 ## Do not break these
 
-1. **CSS import order** in `src/main.tsx` (colors-and-type → ink → kit → page)
-   is the legacy `<link>` cascade; reordering changes the rendered page.
-   `colors-and-type.css` must stay first (it `@import`s Google Fonts).
-2. **Lucide pattern** — icons are `<i data-lucide="...">` placeholders stamped
-   by `createIcons()` after render (not `lucide-react`). A new `data-lucide`
-   name also needs registering in `src/app/utils/icons.ts` or it renders
-   nothing.
-3. **`public/CNAME`** pins the custom domain into every deploy. Vite `base`
+1. **CSS import order** in `src/main.tsx`: `tokens.css` → `components.css` →
+   `page.css`. Tokens declare the fonts; the page layer overrides components.
+2. **Design system is vendored** in `src/design-system/`. `tokens.css`,
+   `components.css` and `fonts/` are verbatim copies from the sibling
+   `design-system` repo (prettier-ignored) — re-copy, don't hand-edit. Follow its
+   rules: tokens never hex, one printed splash per view, sentence case.
+3. **Splashes carry `data-theme="light"`** — they print on paper in both themes.
+4. **Motion is opt-in via `html.motion`** (set in index.html). Scope every
+   hidden/start state under `.motion` so content shows without JS or with
+   reduced motion. Don't loop the splash ink.
+5. **`public/CNAME`** pins the custom domain into every deploy. Vite `base`
    stays `/` (asset URLs in markup are root-relative).
 
 ## Conventions
@@ -39,15 +42,18 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 - React named imports only (`import { useEffect } from "react"`); no
   `esModuleInterop`, so default-importing React fails type-check.
 - Named exports; kebab-case filenames; tests colocated as `*.test.tsx`.
+- Icons: `import { Compass } from "lucide"` + `<Icon node={Compass} />`.
 - Prettier: 4-space indent, 100 cols, double quotes. ESLint flat config.
 
 ## Structure (short version)
 
-- `src/main.tsx` — CSS imports + mount. `src/app/app.tsx` — composition root
-  (hero copy and ink preset are constants there).
-- `src/app/components/` — sections.tsx (Nav/Hero/What/Fleet/Values/Crew/Footer),
-  newsletter.tsx (posts to roster.beamcove.com), brand.tsx (inline social SVGs).
-- `public/` — copied verbatim to dist (CNAME, favicon, logos).
+- `src/main.tsx` — CSS imports + mount. `src/app/app.tsx` — composition root.
+- `src/design-system/` — Ink & tide tokens, CSS, fonts, typed component port.
+- `src/app/components/` — one file per section (site-header, hero, ticker,
+  what-we-build, voyage, fleet, manifesto, principles, logbook, dispatches,
+  site-footer) plus beam-dots (hero lighthouse canvas), icon (renders
+  Lucide icon nodes), theme-toggle, brand (social SVGs).
+- `public/` — copied verbatim to dist (CNAME, favicon).
 
 ## Deployment
 
