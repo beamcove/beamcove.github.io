@@ -8,8 +8,12 @@ import { SiteLayout } from "@/app/components/site-layout";
 import { SITE } from "@/content/site";
 import { Button, Card } from "@/design-system";
 
-/** Approved boilerplate, from the company's About page. */
+/**
+ * The marketing face of Ink & tide. The rules here follow the design-system
+ * repo (beamcove/design-system); the copy follows the company's About page.
+ */
 const BOILERPLATE = [
+    { label: "Tagline", text: SITE.tagline },
     { label: "Short", text: SITE.summary },
     {
         label: "Long",
@@ -24,20 +28,58 @@ const BOILERPLATE = [
 const SWATCHES = [
     {
         name: "Paper",
-        token: "--surface",
+        token: "surface",
         hex: "#F7F6F2",
         use: "The page. Every print starts here.",
     },
-    { name: "Ink", token: "--ink", hex: "#1C2554", use: "Text and the wordmark. Never black." },
-    { name: "Riso blue", token: "--print-blue", hex: "#0A6CBD", use: "The action ink." },
+    {
+        name: "Ink",
+        token: "ink",
+        hex: "#1C2554",
+        use: "Text and the wordmark. A deep navy, never black.",
+    },
+    {
+        name: "Riso blue",
+        token: "print-blue",
+        hex: "#0A6CBD",
+        use: "The action ink: buttons, links and focus.",
+    },
     {
         name: "Fluorescent red",
-        token: "--print-red",
+        token: "print-red",
         hex: "#FF4A3D",
-        use: "The second ink and the beacon.",
+        use: "The second ink: the beacon dot, blooms and the bar. Never a status.",
     },
-    { name: "Overprint", token: "--overprint", hex: "#2A3A8C", use: "Where blue prints over red." },
+    {
+        name: "Overprint",
+        token: "overprint",
+        hex: "#2A3A8C",
+        use: "The navy where blue prints over red.",
+    },
 ];
+
+function DoDont({ dos, donts }: { dos: string[]; donts: string[] }) {
+    return (
+        <div className="do-dont" data-reveal>
+            <div>
+                <p className="headline">Do</p>
+                <ul className="tick-list">
+                    {dos.map((item) => (
+                        <li key={item}>{item}</li>
+                    ))}
+                </ul>
+            </div>
+            <div>
+                <p className="headline">Don’t</p>
+                <ul className="cross-list">
+                    {donts.map((item) => (
+                        <li key={item}>{item}</li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+}
 
 function CopyButton({ text }: { text: string }) {
     const [copied, setCopied] = useState(false);
@@ -65,8 +107,8 @@ export function BrandPage() {
     return (
         <SiteLayout>
             <PageHero band="flare" eyebrow="Brand kit" title="Printing Beamcove.">
-                For press, partners and anyone writing about us. Everything here is free to use as
-                long as it stays as it is.
+                For press, partners and anyone writing about Beamcove. It follows Ink & tide, our
+                design system. Everything here is free to use as long as it stays as it is.
             </PageHero>
 
             <section className="section section-tight" aria-labelledby="boilerplate-title">
@@ -104,8 +146,8 @@ export function BrandPage() {
             <section className="section" aria-labelledby="wordmark-title">
                 <div className="container">
                     <SectionHead id="wordmark" eyebrow="Wordmark" title="Set in type, not drawn.">
-                        We don’t have a logo mark yet, and we’d rather you didn’t make one for us.
-                        The name is set in Onest at weight 600 with tight tracking.
+                        There’s no logo mark yet. Until there is, the name is the logo: Beamcove,
+                        set in Onest at weight 600 with tight tracking.
                     </SectionHead>
                     <div className="wordmark-grid">
                         <figure className="wordmark-sample" data-theme="light" data-reveal>
@@ -117,39 +159,33 @@ export function BrandPage() {
                             <figcaption className="caption">Paper on night</figcaption>
                         </figure>
                     </div>
-                    <div className="do-dont" data-reveal>
-                        <div>
-                            <p className="headline">Do</p>
-                            <ul className="tick-list">
-                                <li>Write it as one word with a capital B.</li>
-                                <li>Use ink on light backgrounds and paper on dark ones.</li>
-                                <li>Give it room: at least the height of the “B” on every side.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p className="headline">Don’t</p>
-                            <ul className="cross-list">
-                                <li>Draw a symbol, ship or wave next to it.</li>
-                                <li>Print it in two colors or add shadows and outlines.</li>
-                                <li>Stretch, skew or re-space the letters.</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <DoDont
+                        dos={[
+                            "Set it in Onest 600 with −0.045em tracking.",
+                            "Use ink on paper, and paper on night.",
+                            "Write it as one word with a capital B. The company’s legal name is Beamcove LLC.",
+                        ]}
+                        donts={[
+                            "Draw a symbol or mark next to it.",
+                            "Print it in two colors or offset a shadow in a second ink.",
+                            "Set it in black. Ink is a deep navy.",
+                        ]}
+                    />
                 </div>
             </section>
 
             <section className="section" aria-labelledby="color-title">
                 <div className="container">
                     <SectionHead id="color" eyebrow="Color" title="Two inks on paper.">
-                        Ink & tide is printed like a riso poster: paper, a blue ink, a fluorescent
-                        red, and the navy you get where they overlap.
+                        Beamcove is printed like a riso poster: paper, riso blue, fluorescent red
+                        and the navy where they overprint, with real grain in the color.
                     </SectionHead>
                     <ul className="swatch-grid" data-theme="light">
                         {SWATCHES.map((swatch) => (
                             <li key={swatch.name} data-reveal>
                                 <span
                                     className="swatch-chip"
-                                    style={{ background: `var(${swatch.token})` }}
+                                    style={{ background: `var(--${swatch.token})` }}
                                     aria-hidden="true"
                                 />
                                 <p className="headline">{swatch.name}</p>
@@ -158,17 +194,32 @@ export function BrandPage() {
                             </li>
                         ))}
                     </ul>
+                    <DoDont
+                        dos={[
+                            "Give each piece one printed moment, and keep the rest paper and navy.",
+                            "Keep text on paper, with the ink on the right or the bottom edge.",
+                            "Keep corners soft.",
+                        ]}
+                        donts={[
+                            "Put text on dense ink or under a shape.",
+                            "Overprint anything but the two inks.",
+                            "Use red for warnings or errors.",
+                        ]}
+                    />
                 </div>
             </section>
 
             <section className="section" aria-labelledby="type-title">
                 <div className="container">
-                    <SectionHead id="type" eyebrow="Type" title="Two typefaces, three weights." />
+                    <SectionHead id="type" eyebrow="Type" title="Two typefaces, three weights.">
+                        Onest for everything, JetBrains Mono for codes and data, in weights 400, 500
+                        and 600.
+                    </SectionHead>
                     <div className="type-grid">
                         <Card variant="plain" data-reveal>
                             <p className="caption muted">Onest · everything</p>
                             <p className="type-specimen">Aa</p>
-                            <p className="body-lg">Charting new horizons in the digital sea.</p>
+                            <p className="body-lg">{SITE.tagline}</p>
                         </Card>
                         <Card variant="plain" data-reveal>
                             <p className="caption muted">JetBrains Mono · codes and data</p>
@@ -176,6 +227,26 @@ export function BrandPage() {
                             <p className="mono">Est. 2026 · beamcove.com</p>
                         </Card>
                     </div>
+                </div>
+            </section>
+
+            <section className="section" aria-labelledby="voice-title">
+                <div className="container">
+                    <SectionHead id="voice" eyebrow="Voice" title="Clear, warm, quietly confident.">
+                        Plain words first, and a little play where the ink is.
+                    </SectionHead>
+                    <DoDont
+                        dos={[
+                            "Say “we” for Beamcove and “you” for the reader.",
+                            "Write in sentence case.",
+                            "Save nautical words like voyage, fleet and crew for brand moments.",
+                        ]}
+                        donts={[
+                            "Use all-caps labels.",
+                            "Use emoji.",
+                            "Use nautical words in instructions, errors or settings.",
+                        ]}
+                    />
                 </div>
             </section>
         </SiteLayout>

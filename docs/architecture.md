@@ -29,7 +29,10 @@ to production, see [deployment.md](deployment.md).
 ├── public/                       Copied verbatim into dist/
 │   ├── boot.js                   Theme + motion flags before first paint (every page)
 │   ├── CNAME                     Pins the custom domain in every Pages deployment
-│   └── assets/favicon.svg
+│   ├── robots.txt, sitemap.xml   For search engines (sitemap lists every route)
+│   └── assets/                   favicon.svg, apple-touch-icon.png, social-card.png
+├── scripts/                      HTML sources for the two PNGs + render-images.sh
+│                                 (npm run social-card, with the dev server running)
 ├── src/
 │   ├── entries/                  One tiny module per page: mount(<XPage />)
 │   ├── pages/                    Page components (home, fleet, about, …, not-found)
@@ -69,10 +72,12 @@ to production, see [deployment.md](deployment.md).
 2. Write `src/pages/<name>.tsx` wrapping its content in `<SiteLayout>`.
 3. Add `src/entries/<name>.tsx` (`mount(<NamePage />)`).
 4. Add `<name>/index.html` (copy another page's; change title, description,
-   canonical and the entry script).
+   canonical, og:url and the entry script), and add its URL to
+   `public/sitemap.xml`.
 5. Add `<name>` to `PAGES` in [`vite.config.ts`](../vite.config.ts).
 6. Add it to the `PAGES` list in `src/pages/pages.test.tsx`. That test checks
-   every page has one `<h1>` and that every internal link resolves.
+   every page has one `<h1>` and that every internal link resolves;
+   `src/site-files.test.ts` checks the sitemap and each page's preview tags.
 
 ## Landing sections
 

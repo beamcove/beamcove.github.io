@@ -88,9 +88,8 @@ const SECTIONS: LegalSection[] = [
             <>
                 <p>
                     You can ask to see, correct or delete the data we hold about you, or object to
-                    how we use it. Email {email} and we’ll reply within 30 days. Depending on where
-                    you live, you may also have the right to complain to your local data protection
-                    authority.
+                    how we use it. Email {email} with your request. Depending on where you live, you
+                    may also have the right to complain to your local data protection authority.
                 </p>
             </>
         ),

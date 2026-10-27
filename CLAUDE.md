@@ -36,7 +36,8 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    reduced motion. Don't loop the splash ink.
 5. **A new page touches five places**: `ROUTES` in `src/content/site.ts`,
    `src/pages/`, `src/entries/`, `<name>/index.html`, and `PAGES` in
-   `vite.config.ts` (+ the page list in `src/pages/pages.test.tsx`). See
+   `vite.config.ts` (+ the page list in `src/pages/pages.test.tsx` and a line in
+   `public/sitemap.xml`). See
    docs/architecture.md → "Adding a page".
 6. **`public/CNAME`** pins the custom domain into every deploy. Vite `base`
    stays `/` (asset URLs in markup are root-relative).
@@ -62,7 +63,8 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
   legal-page) and sections (hero, story, manifesto, …), plus beam-dots
   (hero lighthouse canvas), icon (renders Lucide icon nodes), brand (social SVGs).
 - `src/design-system/` — Ink & tide tokens, CSS, fonts, typed component port.
-- `public/` — copied verbatim to dist (boot.js, CNAME, favicon).
+- `public/` — copied verbatim to dist (boot.js, CNAME, robots.txt, sitemap.xml,
+  favicon, touch icon, social card). `scripts/` renders the two PNGs.
 
 ## Deployment
 

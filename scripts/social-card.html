@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+    Source for public/assets/social-card.png (the link preview image, 1200×630).
+    Not part of the site build. To regenerate, run the dev server and then:
+    npm run social-card
+-->
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <title>Social card</title>
+        <link rel="stylesheet" href="/src/design-system/tokens.css" />
+        <link rel="stylesheet" href="/src/design-system/components.css" />
+        <style>
+            html,
+            body {
+                margin: 0;
+                width: 1200px;
+                height: 630px;
+                overflow: hidden;
+                background: var(--surface);
+            }
+            .card.bc-splash {
+                position: absolute;
+                inset: 32px;
+                padding: 64px 72px;
+                display: flex;
+            }
+            .card .bc-splash-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                max-width: 600px;
+            }
+            .card .bc-splash-title {
+                font-size: 68px;
+                line-height: 1.02;
+                letter-spacing: -0.045em;
+            }
+            .card .wordmark {
+                font-size: 34px;
+                font-weight: 600;
+                letter-spacing: -0.045em;
+                color: var(--ink);
+            }
+        </style>
+    </head>
+    <body>
+        <section class="card bc-splash bc-on-splash bc-tone-overprint bc-dotfield">
+            <div class="bc-splash-shapes" aria-hidden="true">
+                <i class="tri"></i><i class="bar"></i>
+            </div>
+            <div class="bc-splash-content">
+                <div>
+                    <p class="bc-eyebrow">Exploring what comes next</p>
+                    <h1 class="bc-splash-title">Charting new horizons in the digital sea.</h1>
+                </div>
+                <span class="wordmark">Beamcove</span>
+            </div>
+        </section>
+    </body>
+</html>

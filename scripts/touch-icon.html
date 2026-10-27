@@ -1,0 +1,43 @@
+<!doctype html>
+<!--
+    Source for public/assets/apple-touch-icon.png (180×180). The favicon's
+    triangle and bar on a full paper square: iOS rounds the corners itself.
+    Not part of the site build; regenerate with `npm run social-card`.
+-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Touch icon</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                width: 180px;
+                height: 180px;
+                overflow: hidden;
+            }
+            svg {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="180" height="180">
+            <defs>
+                <clipPath id="tri"><polygon points="14,10 50,10 32,46" /></clipPath>
+            </defs>
+            <rect width="64" height="64" fill="#f7f6f2" />
+            <polygon points="14,10 50,10 32,46" fill="#0a6cbd" />
+            <rect x="10" y="36" width="44" height="14" rx="7" fill="#ff4a3d" />
+            <rect
+                x="10"
+                y="36"
+                width="44"
+                height="14"
+                rx="7"
+                fill="#2a3a8c"
+                clip-path="url(#tri)"
+            />
+        </svg>
+    </body>
+</html>
