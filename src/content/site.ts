@@ -26,7 +26,7 @@ export const ROUTES = {
     terms: "/terms/",
 } as const;
 
-export type Route = (typeof ROUTES)[keyof typeof ROUTES];
+type Route = (typeof ROUTES)[keyof typeof ROUTES];
 
 export const NAV: { href: Route; label: string }[] = [
     { href: ROUTES.fleet, label: "Fleet" },

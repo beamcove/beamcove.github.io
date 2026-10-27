@@ -46,7 +46,7 @@ lefthook git hooks via the `prepare` script.
 
 `npm run size` (after a build) checks all page scripts in `dist/assets/` together
 against the 100 KB budget in [package.json](../package.json). They currently
-come to ~78 KB compressed (React 19, shared components, every page's own chunk,
+come to ~73 KB compressed (React 19, shared components, every page's own chunk,
 a handful of Lucide icons). If the budget trips, check what got imported —
 e.g. something that pulls in all of `lucide` instead of named icon imports.
 Fonts are separate files and don't count.
