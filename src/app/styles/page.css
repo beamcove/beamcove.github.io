@@ -319,6 +319,9 @@ main > .section:last-child {
 .site-footer {
     padding-top: var(--space-16);
     box-shadow: inset 0 1px 0 var(--line);
+    /* the wordmark letters start lower and rise into place; don't let that
+       starting offset make the page taller (clip, unlike hidden, adds no scroller) */
+    overflow-y: clip;
 }
 .footer-top {
     display: flex;
