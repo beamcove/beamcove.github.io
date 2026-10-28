@@ -29,7 +29,8 @@ to production, see [deployment.md](deployment.md).
 ├── public/                       Copied verbatim into dist/
 │   ├── boot.js                   Theme + motion flags before first paint (every page)
 │   ├── CNAME                     Pins the custom domain in every Pages deployment
-│   ├── robots.txt, sitemap.xml   For search engines (sitemap lists every route)
+│   ├── robots.txt, sitemap.xml   For search engines (sitemap lists every route;
+│   │                             robots.txt shuts out the Internet Archive's crawlers)
 │   └── assets/                   favicon.svg, apple-touch-icon.png, social-card.png
 ├── scripts/                      HTML sources for the two PNGs + render-images.sh
 │                                 (npm run social-card, with the dev server running)

@@ -13,6 +13,14 @@ const sitemap = Object.values(
     }),
 )[0];
 
+const robots = Object.values(
+    import.meta.glob<string>("/public/robots.txt", {
+        query: "?raw",
+        import: "default",
+        eager: true,
+    }),
+)[0];
+
 /** "/about/index.html" → "/about/", "/index.html" → "/". */
 const routeOf = (file: string) => file.replace(/index\.html$/, "");
 
@@ -20,6 +28,14 @@ describe("sitemap.xml", () => {
     it("lists every page", () => {
         for (const route of Object.values(ROUTES)) {
             expect(sitemap).toContain(`<loc>https://beamcove.com${route}</loc>`);
+        }
+    });
+});
+
+describe("robots.txt", () => {
+    it("keeps the Internet Archive's crawlers out", () => {
+        for (const bot of ["archive.org_bot", "ia_archiver"]) {
+            expect(robots).toContain(`User-agent: ${bot}\nDisallow: /`);
         }
     });
 });
