@@ -10,10 +10,6 @@ export const QUESTIONS = [
         a: "None released yet. Our first products are in development, and each one will be listed on the products page once it’s ready. Newsletter subscribers hear first.",
     },
     {
-        q: "Who’s behind Beamcove?",
-        a: "Beamcove LLC was founded by Yoan Dubuc in January 2026.",
-    },
-    {
         q: "How often does the newsletter go out?",
         a: "Only when there’s something worth sharing.",
     },
