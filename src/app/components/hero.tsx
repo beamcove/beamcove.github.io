@@ -23,7 +23,7 @@ export function Hero() {
                             className="btn-nudge"
                             iconRight={<Icon node={ArrowRight} />}
                         >
-                            About the studio
+                            About Beamcove
                         </Button>
                         <Button size="lg" variant="secondary" href="#build">
                             What we build

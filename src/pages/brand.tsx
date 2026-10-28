@@ -3,6 +3,7 @@ import { Check, Copy } from "lucide";
 
 import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
+import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { SITE } from "@/content/site";
@@ -106,7 +107,12 @@ function CopyButton({ text }: { text: string }) {
 export function BrandPage() {
     return (
         <SiteLayout>
-            <PageHero band="flare" eyebrow="Brand kit" title="Printing Beamcove.">
+            <PageHero
+                tone="overprint"
+                eyebrow="Brand kit"
+                title="Brand guidelines."
+                art={<RisoArt name="palette" className="page-splash-art" />}
+            >
                 For press, partners and anyone writing about Beamcove. It follows Ink & tide, our
                 design system. Everything here is free to use as long as it stays as it is.
             </PageHero>
@@ -116,9 +122,9 @@ export function BrandPage() {
                     <SectionHead
                         id="boilerplate"
                         eyebrow="Boilerplate"
-                        title="Beamcove in a few words."
+                        title="Company descriptions."
                     >
-                        For bios, press and app stores.
+                        Ready to copy for bios, press and app stores.
                     </SectionHead>
                     <div className="boilerplate-list">
                         {BOILERPLATE.map((item) => (
@@ -145,7 +151,7 @@ export function BrandPage() {
 
             <section className="section" aria-labelledby="wordmark-title">
                 <div className="container">
-                    <SectionHead id="wordmark" eyebrow="Wordmark" title="Set in type, not drawn.">
+                    <SectionHead id="wordmark" eyebrow="Wordmark" title="Using the wordmark.">
                         There’s no logo mark yet. Until there is, the name is the logo: Beamcove,
                         set in Onest at weight 600 with tight tracking.
                     </SectionHead>
@@ -176,7 +182,7 @@ export function BrandPage() {
 
             <section className="section" aria-labelledby="color-title">
                 <div className="container">
-                    <SectionHead id="color" eyebrow="Color" title="Two inks on paper.">
+                    <SectionHead id="color" eyebrow="Color" title="Brand colors.">
                         Beamcove is printed like a riso poster: paper, riso blue, fluorescent red
                         and the navy where they overprint, with real grain in the color.
                     </SectionHead>
@@ -211,7 +217,7 @@ export function BrandPage() {
 
             <section className="section" aria-labelledby="type-title">
                 <div className="container">
-                    <SectionHead id="type" eyebrow="Type" title="Two typefaces, three weights.">
+                    <SectionHead id="type" eyebrow="Type" title="Typography.">
                         Onest for everything, JetBrains Mono for codes and data, in weights 400, 500
                         and 600.
                     </SectionHead>
@@ -232,8 +238,9 @@ export function BrandPage() {
 
             <section className="section" aria-labelledby="voice-title">
                 <div className="container">
-                    <SectionHead id="voice" eyebrow="Voice" title="Clear, warm, quietly confident.">
-                        Plain words first, and a little play where the ink is.
+                    <SectionHead id="voice" eyebrow="Voice" title="How we write.">
+                        Clear, warm and quietly confident: plain words first, and a little play
+                        where the ink is.
                     </SectionHead>
                     <DoDont
                         dos={[

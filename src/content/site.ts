@@ -16,10 +16,10 @@ export const SITE = {
 
 export const ROUTES = {
     home: "/",
-    fleet: "/fleet/",
+    products: "/products/",
     about: "/about/",
     values: "/values/",
-    logbook: "/logbook/",
+    updates: "/updates/",
     contact: "/contact/",
     brand: "/brand/",
     privacy: "/privacy/",
@@ -29,10 +29,10 @@ export const ROUTES = {
 type Route = (typeof ROUTES)[keyof typeof ROUTES];
 
 export const NAV: { href: Route; label: string }[] = [
-    { href: ROUTES.fleet, label: "Fleet" },
+    { href: ROUTES.products, label: "Products" },
     { href: ROUTES.about, label: "About" },
     { href: ROUTES.values, label: "Values" },
-    { href: ROUTES.logbook, label: "Logbook" },
+    { href: ROUTES.updates, label: "Updates" },
     { href: ROUTES.contact, label: "Contact" },
 ];
 
@@ -42,23 +42,23 @@ export const FOOTER_GROUPS: { title: string; links: { href: string; label: strin
         links: [
             { href: ROUTES.about, label: "About" },
             { href: ROUTES.values, label: "Values" },
-            { href: ROUTES.logbook, label: "Logbook" },
+            { href: ROUTES.updates, label: "Updates" },
             { href: ROUTES.brand, label: "Brand kit" },
         ],
     },
     {
-        title: "Fleet",
+        title: "Products",
         links: [
-            { href: ROUTES.fleet, label: "The shipyard" },
-            { href: `${ROUTES.fleet}#kinds`, label: "What we build" },
-            { href: "/#dispatches", label: "Dispatches" },
+            { href: ROUTES.products, label: "Products" },
+            { href: `${ROUTES.products}#what-we-build`, label: "What we build" },
+            { href: "/#newsletter", label: "Newsletter" },
         ],
     },
     {
         title: "Help",
         links: [
             { href: ROUTES.contact, label: "Contact" },
-            { href: `${ROUTES.contact}#questions`, label: "Questions" },
+            { href: `${ROUTES.contact}#questions`, label: "FAQ" },
         ],
     },
     {

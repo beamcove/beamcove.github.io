@@ -38,10 +38,12 @@ export function SiteHeader() {
                     Beamcove
                 </a>
                 <nav aria-label="Main" className="site-nav">
-                    <ul>
+                    {/* The design system's segmented track: the current page is printed in blue. */}
+                    <ul className="bc-seg">
                         {NAV.map((link) => (
                             <li key={link.href}>
                                 <a
+                                    className="bc-seg-item"
                                     href={link.href}
                                     aria-current={isCurrent(link.href) ? "page" : undefined}
                                 >
@@ -56,10 +58,10 @@ export function SiteHeader() {
                     <Button
                         variant="secondary"
                         size="sm"
-                        href="/#dispatches"
+                        href="/#newsletter"
                         className="header-cta"
                     >
-                        Get dispatches
+                        Subscribe
                     </Button>
                     <Button
                         variant="ghost"
@@ -89,8 +91,8 @@ export function SiteHeader() {
                         </li>
                     ))}
                     <li>
-                        <a href="/#dispatches" onClick={() => setMenuOpen(false)}>
-                            Get dispatches
+                        <a href="/#newsletter" onClick={() => setMenuOpen(false)}>
+                            Subscribe
                         </a>
                     </li>
                 </ul>

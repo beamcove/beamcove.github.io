@@ -17,13 +17,13 @@ export function Manifesto({ tone = "flare" }: { tone?: Exclude<SplashTone, "nigh
     const words = LINE.split(" ");
 
     return (
-        <section className="section" aria-label="Where we’re headed">
+        <section className="section" aria-label="Our vision">
             <div className="container" ref={ref}>
                 <Splash
                     tone={tone}
                     className="manifesto"
                     data-theme="light"
-                    eyebrow="Where we’re headed"
+                    eyebrow="Our vision"
                     title={
                         <span
                             className="manifesto-line"

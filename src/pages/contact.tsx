@@ -5,6 +5,7 @@ import { BrandIcon } from "@/app/components/brand";
 import { FaqList } from "@/app/components/faq-list";
 import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
+import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { QUESTIONS } from "@/content/faq";
@@ -18,8 +19,13 @@ const BEST_FOR: Record<string, string> = {
 export function ContactPage() {
     return (
         <SiteLayout>
-            <PageHero eyebrow="Contact" title="Hail the cove.">
-                Questions, ideas or press? Here’s where to find us.
+            <PageHero
+                tone="overprint"
+                eyebrow="Contact"
+                title="Contact us."
+                art={<RisoArt name="contact" className="page-splash-art" />}
+            >
+                Questions, partnerships or press: here’s how to reach us.
             </PageHero>
 
             <section className="section section-tight" aria-labelledby="channels-title">
@@ -64,8 +70,8 @@ export function ContactPage() {
 
             <section className="section" id="questions" aria-labelledby="questions-title">
                 <div className="container faq-page">
-                    <SectionHead id="questions" eyebrow="Questions" title="Asked at the dock.">
-                        The things people ask us most. If yours isn’t here, send it over.
+                    <SectionHead id="questions" eyebrow="FAQ" title="Frequently asked questions.">
+                        The questions we get most. If yours isn’t here, email us.
                     </SectionHead>
                     <FaqList items={QUESTIONS} />
                 </div>

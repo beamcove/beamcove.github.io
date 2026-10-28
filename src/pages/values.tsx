@@ -6,7 +6,7 @@ import { VALUES } from "@/content/values";
 export function ValuesPage() {
     return (
         <SiteLayout>
-            <PageHero tone="flare" eyebrow="Values" title="The compass we steer by.">
+            <PageHero tone="flare" eyebrow="Values" title="Our values.">
                 Adventure, integrity and balance: the three values behind everything Beamcove
                 builds.
             </PageHero>
@@ -22,7 +22,7 @@ export function ValuesPage() {
                             aria-labelledby={`${value.id}-title`}
                         >
                             <div>
-                                <span className="mono-data principle-num">
+                                <span className="ink-figure" aria-hidden="true">
                                     {String(i + 1).padStart(2, "0")}
                                 </span>
                                 <h2 className="title-1 value-title" id={`${value.id}-title`}>

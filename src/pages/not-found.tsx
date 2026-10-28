@@ -12,12 +12,19 @@ export function NotFoundPage() {
                     className="not-found"
                     data-theme="light"
                     titleAs="h1"
-                    eyebrow="404"
-                    title="Off the map."
+                    eyebrow="Page not found"
+                    title={
+                        <>
+                            <span className="not-found-figure">
+                                <span className="ink-figure">404</span>
+                            </span>
+                            Off the map.
+                        </>
+                    }
                     actions={
                         <>
                             <Button size="lg" href={ROUTES.home}>
-                                Back to the cove
+                                Go to the homepage
                             </Button>
                             <Button size="lg" variant="secondary" href={ROUTES.contact}>
                                 Contact us

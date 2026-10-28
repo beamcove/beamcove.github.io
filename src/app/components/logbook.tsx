@@ -8,27 +8,27 @@ import { ROUTES } from "@/content/site";
 /** Landing abstract: the latest log entries and the top questions. */
 export function Logbook() {
     return (
-        <section className="section" aria-label="Logbook and questions">
+        <section className="section" aria-label="Updates and questions">
             <div className="container logbook-grid">
                 <div id="logbook">
                     <header className="split-head" data-reveal>
-                        <p className="bc-eyebrow">Logbook</p>
-                        <h2 className="title-2">Notes from the voyage so far.</h2>
+                        <p className="bc-eyebrow">Updates</p>
+                        <h2 className="title-2">What’s new at Beamcove.</h2>
                     </header>
                     <LogList entries={LOGBOOK.slice(0, 3)} />
                     <div className="split-more">
-                        <MoreLink href={ROUTES.logbook}>Open the logbook</MoreLink>
+                        <MoreLink href={ROUTES.updates}>See all updates</MoreLink>
                     </div>
                 </div>
 
                 <div id="questions">
                     <header className="split-head" data-reveal>
-                        <p className="bc-eyebrow">Questions</p>
-                        <h2 className="title-2">Asked at the dock.</h2>
+                        <p className="bc-eyebrow">FAQ</p>
+                        <h2 className="title-2">Frequently asked questions.</h2>
                     </header>
                     <FaqList items={QUESTIONS.slice(0, 4)} />
                     <div className="split-more">
-                        <MoreLink href={`${ROUTES.contact}#questions`}>More questions</MoreLink>
+                        <MoreLink href={`${ROUTES.contact}#questions`}>See all questions</MoreLink>
                     </div>
                 </div>
             </div>

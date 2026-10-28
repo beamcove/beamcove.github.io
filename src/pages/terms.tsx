@@ -10,7 +10,7 @@ const SECTIONS: LegalSection[] = [
                 <p>
                     These terms are an agreement between you and {SITE.legalName}, a limited
                     liability company registered in Georgia, USA. They cover your use of
-                    beamcove.com and the dispatches newsletter. By using the site you agree to them.
+                    beamcove.com and the Beamcove newsletter. By using the site you agree to them.
                     If you don’t agree, please don’t use the site.
                 </p>
                 <p>
@@ -30,19 +30,19 @@ const SECTIONS: LegalSection[] = [
                     <li>use the site for anything unlawful;</li>
                     <li>try to break, overload or get around the security of the site;</li>
                     <li>scrape it in a way that degrades it for others;</li>
-                    <li>sign other people up for dispatches without their permission.</li>
+                    <li>sign other people up for the newsletter without their permission.</li>
                 </ul>
             </>
         ),
     },
     {
-        id: "dispatches",
-        title: "Dispatches",
+        id: "newsletter",
+        title: "The newsletter",
         body: (
             <p>
-                Dispatches are free. You can unsubscribe at any time with the link in every
-                dispatch. We may change how often we send them, or stop sending them. How we handle
-                your email address is covered by our <a href={ROUTES.privacy}>privacy policy</a>.
+                The newsletter is free. You can unsubscribe at any time with the link in every
+                email. We may change how often we send it, or stop sending it. How we handle your
+                email address is covered by our <a href={ROUTES.privacy}>privacy policy</a>.
             </p>
         ),
     },
@@ -106,7 +106,7 @@ const SECTIONS: LegalSection[] = [
         body: (
             <p>
                 We may update these terms. When we do, we’ll change the date at the top and note it
-                in the <a href={ROUTES.logbook}>logbook</a>. Using the site after a change means you
+                in our <a href={ROUTES.updates}>updates</a>. Using the site after a change means you
                 accept the new terms.
             </p>
         ),
@@ -127,10 +127,10 @@ export function TermsPage() {
         <LegalPage
             eyebrow="Terms"
             title="Terms of use."
-            lead="The ground rules for using beamcove.com and reading dispatches."
+            lead="The rules for using beamcove.com and the Beamcove newsletter."
             summary={[
                 "Use the site lawfully and kindly.",
-                "Dispatches are free and you can leave any time.",
+                "The newsletter is free and you can unsubscribe any time.",
                 "Our name and content are ours; the brand kit says how to use them.",
                 "Georgia law applies.",
                 "Each product will have its own terms when it launches.",

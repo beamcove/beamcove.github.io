@@ -32,7 +32,7 @@ describe("Dispatches", () => {
         render(<Dispatches />);
         await userEvent.type(screen.getByLabelText("Email address"), " sailor@example.com ");
         await userEvent.click(screen.getByRole("button", { name: "Subscribe" }));
-        expect(await screen.findByText("You’re aboard.")).toBeInTheDocument();
+        expect(await screen.findByText("You’re subscribed.")).toBeInTheDocument();
         expect(fetchMock).toHaveBeenCalledWith(
             ROSTER_URL,
             expect.objectContaining({

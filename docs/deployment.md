@@ -44,7 +44,7 @@ cancels superseded in-flight runs, so rapid pushes deploy only the latest commit
 2. beamcove.com serves the new build (hard-refresh; HTML is cached briefly).
 3. Spot-check: fonts (Onest / JetBrains Mono), the hero splash's grain and dot
    grid, icons, the newsletter field, the light/dark toggle, a couple of inner
-   pages (e.g. `/fleet/`, `/privacy/`) and a missing path (should show “Off the
+   pages (e.g. `/products/`, `/privacy/`) and a missing path (should show “Off the
    map”).
 
 ## Rollback

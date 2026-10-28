@@ -11,14 +11,14 @@ export function Principles() {
                 <div className="principles bc-dots">
                     <SectionHead
                         id="principles"
-                        eyebrow="How we sail"
+                        eyebrow="Our values"
                         title="Adventure, integrity, balance."
                         more={{ href: ROUTES.values, label: "Read our values" }}
                     />
                     <ol className="principle-list">
                         {VALUES.map((value, i) => (
                             <li key={value.id} data-reveal style={{ "--d": i } as CSSProperties}>
-                                <span className="mono-data principle-num" aria-hidden="true">
+                                <span className="ink-figure" aria-hidden="true">
                                     {String(i + 1).padStart(2, "0")}
                                 </span>
                                 <h3 className="title-3">{value.title}</h3>

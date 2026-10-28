@@ -27,6 +27,10 @@ export const VISION =
 export const HORIZONS =
     "For Beamcove, charting new horizons means exploring possibilities, challenging conventions, and turning original ideas into digital products.";
 
+/** The phrase in STORY[0] that the landing page sets in red ink. */
+export const STORY_MARK =
+    "curiosity becomes original ideas and ideas become useful digital products";
+
 export const STORY = [
     "Beamcove brings projects beyond personal experiments with the ambition to explore what comes next. It is a place for innovation, where curiosity becomes original ideas and ideas become useful digital products.",
     "Rooted in adventure and trying new things, Beamcove challenges familiar approaches while bringing professional care and fun to the work.",

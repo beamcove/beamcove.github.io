@@ -5,20 +5,20 @@ import { ROUTES } from "@/content/site";
 import { AboutPage } from "@/pages/about";
 import { BrandPage } from "@/pages/brand";
 import { ContactPage } from "@/pages/contact";
-import { FleetPage } from "@/pages/fleet";
 import { HomePage } from "@/pages/home";
-import { LogbookPage } from "@/pages/logbook";
 import { NotFoundPage } from "@/pages/not-found";
 import { PrivacyPage } from "@/pages/privacy";
+import { ProductsPage } from "@/pages/products";
 import { TermsPage } from "@/pages/terms";
+import { UpdatesPage } from "@/pages/updates";
 import { ValuesPage } from "@/pages/values";
 
 const PAGES: [string, () => ReactElement][] = [
     [ROUTES.home, () => <HomePage />],
-    [ROUTES.fleet, () => <FleetPage />],
+    [ROUTES.products, () => <ProductsPage />],
     [ROUTES.about, () => <AboutPage />],
     [ROUTES.values, () => <ValuesPage />],
-    [ROUTES.logbook, () => <LogbookPage />],
+    [ROUTES.updates, () => <UpdatesPage />],
     [ROUTES.contact, () => <ContactPage />],
     [ROUTES.brand, () => <BrandPage />],
     [ROUTES.privacy, () => <PrivacyPage />],
@@ -74,19 +74,19 @@ describe("HomePage", () => {
             screen.getByRole("heading", { level: 1, name: /charting new horizons/i }),
         ).toBeInTheDocument();
         for (const name of [
-            /visit the shipyard/i,
-            /more about the studio/i,
+            /see our products/i,
+            /more about beamcove/i,
             /read our values/i,
-            /open the logbook/i,
+            /see all updates/i,
         ]) {
             expect(screen.getByRole("link", { name })).toBeInTheDocument();
         }
     });
 });
 
-describe("LogbookPage", () => {
+describe("UpdatesPage", () => {
     it("dates entries the house way", () => {
-        render(<LogbookPage />);
+        render(<UpdatesPage />);
         expect(screen.getAllByText("Oct 27, 2026")[0]).toHaveAttribute("datetime", "2026-10-27");
     });
 });

@@ -16,7 +16,7 @@ export function Dispatches() {
         e.preventDefault();
         const value = email.trim();
         if (!value) {
-            setError("Enter your email address to get dispatches.");
+            setError("Enter your email address to subscribe.");
             return;
         }
         if (!EMAIL_PATTERN.test(value)) {
@@ -42,7 +42,7 @@ export function Dispatches() {
     };
 
     return (
-        <section className="section" id="dispatches" aria-labelledby="dispatches-title">
+        <section className="section" id="newsletter" aria-labelledby="newsletter-title">
             <div className="container">
                 {/* Splashes print on paper in both themes, so pin their tokens to light. */}
                 <Splash
@@ -50,16 +50,19 @@ export function Dispatches() {
                     align="center"
                     className="dispatches"
                     data-theme="light"
-                    eyebrow="Dispatches"
-                    title={<span id="dispatches-title">Get word when we set sail.</span>}
+                    eyebrow="Newsletter"
+                    title={<span id="newsletter-title">Hear when we launch.</span>}
                 >
                     <p className="bc-splash-body">
-                        Only when there’s something worth sharing. No noise, and you can leave any
-                        time.
+                        An occasional email when there’s news worth sharing. Unsubscribe any time.
                     </p>
                     {done ? (
-                        <Callout tone="success" title="You’re aboard." className="dispatch-done">
-                            Watch your inbox for the next dispatch.
+                        <Callout
+                            tone="success"
+                            title="You’re subscribed."
+                            className="dispatch-done"
+                        >
+                            You’ll hear from us when there’s news.
                         </Callout>
                     ) : (
                         <form className="dispatch-form" onSubmit={submit} noValidate>
@@ -71,7 +74,7 @@ export function Dispatches() {
                                 placeholder="you@example.com"
                                 value={email}
                                 error={error || undefined}
-                                hint="We only use it for dispatches."
+                                hint="We only use it to send the newsletter."
                                 disabled={submitting}
                                 onChange={(e) => {
                                     setEmail(e.target.value);

@@ -10,10 +10,10 @@ const SECTIONS: LegalSection[] = [
         body: (
             <>
                 <p>
-                    This policy covers beamcove.com and the dispatches newsletter. It explains what
-                    we collect, why, and what you can do about it. “We” means {SITE.legalName}, a
+                    This policy covers beamcove.com and the Beamcove newsletter. It explains what we
+                    collect, why, and what you can do about it. “We” means {SITE.legalName}, a
                     limited liability company registered in Georgia, USA; “you” means anyone
-                    visiting the site or reading dispatches.
+                    visiting the site or reading the newsletter.
                 </p>
                 <p>
                     Each Beamcove product will have its own privacy notice when it launches, because
@@ -28,8 +28,8 @@ const SECTIONS: LegalSection[] = [
         body: (
             <>
                 <p>
-                    <strong>If you subscribe to dispatches:</strong> your email address. That’s all.
-                    We store it with our subscriber service so we can send you dispatches.
+                    <strong>If you subscribe to the newsletter:</strong> your email address. That’s
+                    all. We store it with our subscriber service so we can send you the newsletter.
                 </p>
                 <p>
                     <strong>When you browse:</strong> nothing that identifies you. This site has no
@@ -54,7 +54,7 @@ const SECTIONS: LegalSection[] = [
         title: "How we use it",
         body: (
             <ul>
-                <li>We use your email address only to send dispatches.</li>
+                <li>We use your email address only to send the newsletter.</li>
                 <li>We don’t build profiles, sell data or share it for advertising.</li>
                 <li>We don’t combine it with data from other sources.</li>
             </ul>
@@ -65,9 +65,9 @@ const SECTIONS: LegalSection[] = [
         title: "Who else sees it",
         body: (
             <p>
-                Only the service providers that store and deliver dispatches on our behalf, and only
-                for that purpose. We’d also disclose data if the law required it, and we’d tell you
-                unless we were legally prevented from doing so.
+                Only the service providers that store and deliver the newsletter on our behalf, and
+                only for that purpose. We’d also disclose data if the law required it, and we’d tell
+                you unless we were legally prevented from doing so.
             </p>
         ),
     },
@@ -76,7 +76,7 @@ const SECTIONS: LegalSection[] = [
         title: "How long we keep it",
         body: (
             <p>
-                We keep your email address while you’re subscribed. Every dispatch has an
+                We keep your email address while you’re subscribed. Every newsletter email has an
                 unsubscribe link; when you use it, or ask us, we remove your address from our list.
             </p>
         ),
@@ -110,8 +110,8 @@ const SECTIONS: LegalSection[] = [
         body: (
             <p>
                 If we change this policy, we’ll update the date at the top and note the change in
-                the <a href={ROUTES.logbook}>logbook</a>. If a change matters for subscribers, we’ll
-                say so in a dispatch.
+                our <a href={ROUTES.updates}>updates</a>. If a change matters for subscribers, we’ll
+                say so in the newsletter.
             </p>
         ),
     },
@@ -130,7 +130,7 @@ export function PrivacyPage() {
             lead="What we collect, why we collect it and what you can do about it, in plain words."
             summary={[
                 "We don’t track you on this site: no analytics, ads or tracking cookies.",
-                "If you subscribe to dispatches, we keep your email address to send them, and nothing else.",
+                "If you subscribe to the newsletter, we keep your email address to send it, and nothing else.",
                 "We never sell your data, and you can ask us to delete it at any time.",
             ]}
             sections={SECTIONS}

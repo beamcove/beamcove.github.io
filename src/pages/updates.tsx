@@ -13,11 +13,11 @@ function byYear(entries: LogEntry[]) {
     return [...groups];
 }
 
-export function LogbookPage() {
+export function UpdatesPage() {
     return (
         <SiteLayout>
-            <PageHero band="overprint" eyebrow="Logbook" title="Notes from the voyage.">
-                Launches, milestones and the occasional change of course, newest first.
+            <PageHero tone="flare" eyebrow="Updates" title="Company updates.">
+                Launches, milestones and other news from Beamcove, newest first.
             </PageHero>
 
             <section className="section section-tight" aria-label="Log entries">

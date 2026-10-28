@@ -28,7 +28,7 @@ export function LegalPage({
     return (
         <SiteLayout>
             <PageHero
-                band="tide"
+                tone="tide"
                 eyebrow={eyebrow}
                 title={title}
                 meta={

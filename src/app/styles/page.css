@@ -93,32 +93,18 @@ a:focus-visible {
 .site-nav {
     flex: 1;
 }
-.site-nav ul {
-    display: flex;
-    gap: var(--space-1);
-}
-.site-nav a {
+/* Nav links wear the SegmentedControl: a white pill track, the current page
+   printed in riso blue with paper speckle (as aria-checked does for segments). */
+.site-nav .bc-seg {
     display: inline-flex;
-    align-items: center;
-    height: 32px;
-    padding: 0 var(--space-3);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 500;
-    color: var(--ink-muted);
+}
+.site-nav .bc-seg-item {
     text-decoration: none;
-    transition:
-        color var(--duration-fast) ease-out,
-        background-color var(--duration-fast) ease-out;
 }
-.site-nav a[aria-current="page"] {
-    color: var(--ink);
-    background: var(--surface-sunken);
-}
-.site-nav a:hover {
-    color: var(--ink);
-    background: var(--surface-sunken);
+.site-nav .bc-seg-item[aria-current="page"] {
+    background-color: var(--beam);
+    background-image: var(--bc-speck-fine);
+    color: var(--on-beam);
 }
 .site-header-actions {
     display: flex;
@@ -162,6 +148,9 @@ main > .section:last-child {
 }
 .section-title {
     margin-top: var(--space-3);
+    font-size: clamp(36px, 4.2vw, 52px);
+    line-height: 1.04;
+    letter-spacing: -0.04em;
     text-wrap: balance;
 }
 .section-lead {
@@ -169,44 +158,149 @@ main > .section:last-child {
     justify-self: end;
 }
 
-/* ── What we build ────────────────────────────────── */
+/* ── What we build: three printed compositions ─────
+   Plain cards topped by a strip of dotted paper (paper in both themes, like
+   card bands) with riso shapes printed on the right: speckled, multiplied
+   where they overlap. The ring is drawn over the print, as on band cards. */
 .kind-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-6);
 }
 .kind-card {
+    position: relative;
     height: 100%;
-    display: flex;
-    flex-direction: column;
 }
-.kind-card > .bc-card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.kind-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--line);
+    pointer-events: none;
 }
-.icon-tile {
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    margin-bottom: var(--space-4);
-    border-radius: var(--radius-md);
-    background: var(--beam-soft);
-    color: var(--beam-ink);
-}
-.icon-tile svg {
-    display: block;
+.kind-art {
+    position: relative;
+    overflow: hidden;
+    height: 176px;
+    margin: calc(-1 * var(--space-6)) calc(-1 * var(--space-6)) var(--space-6);
+    background: var(--surface);
+    box-shadow: inset 0 -1px 0 var(--line);
 }
 
-/* ── Principles: a sunken well with the paper dot grid ── */
+/* ── Riso art: shapes and blooms on paper (see riso-art.tsx) ──
+   Pieces multiply over the paper and each other; one layer of paper
+   speckle sits on top of the whole print, as on a splash. */
+.riso-art {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+.riso-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--bc-speck-fine);
+}
+.riso-art > span {
+    position: absolute;
+    display: block;
+    background-color: var(--riso);
+    mix-blend-mode: multiply;
+}
+.riso-ink-blue {
+    --riso: var(--print-blue);
+}
+.riso-ink-red {
+    --riso: var(--print-red);
+}
+.riso-ink-yellow {
+    --riso: var(--ink-yellow);
+}
+.riso-ink-green {
+    --riso: var(--ink-green);
+}
+/* screened tints: the same inks printed lighter */
+.riso-ink-sky {
+    --riso: color-mix(in srgb, var(--print-blue) 42%, transparent);
+}
+.riso-ink-pink {
+    --riso: color-mix(in srgb, var(--print-red) 45%, transparent);
+}
+.riso-ink-mint {
+    --riso: color-mix(in srgb, var(--ink-green) 42%, transparent);
+}
+.riso-ink-butter {
+    --riso: color-mix(in srgb, var(--ink-yellow) 60%, transparent);
+}
+.riso-art > .riso-bloom {
+    background: radial-gradient(closest-side, var(--riso), transparent);
+}
+.riso-disc {
+    border-radius: var(--radius-full);
+}
+.riso-block {
+    border-radius: var(--radius-xl);
+}
+.riso-ring {
+    border-radius: var(--radius-full);
+    -webkit-mask: radial-gradient(
+        closest-side,
+        transparent calc(100% - var(--ring, 24px) - 1px),
+        var(--ink) calc(100% - var(--ring, 24px))
+    );
+    mask: radial-gradient(
+        closest-side,
+        transparent calc(100% - var(--ring, 24px) - 1px),
+        var(--ink) calc(100% - var(--ring, 24px))
+    );
+}
+.riso-half {
+    border-radius: var(--radius-full) var(--radius-full) 0 0;
+}
+.riso-cap {
+    border-radius: 0 0 var(--radius-full) var(--radius-full);
+}
+.riso-quarter {
+    border-radius: 100% 0 0 0;
+}
+
+/* splash headers: the art sits behind the dots and the copy; its shapes
+   overprint each other but print clean over the splash's blooms */
+.page-splash-art {
+    z-index: -1;
+}
+/* card art keeps the hairline between print and card body */
+.kind-art .riso-art::after {
+    box-shadow: inset 0 -1px 0 var(--line);
+}
+
+/* ── Ink figures: big numerals, printed in riso blue with paper speckle ── */
+.ink-figure {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 72px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    background-color: var(--beam);
+    background-image: var(--bc-speck-fine);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ── Principles: three cards, each led by a dot figure ──
+   They rest on a field of the fitted dot grid, on paper: no tint, just a ring. */
 .principles {
     border-radius: var(--radius-xl);
-    background: var(--surface-sunken);
     padding: var(--space-12);
+    box-shadow: inset 0 0 0 1px var(--line);
 }
 .principles .section-head {
-    grid-template-columns: minmax(0, 1fr);
+    margin-bottom: var(--space-12);
 }
 .principle-list {
     display: grid;
@@ -219,14 +313,38 @@ main > .section:last-child {
     background: var(--surface-raised);
     box-shadow: inset 0 0 0 1px var(--line);
 }
-.principle-num {
-    color: var(--flare-ink);
-}
 .principle-list h3 {
-    margin-top: var(--space-6);
+    margin-top: var(--space-8);
 }
 .principle-list p {
     margin-top: var(--space-2);
+}
+
+/* ── Story: one statement, its key phrase in red ink ── */
+.story-statement {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-12);
+    align-items: start;
+}
+.story-statement-head {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-6);
+}
+.story-statement-head .section-title {
+    margin-top: calc(var(--space-3) - var(--space-6));
+}
+.story-statement-text {
+    font-size: clamp(22px, 2.5vw, 32px);
+    line-height: 1.32;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    text-wrap: pretty;
+}
+.story-em {
+    font-style: normal;
+    color: var(--flare-ink);
 }
 
 /* ── Dispatches: tide splash, text up top, ink below ── */
@@ -446,6 +564,23 @@ main > .section:last-child {
 .logbook p {
     margin-top: var(--space-1);
 }
+/* the course: a dashed line down the entries, a beacon at each stop */
+.logbook li > div {
+    position: relative;
+    padding-left: var(--space-6);
+    background: linear-gradient(var(--line-strong) 50%, transparent 0) 0 0 / 1px 8px repeat-y;
+}
+.logbook li > div::before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: 7px;
+    width: 9px;
+    height: 9px;
+    border-radius: var(--radius-full);
+    background: var(--flare);
+    box-shadow: 0 0 0 3px var(--surface);
+}
 .faq {
     margin-top: var(--space-8);
 }
@@ -475,13 +610,30 @@ main > .section:last-child {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
 }
+/* the toggle: an ink ring that fills with riso blue when open */
 .faq-item summary svg {
     flex: none;
-    color: var(--ink-muted);
-    transition: rotate var(--duration-base) ease-out;
+    box-sizing: content-box;
+    width: 16px;
+    height: 16px;
+    padding: 6px;
+    border-radius: var(--radius-full);
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transition:
+        rotate var(--duration-base) ease-out,
+        background-color var(--duration-base) ease-out,
+        color var(--duration-base) ease-out;
+}
+.faq-item summary:hover svg {
+    box-shadow: inset 0 0 0 1px var(--ink);
 }
 .faq-item[open] summary svg {
     rotate: 45deg;
+    color: var(--ink-on-night);
+    background-color: var(--print-blue);
+    background-image: var(--bc-speck-fine);
+    box-shadow: none;
 }
 .faq-item p {
     padding-bottom: var(--space-4);
@@ -601,28 +753,8 @@ main > .section:last-child {
 .page-splash.bc-tone-tide.bc-splash {
     padding-bottom: 144px;
 }
-.page-hero-plain {
-    padding-top: var(--space-16);
-}
-.page-title {
-    margin-top: var(--space-4);
-    max-width: 18ch;
-    text-wrap: balance;
-}
-.page-lead {
-    margin-top: var(--space-4);
-    max-width: 52ch;
-}
 .page-meta {
     margin-top: var(--space-6);
-}
-.page-hero-band {
-    display: block;
-    height: 48px;
-    margin-top: var(--space-12);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: inset 0 0 0 1px #10163a14;
 }
 
 /* ── Fleet page: the empty shipyard ──────────────── */
@@ -672,10 +804,55 @@ main > .section:last-child {
     background: var(--surface-sunken);
     color: var(--ink);
 }
-.bearing-grid {
+/* Mission and vision as a course on a chart: a dashed line from a lit
+   beacon (mission) to a red destination ring (vision). */
+.bearing {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-6);
+    gap: var(--space-12);
+    padding-top: var(--space-12);
+}
+.bearing::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--line-strong) 50%, transparent 0) 0 0 / 8px 1px repeat-x;
+}
+.bearing-stop {
+    position: relative;
+}
+.bearing-stop::before {
+    content: "";
+    position: absolute;
+    top: calc(6px - var(--space-12) - 6px);
+    left: 0;
+    width: 13px;
+    height: 13px;
+    border-radius: var(--radius-full);
+    background-color: var(--beam);
+    box-shadow: 0 0 0 4px var(--surface);
+}
+.bearing-stop-ahead::before {
+    background-color: var(--surface);
+    box-shadow:
+        inset 0 0 0 3px var(--flare),
+        0 0 0 4px var(--surface);
+}
+.bearing-label {
+    color: var(--ink-subtle);
+}
+.bearing-text {
+    margin-top: var(--space-3);
+    max-width: 30ch;
+    font-size: clamp(22px, 2.3vw, 30px);
+    line-height: 1.3;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    text-wrap: pretty;
 }
 .crew-grid {
     display: grid;
@@ -703,9 +880,6 @@ main > .section:last-child {
 }
 .crew-blurb {
     margin-top: var(--space-2);
-}
-.crew-card-open {
-    background: var(--surface-sunken);
 }
 .crew-card-open .more-link {
     margin-top: var(--space-4);
@@ -782,6 +956,19 @@ main > .section:last-child {
     box-shadow:
         inset 0 0 0 1px var(--line),
         var(--shadow-md);
+}
+.icon-tile {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--beam-soft);
+    color: var(--beam-ink);
+}
+.icon-tile svg {
+    display: block;
 }
 .channel .icon-tile {
     flex: none;
@@ -950,6 +1137,11 @@ main > .section:last-child {
 }
 
 /* ── 404 ──────────────────────────────────────────── */
+.not-found-figure {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-8);
+}
 .not-found.bc-splash {
     padding: var(--space-24) var(--space-6) 200px;
 }
@@ -1065,6 +1257,45 @@ main > .section:last-child {
     translate: 0 24px;
 }
 
+/* riso art: blooms soak in, shapes print in one after another, then stay put */
+.motion .riso-art > span {
+    transition:
+        opacity 700ms var(--ease-out),
+        translate 1000ms var(--ease-out);
+    transition-delay: calc(var(--d, 0) * 90ms + var(--s, 0) * 110ms + 120ms);
+}
+.motion .kind-grid > li:not(.is-in) .riso-art > span {
+    opacity: 0;
+    translate: 0 16px;
+}
+.motion .kind-grid > li:not(.is-in) .riso-art > .riso-bloom {
+    translate: none;
+}
+@keyframes riso-print {
+    from {
+        opacity: 0;
+        translate: 0 20px;
+    }
+}
+.motion .page-splash-art > span {
+    animation: riso-print 1000ms var(--ease-out) both;
+    animation-delay: calc(var(--s, 0) * 120ms + 150ms);
+}
+
+/* bearing: the course draws out to the harbor, then the harbor ring lights */
+.motion .bearing::before {
+    transition: clip-path 1400ms var(--ease-out) 200ms;
+}
+.motion .bearing:not(.is-in)::before {
+    clip-path: inset(0 100% 0 0);
+}
+.motion .bearing-stop-ahead::before {
+    transition: scale 500ms var(--ease-out) 1300ms;
+}
+.motion .bearing:not(.is-in) .bearing-stop-ahead::before {
+    scale: 0;
+}
+
 /* live status dots breathe like a beacon */
 .motion .bc-badge-beam .bc-badge-dot {
     animation: bc-beacon 2400ms ease-out infinite;
@@ -1092,6 +1323,9 @@ main > .section:last-child {
 
 /* ── Responsive ───────────────────────────────────── */
 @media (max-width: 960px) {
+    .page-splash-art {
+        opacity: 0.35;
+    }
     .story,
     .value-row {
         grid-template-columns: minmax(0, 1fr);
@@ -1119,8 +1353,12 @@ main > .section:last-child {
         gap: var(--space-16);
     }
     .kind-grid,
-    .principle-list {
+    .principle-list,
+    .story-statement {
         grid-template-columns: minmax(0, 1fr);
+    }
+    .story-statement {
+        gap: var(--space-8);
     }
     .section-head {
         grid-template-columns: minmax(0, 1fr);
@@ -1137,7 +1375,6 @@ main > .section:last-child {
         display: inline-flex;
     }
     .crew-grid,
-    .bearing-grid,
     .channel-grid,
     .wordmark-grid,
     .do-dont,
@@ -1154,14 +1391,34 @@ main > .section:last-child {
     .page-splash.bc-splash {
         padding: var(--space-12) var(--space-8);
     }
-    .page-hero-plain {
-        padding-top: var(--space-12);
-    }
     .type-specimen {
         font-size: 88px;
     }
     .site-header-actions {
         margin-left: auto;
+    }
+    .principles {
+        padding: var(--space-8) var(--space-6);
+    }
+    .bearing {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 0 0 0 var(--space-8);
+    }
+    .bearing::before {
+        top: 0;
+        bottom: 0;
+        left: 6px;
+        right: auto;
+        width: 1px;
+        height: auto;
+        background: linear-gradient(var(--line-strong) 50%, transparent 0) 0 0 / 1px 8px repeat-y;
+    }
+    .bearing-stop::before {
+        top: 4px;
+        left: calc(-1 * var(--space-8));
+    }
+    .motion .bearing:not(.is-in)::before {
+        clip-path: inset(0 0 100% 0);
     }
     .hero.bc-splash {
         padding: var(--space-12) var(--space-8);
@@ -1174,9 +1431,6 @@ main > .section:last-child {
     }
     main > .section:last-child {
         padding-bottom: var(--space-16);
-    }
-    .principles {
-        padding: var(--space-8) var(--space-6);
     }
     .manifesto.bc-splash {
         padding: var(--space-16) var(--space-8);
@@ -1222,7 +1476,6 @@ main > .section:last-child {
     html {
         scroll-behavior: auto;
     }
-    .site-nav a,
     .footer-cols a,
     .faq-item summary svg,
     .faq-item::details-content,

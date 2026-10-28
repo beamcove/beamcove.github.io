@@ -20,7 +20,7 @@ const CREW = [
 export function AboutPage() {
     return (
         <SiteLayout>
-            <PageHero tone="tide" eyebrow="About" title="A place for innovation.">
+            <PageHero tone="tide" eyebrow="About" title="About Beamcove.">
                 Beamcove explores new possibilities through software, challenges familiar
                 approaches, and turns original ideas into useful digital products.
             </PageHero>
@@ -30,7 +30,7 @@ export function AboutPage() {
                     <div data-reveal>
                         <p className="bc-eyebrow">Our story</p>
                         <h2 className="title-1 section-title" id="story-title">
-                            How it started.
+                            How Beamcove started.
                         </h2>
                     </div>
                     <div className="prose" data-reveal style={{ "--d": 1 } as CSSProperties}>
@@ -53,25 +53,23 @@ export function AboutPage() {
                     >
                         {HORIZONS}
                     </SectionHead>
-                    <div className="bearing-grid">
-                        <Card variant="plain" eyebrow="Mission" data-reveal>
-                            <p className="title-3">{MISSION}</p>
-                        </Card>
-                        <Card
-                            variant="plain"
-                            eyebrow="Vision"
-                            data-reveal
-                            style={{ "--d": 1 } as CSSProperties}
-                        >
-                            <p className="title-3">{VISION}</p>
-                        </Card>
-                    </div>
+                    {/* A course on a chart: from where we sail now to where we're headed. */}
+                    <ol className="bearing" data-reveal>
+                        <li className="bearing-stop">
+                            <p className="mono bearing-label">Mission · what we do</p>
+                            <p className="bearing-text">{MISSION}</p>
+                        </li>
+                        <li className="bearing-stop bearing-stop-ahead">
+                            <p className="mono bearing-label">Vision · where we’re going</p>
+                            <p className="bearing-text">{VISION}</p>
+                        </li>
+                    </ol>
                 </div>
             </section>
 
             <section className="section" aria-labelledby="crew-title">
                 <div className="container">
-                    <SectionHead id="crew" eyebrow="The crew" title="Who’s aboard." />
+                    <SectionHead id="crew" eyebrow="Team" title="The team." />
                     <ul className="crew-grid">
                         {CREW.map((member) => (
                             <li key={member.name} data-reveal>
@@ -92,7 +90,7 @@ export function AboutPage() {
                                 <div>
                                     <Badge>Not hiring yet</Badge>
                                     <h3 className="headline crew-open-title">
-                                        Want to come aboard later?
+                                        Want to work with us?
                                     </h3>
                                     <p className="muted crew-blurb">
                                         We’re not hiring yet, but we like meeting curious people who

@@ -15,9 +15,10 @@ export function HomePage() {
             <Hero />
             <Ticker />
             <WhatWeBuild />
+            {/* Printed blocks (principles, manifesto, dispatches) never sit back to back. */}
+            <Principles />
             <Story />
             <Manifesto />
-            <Principles />
             <Logbook />
             <Dispatches />
         </SiteLayout>
