@@ -52,18 +52,18 @@ to production, see [deployment.md](deployment.md).
 
 ## Pages
 
-| URL          | Component             | Header                    | What's on it                                            |
-| ------------ | --------------------- | ------------------------- | ------------------------------------------------------- |
-| `/`          | `pages/home.tsx`      | Overprint splash (hero)   | The abstract: one summary per page, plus the newsletter |
-| `/products/` | `pages/products.tsx`  | Overprint splash + art    | Empty state, what we build (`#what-we-build`)           |
-| `/about/`    | `pages/about.tsx`     | Tide splash               | Story, mission and vision, team                         |
-| `/values/`   | `pages/values.tsx`    | Flare splash              | The three values, vision band                           |
-| `/updates/`  | `pages/updates.tsx`   | Flare splash              | Every update by year                                    |
-| `/contact/`  | `pages/contact.tsx`   | Overprint splash + art    | Email + social channels, full FAQ                       |
-| `/brand/`    | `pages/brand.tsx`     | Overprint splash + art    | Boilerplate, wordmark rules, colours, type              |
-| `/privacy/`  | `pages/privacy.tsx`   | Tide splash (`LegalPage`) | Privacy policy with contents sidebar                    |
-| `/terms/`    | `pages/terms.tsx`     | Tide splash (`LegalPage`) | Terms of use with contents sidebar                      |
-| 404          | `pages/not-found.tsx` | Tide splash               | “Off the map”                                           |
+| URL          | Component             | Header                          | What's on it                                            |
+| ------------ | --------------------- | ------------------------------- | ------------------------------------------------------- |
+| `/`          | `pages/home.tsx`      | Overprint splash (hero)         | The abstract: one summary per page, plus the newsletter |
+| `/products/` | `pages/products.tsx`  | Lagoon splash + art             | Empty state, what we build (`#what-we-build`)           |
+| `/about/`    | `pages/about.tsx`     | Tide splash + art               | Story, mission and vision, team                         |
+| `/values/`   | `pages/values.tsx`    | Flare splash + art              | The three values, vision band                           |
+| `/updates/`  | `pages/updates.tsx`   | Sky splash + art                | Every update by year                                    |
+| `/contact/`  | `pages/contact.tsx`   | Meadow splash + art             | Email + social channels, full FAQ                       |
+| `/brand/`    | `pages/brand.tsx`     | Rose splash + art               | Boilerplate, wordmark rules, colours, type              |
+| `/privacy/`  | `pages/privacy.tsx`   | Tide splash + art (`LegalPage`) | Privacy policy with contents sidebar                    |
+| `/terms/`    | `pages/terms.tsx`     | Tide splash + art (`LegalPage`) | Terms of use with contents sidebar                      |
+| 404          | `pages/not-found.tsx` | Tide splash                     | “Off the map”                                           |
 
 ### Adding a page
 
@@ -122,6 +122,9 @@ splash, the empty products state. URLs follow the plain names too
   half disc, quarter) that overprint into a third colour, cut off by the edge,
   over one soft bloom. The triangle and bar stay the hero's own. Shapes print
   in once.
+- Every page header is a splash in its own tone (design-system tones overprint,
+  tide, flare, meadow, lagoon, rose, sky) with its own `RisoArt` composition,
+  printed in inks that contrast with that tone. The newsletter splash repeats.
 - Big numerals (values, the 404) use `.ink-figure`: Onest 600 in riso blue with
   paper speckle.
 - Drifting ink: every `Splash` lets its ink blooms drift slowly (a design-system

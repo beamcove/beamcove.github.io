@@ -185,7 +185,6 @@ main > .section:last-child {
     height: 176px;
     margin: calc(-1 * var(--space-6)) calc(-1 * var(--space-6)) var(--space-6);
     background: var(--surface);
-    box-shadow: inset 0 -1px 0 var(--line);
 }
 
 /* ── Riso art: shapes and blooms on paper (see riso-art.tsx) ──
@@ -226,7 +225,7 @@ main > .section:last-child {
     --riso: color-mix(in srgb, var(--print-blue) 42%, transparent);
 }
 .riso-ink-pink {
-    --riso: color-mix(in srgb, var(--print-red) 45%, transparent);
+    --riso: color-mix(in srgb, var(--print-red) 60%, transparent);
 }
 .riso-ink-mint {
     --riso: color-mix(in srgb, var(--ink-green) 42%, transparent);
@@ -262,18 +261,19 @@ main > .section:last-child {
 .riso-cap {
     border-radius: 0 0 var(--radius-full) var(--radius-full);
 }
-.riso-quarter {
-    border-radius: 100% 0 0 0;
+/* a half disc with its flat side on the right edge (draw it half as wide as tall) */
+.riso-lune {
+    border-radius: var(--radius-full) 0 0 var(--radius-full);
+}
+.riso-diamond {
+    rotate: 45deg;
+    border-radius: var(--radius-lg);
 }
 
 /* splash headers: the art sits behind the dots and the copy; its shapes
    overprint each other but print clean over the splash's blooms */
 .page-splash-art {
     z-index: -1;
-}
-/* card art keeps the hairline between print and card body */
-.kind-art .riso-art::after {
-    box-shadow: inset 0 -1px 0 var(--line);
 }
 
 /* ── Ink figures: big numerals, printed in riso blue with paper speckle ── */
@@ -1061,7 +1061,7 @@ main > .section:last-child {
 }
 .swatch-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: var(--space-6);
     background: transparent;
     color: var(--ink);
@@ -1446,6 +1446,10 @@ main > .section:last-child {
 @media (max-width: 560px) {
     .container {
         padding-inline: var(--space-4);
+    }
+    /* on phones the copy spans the card: keep it on paper, the tone carries the colour */
+    .page-splash-art {
+        display: none;
     }
     .header-cta {
         display: none;

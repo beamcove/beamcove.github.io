@@ -11,10 +11,10 @@ export function ProductsPage() {
     return (
         <SiteLayout>
             <PageHero
-                tone="overprint"
+                tone="lagoon"
                 eyebrow="Products"
                 title="Our products."
-                art={<RisoArt name="cove" className="page-splash-art" />}
+                art={<RisoArt name="products" className="page-splash-art" />}
             >
                 Beamcove’s products are in development. Each one will be listed here once it’s
                 ready.

@@ -20,7 +20,7 @@ export function ContactPage() {
     return (
         <SiteLayout>
             <PageHero
-                tone="overprint"
+                tone="meadow"
                 eyebrow="Contact"
                 title="Contact us."
                 art={<RisoArt name="contact" className="page-splash-art" />}

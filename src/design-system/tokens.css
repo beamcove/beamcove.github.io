@@ -112,6 +112,11 @@
   --splash-overprint: radial-gradient(55% 85% at 88% 8%, #ff4a3d 0%, #ff4a3d00 72%), radial-gradient(60% 95% at 72% 100%, #0a74c9 0%, #0a74c900 72%), linear-gradient(#f7f6f2, #f7f6f2);
   --splash-tide: radial-gradient(120% 90% at 60% 115%, #0a74c9 0%, #0a74c9b3 35%, #0a74c900 75%), linear-gradient(#f7f6f2, #f7f6f2);
   --splash-flare: radial-gradient(80% 95% at 95% 0%, #ff4a3d 0%, #ff4a3d00 70%), linear-gradient(#f7f6f2, #f7f6f2);
+  --splash-meadow: radial-gradient(70% 95% at 96% 108%, #00a36c 0%, #00a36c00 70%), radial-gradient(40% 55% at 64% 104%, #ffd93d 0%, #ffd93d00 72%), linear-gradient(#f7f6f2, #f7f6f2);
+  --splash-sun: radial-gradient(75% 100% at 74% -12%, #ffd93d 0%, #ffd93d00 72%), radial-gradient(38% 60% at 102% 0%, #ff4a3d99 0%, #ff4a3d00 70%), linear-gradient(#f7f6f2, #f7f6f2);
+  --splash-lagoon: radial-gradient(55% 95% at 106% 38%, #0a74c9 0%, #0a74c900 70%), radial-gradient(60% 85% at 82% 112%, #00a36c 0%, #00a36c00 70%), linear-gradient(#f7f6f2, #f7f6f2);
+  --splash-rose: radial-gradient(95% 75% at 28% 118%, #ff4a3d99 0%, #ff4a3d00 72%), radial-gradient(50% 75% at 104% 104%, #0a74c980 0%, #0a74c900 70%), linear-gradient(#f7f6f2, #f7f6f2);
+  --splash-sky: radial-gradient(75% 105% at 104% -6%, #0a74c973 0%, #0a74c900 70%), radial-gradient(70% 75% at 70% 112%, #ff4a3d59 0%, #ff4a3d00 70%), linear-gradient(#f7f6f2, #f7f6f2);
   --splash-night: radial-gradient(60% 80% at 85% 0%, #ff4a3d73 0%, #ff4a3d00 70%), radial-gradient(70% 90% at 15% 100%, #0a74c999 0%, #0a74c900 70%), linear-gradient(#1c2554, #1c2554);
   --dot-pitch: 16px;
   --dot-size: 2px;

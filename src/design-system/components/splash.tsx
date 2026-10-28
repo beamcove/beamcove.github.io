@@ -3,7 +3,16 @@ import { useRef, type HTMLAttributes, type ReactNode } from "react";
 import { cx } from "./cx";
 import { useDotFit } from "./dot-fit";
 
-export type SplashTone = "overprint" | "tide" | "flare" | "night";
+export type SplashTone =
+    | "overprint"
+    | "tide"
+    | "flare"
+    | "meadow"
+    | "sun"
+    | "lagoon"
+    | "rose"
+    | "sky"
+    | "night";
 
 export interface SplashProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
     tone?: SplashTone;

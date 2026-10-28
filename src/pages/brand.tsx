@@ -52,6 +52,18 @@ const SWATCHES = [
         use: "The second ink: the beacon dot, blooms and the bar. Never a status.",
     },
     {
+        name: "Sun yellow",
+        token: "ink-yellow",
+        hex: "#FFD93D",
+        use: "Illustration and splash ink: shapes, the sun bloom. Never text.",
+    },
+    {
+        name: "Meadow green",
+        token: "ink-green",
+        hex: "#00A36C",
+        use: "Illustration and splash ink: shapes, meadow and lagoon. Never a status.",
+    },
+    {
         name: "Overprint",
         token: "overprint",
         hex: "#2A3A8C",
@@ -108,10 +120,10 @@ export function BrandPage() {
     return (
         <SiteLayout>
             <PageHero
-                tone="overprint"
+                tone="rose"
                 eyebrow="Brand kit"
                 title="Brand guidelines."
-                art={<RisoArt name="palette" className="page-splash-art" />}
+                art={<RisoArt name="brand" className="page-splash-art" />}
             >
                 For press, partners and anyone writing about Beamcove. It follows Ink & tide, our
                 design system. Everything here is free to use as long as it stays as it is.
@@ -183,8 +195,9 @@ export function BrandPage() {
             <section className="section" aria-labelledby="color-title">
                 <div className="container">
                     <SectionHead id="color" eyebrow="Color" title="Brand colors.">
-                        Beamcove is printed like a riso poster: paper, riso blue, fluorescent red
-                        and the navy where they overprint, with real grain in the color.
+                        Beamcove is printed like a riso poster: paper, riso blue and fluorescent
+                        red, with sun yellow and meadow green for illustration. Inks overprint where
+                        they cross, with real grain in the color.
                     </SectionHead>
                     <ul className="swatch-grid" data-theme="light">
                         {SWATCHES.map((swatch) => (
@@ -208,7 +221,7 @@ export function BrandPage() {
                         ]}
                         donts={[
                             "Put text on dense ink or under a shape.",
-                            "Overprint anything but the two inks.",
+                            "Overprint text, or anything that isn’t ink.",
                             "Use red for warnings or errors.",
                         ]}
                     />

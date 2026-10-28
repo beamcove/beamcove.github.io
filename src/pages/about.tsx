@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 
 import { MoreLink } from "@/app/components/more-link";
 import { PageHero } from "@/app/components/page-hero";
+import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { ROUTES, SITE } from "@/content/site";
@@ -20,7 +21,12 @@ const CREW = [
 export function AboutPage() {
     return (
         <SiteLayout>
-            <PageHero tone="tide" eyebrow="About" title="About Beamcove.">
+            <PageHero
+                tone="tide"
+                eyebrow="About"
+                title="About Beamcove."
+                art={<RisoArt name="about" className="page-splash-art" />}
+            >
                 Beamcove explores new possibilities through software, challenges familiar
                 approaches, and turns original ideas into useful digital products.
             </PageHero>

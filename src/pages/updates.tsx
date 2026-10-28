@@ -1,6 +1,7 @@
 import { Dispatches } from "@/app/components/dispatches";
 import { LogList } from "@/app/components/log-list";
 import { PageHero } from "@/app/components/page-hero";
+import { RisoArt } from "@/app/components/riso-art";
 import { SiteLayout } from "@/app/components/site-layout";
 import { LOGBOOK, type LogEntry } from "@/content/logbook";
 
@@ -16,7 +17,12 @@ function byYear(entries: LogEntry[]) {
 export function UpdatesPage() {
     return (
         <SiteLayout>
-            <PageHero tone="flare" eyebrow="Updates" title="Company updates.">
+            <PageHero
+                tone="sky"
+                eyebrow="Updates"
+                title="Company updates."
+                art={<RisoArt name="updates" className="page-splash-art" />}
+            >
                 Launches, milestones and other news from Beamcove, newest first.
             </PageHero>
 

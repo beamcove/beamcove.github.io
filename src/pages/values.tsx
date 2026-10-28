@@ -1,12 +1,18 @@
 import { Manifesto } from "@/app/components/manifesto";
 import { PageHero } from "@/app/components/page-hero";
+import { RisoArt } from "@/app/components/riso-art";
 import { SiteLayout } from "@/app/components/site-layout";
 import { VALUES } from "@/content/values";
 
 export function ValuesPage() {
     return (
         <SiteLayout>
-            <PageHero tone="flare" eyebrow="Values" title="Our values.">
+            <PageHero
+                tone="flare"
+                eyebrow="Values"
+                title="Our values."
+                art={<RisoArt name="values" className="page-splash-art" />}
+            >
                 Adventure, integrity and balance: the three values behind everything Beamcove
                 builds.
             </PageHero>
