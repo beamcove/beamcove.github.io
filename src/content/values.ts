@@ -3,35 +3,28 @@ export const VALUES = [
     {
         id: "adventure",
         title: "Adventure",
-        body: "Stay curious, try new things, and leave room for discovery and fun.",
+        body: "Try new things and leave room to be surprised. Good things often start as a detour.",
     },
     {
         id: "integrity",
         title: "Integrity",
-        body: "Be honest, keep our commitments, and earn trust through our actions. What we do leaves a lasting mark beyond what we say.",
+        body: "Be honest and keep our word. Trust is earned by what we do, not what we say.",
     },
     {
         id: "balance",
         title: "Balance",
-        body: "Do meaningful work at a sustainable pace, with room for life, creativity, and fun.",
+        body: "Weigh every decision. Know when to push and when to hold back, and let integrity settle the close calls.",
     },
 ];
 
-export const MISSION =
-    "Create innovative software that opens up new ways for people to work, live, and play, built with care, curiosity, and a sense of adventure.";
+export const MISSION = "Chase good questions, and turn the best answers into something real.";
 
-export const VISION =
-    "Become a company known for setting new directions in the digital world: a trusted brand and a coveted place to innovate.";
-
-/** What the tagline means, from the company's About page. */
-export const HORIZONS =
-    "For Beamcove, charting new horizons means exploring possibilities, challenging conventions, and turning original ideas into digital products.";
+export const VISION = "Make things people are glad exist.";
 
 /** The phrase in STORY[0] that the landing page sets in red ink. */
-export const STORY_MARK =
-    "curiosity becomes original ideas and ideas become useful digital products";
+export const STORY_MARK = "following questions to see where they lead";
 
 export const STORY = [
-    "Beamcove brings projects beyond personal experiments with the ambition to explore what comes next. It is a place for innovation, where curiosity becomes original ideas and ideas become useful digital products.",
-    "Rooted in adventure and trying new things, Beamcove challenges familiar approaches while bringing professional care and fun to the work.",
+    "Beamcove started as a handful of personal experiments that deserved more than a folder on a laptop. What tied them together was a simple habit: following questions to see where they lead. It still decides what we work on next.",
+    "We’re happy to try things a different way, as long as the work is done well. And we try to have some fun along the way.",
 ];

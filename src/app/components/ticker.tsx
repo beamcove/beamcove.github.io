@@ -1,10 +1,10 @@
 const ITEMS = [
-    "Charting new horizons",
-    "Better ways to work, live and play",
-    "Adventure · Integrity · Balance",
+    "Now building",
     "The shipyard is open",
+    "Shipping when it’s ready, not before",
     "Built with craft and a little fun",
     "Dispatched from the cove",
+    "Lighthouse not to scale",
 ];
 
 /** A slow ticker of studio lines under the hero. Pauses on hover; still under reduced motion. */

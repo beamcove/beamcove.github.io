@@ -13,11 +13,10 @@ export function ProductsPage() {
             <PageHero
                 tone="lagoon"
                 eyebrow="Products"
-                title="Our products."
+                title="Nothing here yet."
                 art={<RisoArt name="products" className="page-splash-art" />}
             >
-                Beamcove’s products are in development. Each one will be listed here once it’s
-                ready.
+                Everything we’re building will show up here when it’s ready, not a day before.
             </PageHero>
 
             <section className="section section-tight" aria-labelledby="ships-title">
@@ -30,19 +29,17 @@ export function ProductsPage() {
                             In development
                         </Badge>
                         <p className="title-2">No ships at sea yet.</p>
-                        <p className="body-lg muted">
-                            Our first products are being built right now. Newsletter subscribers
-                            hear about each one first.
-                        </p>
                     </Card>
                 </div>
             </section>
 
             <section className="section" id="what-we-build" aria-labelledby="what-we-build-title">
                 <div className="container">
-                    <SectionHead id="what-we-build" eyebrow="What we build" title="What we build.">
-                        Software in three areas: for work, for everyday life, and for play.
-                    </SectionHead>
+                    <SectionHead
+                        id="what-we-build"
+                        eyebrow="What we build"
+                        title="Where we’re headed."
+                    />
                     <KindGrid />
                 </div>
             </section>

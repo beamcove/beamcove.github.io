@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
 
-import { ROUTES } from "@/content/site";
+import { ROUTES, SITE } from "@/content/site";
 import { AboutPage } from "@/pages/about";
 import { BrandPage } from "@/pages/brand";
 import { ContactPage } from "@/pages/contact";
@@ -70,9 +70,7 @@ describe.each(PAGES)("%s", (_route, renderPage) => {
 describe("HomePage", () => {
     it("summarises every section and links to the full pages", () => {
         render(<HomePage />);
-        expect(
-            screen.getByRole("heading", { level: 1, name: /charting new horizons/i }),
-        ).toBeInTheDocument();
+        expect(screen.getByRole("heading", { level: 1, name: SITE.tagline })).toBeInTheDocument();
         for (const name of [
             /see our products/i,
             /more about beamcove/i,

@@ -9,11 +9,10 @@ export function WhatWeBuild() {
                 <SectionHead
                     id="build"
                     eyebrow="What we build"
-                    title="Software for better ways to work, live and play."
+                    title="Three directions."
                     more={{ href: ROUTES.products, label: "See our products" }}
                 >
-                    Original ideas turned into useful digital products, built with care, curiosity
-                    and a sense of adventure.
+                    Different problems, same care.
                 </SectionHead>
                 <KindGrid />
             </div>

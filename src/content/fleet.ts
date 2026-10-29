@@ -10,19 +10,19 @@ export const KINDS: { tone: SplashTone; art: RisoArtName; title: string; body: s
     {
         tone: "overprint",
         art: "work",
-        title: "Better ways to work",
-        body: "Software that rethinks how work gets done, so it feels lighter and goes further.",
+        title: "For work",
+        body: "Tools that take work off your plate instead of adding to it, so there’s more time for the parts you enjoy.",
     },
     {
         tone: "tide",
         art: "live",
-        title: "Better ways to live",
-        body: "Ideas that make daily life a little easier, and a little more interesting.",
+        title: "For everyday life",
+        body: "Small things that make everyday life a little easier, or a little more interesting.",
     },
     {
         tone: "flare",
         art: "play",
-        title: "Better ways to play",
-        body: "Playful ideas and new kinds of fun, charted for the joy of discovery.",
+        title: "For play",
+        body: "New kinds of fun, made for the joy of finding them. No further justification needed.",
     },
 ];

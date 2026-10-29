@@ -13,7 +13,7 @@ export function Story() {
                 <div className="story-statement-head">
                     <p className="bc-eyebrow">About Beamcove</p>
                     <h2 className="title-1 section-title" id="story-title">
-                        A place for innovation.
+                        It started with curiosity.
                     </h2>
                     <MoreLink href={ROUTES.about}>More about Beamcove</MoreLink>
                 </div>

@@ -10,11 +10,10 @@ export function ValuesPage() {
             <PageHero
                 tone="flare"
                 eyebrow="Values"
-                title="Our values."
+                title="Three rules we keep."
                 art={<RisoArt name="values" className="page-splash-art" />}
             >
-                Adventure, integrity and balance: the three values behind everything Beamcove
-                builds.
+                Three, because we can remember three.
             </PageHero>
 
             <section className="section" aria-label="Our values">

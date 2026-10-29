@@ -6,7 +6,7 @@ import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { ROUTES, SITE } from "@/content/site";
-import { HORIZONS, MISSION, STORY, VISION } from "@/content/values";
+import { MISSION, STORY, VISION } from "@/content/values";
 import { Badge, Card } from "@/design-system";
 
 const CREW = [
@@ -14,7 +14,6 @@ const CREW = [
         initials: "YD",
         name: SITE.founder,
         role: "Founder",
-        blurb: "Founded Beamcove to explore what comes next in technology.",
     },
 ];
 
@@ -24,11 +23,10 @@ export function AboutPage() {
             <PageHero
                 tone="tide"
                 eyebrow="About"
-                title="About Beamcove."
+                title="Hello, we’re Beamcove."
                 art={<RisoArt name="about" className="page-splash-art" />}
             >
-                Beamcove explores new possibilities through software, challenges familiar
-                approaches, and turns original ideas into useful digital products.
+                Where we came from, where we’re headed, and who’s steering.
             </PageHero>
 
             <section className="section" aria-labelledby="story-title">
@@ -56,9 +54,7 @@ export function AboutPage() {
                         eyebrow="Mission and vision"
                         title="Why Beamcove exists."
                         more={{ href: ROUTES.values, label: "Read our values" }}
-                    >
-                        {HORIZONS}
-                    </SectionHead>
+                    />
                     {/* A course on a chart: from where we sail now to where we're headed. */}
                     <ol className="bearing" data-reveal>
                         <li className="bearing-stop">
@@ -75,7 +71,7 @@ export function AboutPage() {
 
             <section className="section" aria-labelledby="crew-title">
                 <div className="container">
-                    <SectionHead id="crew" eyebrow="Team" title="The team." />
+                    <SectionHead id="crew" eyebrow="Team" title="Who builds it." />
                     <ul className="crew-grid">
                         {CREW.map((member) => (
                             <li key={member.name} data-reveal>
@@ -86,7 +82,6 @@ export function AboutPage() {
                                     <div>
                                         <h3 className="headline">{member.name}</h3>
                                         <p className="caption muted">{member.role}</p>
-                                        <p className="muted crew-blurb">{member.blurb}</p>
                                     </div>
                                 </Card>
                             </li>
@@ -99,8 +94,8 @@ export function AboutPage() {
                                         Want to work with us?
                                     </h3>
                                     <p className="muted crew-blurb">
-                                        We’re not hiring yet, but we like meeting curious people who
-                                        build with care.
+                                        We’re not hiring yet, but we always enjoy meeting curious
+                                        people who build with care.
                                     </p>
                                     <MoreLink href={ROUTES.contact}>Say hello</MoreLink>
                                 </div>

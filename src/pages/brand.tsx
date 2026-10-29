@@ -19,9 +19,8 @@ const BOILERPLATE = [
     {
         label: "Long",
         text: [
-            "Beamcove is an innovation company charting new horizons in the digital sea. It explores new possibilities through software, challenges familiar approaches, and turns original ideas into useful digital products. Its ambition is to set trends and open up better ways for people to work, live, and play.",
-            "Its approach combines professional care with curiosity, adventure, and fun. Adventure means trying new things and leaving room for discovery. Integrity means keeping commitments and earning trust through actions that leave a lasting mark. Balance means doing meaningful work at a sustainable pace, with room for life and creativity.",
-            "At its heart, Beamcove is a place for innovation. It aims to become a trusted, well-regarded brand and a coveted place for people who want to shape what comes next.",
+            "Beamcove is an innovation company that turns curiosity into useful things, for work, everyday life and play. It began as a handful of personal experiments and grew into a company that follows good questions wherever they lead.",
+            "It works by three values: adventure (try new things), integrity (keep your word) and balance (weigh every decision well). It brings professional care and a sense of fun to everything it makes.",
         ].join("\n\n"),
     },
 ];
@@ -125,8 +124,8 @@ export function BrandPage() {
                 title="Brand guidelines."
                 art={<RisoArt name="brand" className="page-splash-art" />}
             >
-                For press, partners and anyone writing about Beamcove. It follows Ink & tide, our
-                design system. Everything here is free to use as long as it stays as it is.
+                For press, partners and anyone writing about Beamcove. Use it freely; just don’t
+                change it.
             </PageHero>
 
             <section className="section section-tight" aria-labelledby="boilerplate-title">
@@ -243,7 +242,7 @@ export function BrandPage() {
                         <Card variant="plain" data-reveal>
                             <p className="caption muted">JetBrains Mono · codes and data</p>
                             <p className="type-specimen type-specimen-mono">01</p>
-                            <p className="mono">Est. 2026 · beamcove.com</p>
+                            <p className="mono">beamcove.com · {SITE.email}</p>
                         </Card>
                     </div>
                 </div>
@@ -260,6 +259,7 @@ export function BrandPage() {
                             "Say “we” for Beamcove and “you” for the reader.",
                             "Write in sentence case.",
                             "Save nautical words like voyage, fleet and crew for brand moments.",
+                            "Allow one light touch per page. Keep the rest plain.",
                         ]}
                         donts={[
                             "Use all-caps labels.",

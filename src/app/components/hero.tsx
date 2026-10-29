@@ -12,8 +12,8 @@ export function Hero() {
                 className="hero"
                 data-theme="light"
                 titleAs="h1"
-                eyebrow="Exploring what comes next"
-                title="Charting new horizons in the digital sea."
+                eyebrow="Innovation company"
+                title={SITE.tagline}
                 art={<BeamDots />}
                 actions={
                     <>
@@ -31,7 +31,8 @@ export function Hero() {
                     </>
                 }
             >
-                {SITE.summary}
+                We take the craft seriously and still have fun doing it. What we’re building is
+                almost ready to meet you.
             </Splash>
         </div>
     );

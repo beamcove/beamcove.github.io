@@ -20,10 +20,10 @@ export function UpdatesPage() {
             <PageHero
                 tone="sky"
                 eyebrow="Updates"
-                title="Company updates."
+                title="What’s new."
                 art={<RisoArt name="updates" className="page-splash-art" />}
             >
-                Launches, milestones and other news from Beamcove, newest first.
+                Launches, milestones and the occasional bit of news, newest first.
             </PageHero>
 
             <section className="section section-tight" aria-label="Log entries">

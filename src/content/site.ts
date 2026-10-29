@@ -1,18 +1,6 @@
 import type { BrandName } from "@/app/components/brand";
 
-export const SITE = {
-    name: "Beamcove",
-    url: "https://beamcove.com",
-    legalName: "Beamcove LLC",
-    founder: "Yoan Dubuc",
-    tagline: "Charting new horizons in the digital sea.",
-    /** Short boilerplate, as approved in the company's About page. */
-    summary:
-        "Beamcove is an innovation company exploring new possibilities through software, with the ambition to set trends and create better ways to work, live, and play.",
-    email: "hello@beamcove.com",
-    /** Effective date of the privacy policy and terms (ISO). */
-    legalUpdated: "2026-10-27",
-};
+export { SITE } from "@/content/identity";
 
 export const ROUTES = {
     home: "/",

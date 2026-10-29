@@ -32,8 +32,8 @@ export function NotFoundPage() {
                         </>
                     }
                 >
-                    This page has sailed somewhere we can’t follow. Check the address, or head back
-                    to familiar waters.
+                    This page doesn’t exist, or it wandered off. Check the address, or head back
+                    home.
                 </Splash>
             </div>
         </SiteLayout>

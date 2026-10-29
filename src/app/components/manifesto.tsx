@@ -1,11 +1,8 @@
 import { useRef, type CSSProperties } from "react";
 
 import { useScrollProgress } from "@/app/utils/motion";
-import { MISSION } from "@/content/values";
+import { VISION } from "@/content/values";
 import { Splash, type SplashTone } from "@/design-system";
-
-/** The vision, from the company's About page. */
-const LINE = "Setting new directions in the digital world.";
 
 /**
  * The vision band: a paper splash whose line inks in word by word as it scrolls
@@ -14,7 +11,7 @@ const LINE = "Setting new directions in the digital world.";
 export function Manifesto({ tone = "flare" }: { tone?: Exclude<SplashTone, "night"> }) {
     const ref = useRef<HTMLDivElement>(null);
     useScrollProgress(ref);
-    const words = LINE.split(" ");
+    const words = VISION.split(" ");
 
     return (
         <section className="section" aria-label="Our vision">
@@ -37,7 +34,7 @@ export function Manifesto({ tone = "flare" }: { tone?: Exclude<SplashTone, "nigh
                         </span>
                     }
                 >
-                    Our mission: {MISSION}
+                    That’s the whole plan. The rest is details, and we like details.
                 </Splash>
             </div>
         </section>

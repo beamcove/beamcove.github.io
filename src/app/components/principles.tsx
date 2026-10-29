@@ -12,7 +12,7 @@ export function Principles() {
                     <SectionHead
                         id="principles"
                         eyebrow="Our values"
-                        title="Adventure, integrity, balance."
+                        title="What we hold ourselves to."
                         more={{ href: ROUTES.values, label: "Read our values" }}
                     />
                     <ol className="principle-list">

@@ -54,7 +54,8 @@ export function Dispatches() {
                     title={<span id="newsletter-title">Hear when we launch.</span>}
                 >
                     <p className="bc-splash-body">
-                        An occasional email when there’s news worth sharing. Unsubscribe any time.
+                        A friendly email whenever there’s something worth telling you. Unsubscribe
+                        any time, no hard feelings.
                     </p>
                     {done ? (
                         <Callout
@@ -62,7 +63,7 @@ export function Dispatches() {
                             title="You’re subscribed."
                             className="dispatch-done"
                         >
-                            You’ll hear from us when there’s news.
+                            We’ll write when there’s news.
                         </Callout>
                     ) : (
                         <form className="dispatch-form" onSubmit={submit} noValidate>

@@ -13,7 +13,7 @@ export function Logbook() {
                 <div id="logbook">
                     <header className="split-head" data-reveal>
                         <p className="bc-eyebrow">Updates</p>
-                        <h2 className="title-2">What’s new at Beamcove.</h2>
+                        <h2 className="title-2">What’s new.</h2>
                     </header>
                     <LogList entries={LOGBOOK.slice(0, 3)} />
                     <div className="split-more">
@@ -24,7 +24,7 @@ export function Logbook() {
                 <div id="questions">
                     <header className="split-head" data-reveal>
                         <p className="bc-eyebrow">FAQ</p>
-                        <h2 className="title-2">Frequently asked questions.</h2>
+                        <h2 className="title-2">Asked and answered.</h2>
                     </header>
                     <FaqList items={QUESTIONS.slice(0, 4)} />
                     <div className="split-more">

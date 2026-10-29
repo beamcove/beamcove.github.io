@@ -22,10 +22,10 @@ export function ContactPage() {
             <PageHero
                 tone="meadow"
                 eyebrow="Contact"
-                title="Contact us."
+                title="Say hello."
                 art={<RisoArt name="contact" className="page-splash-art" />}
             >
-                Questions, partnerships or press: here’s how to reach us.
+                Questions, partnerships, press, or just a kind word: here’s how to reach us.
             </PageHero>
 
             <section className="section section-tight" aria-labelledby="channels-title">
@@ -70,8 +70,8 @@ export function ContactPage() {
 
             <section className="section" id="questions" aria-labelledby="questions-title">
                 <div className="container faq-page">
-                    <SectionHead id="questions" eyebrow="FAQ" title="Frequently asked questions.">
-                        The questions we get most. If yours isn’t here, email us.
+                    <SectionHead id="questions" eyebrow="FAQ" title="Asked and answered.">
+                        Didn’t find yours? Email us. A real person reads every message.
                     </SectionHead>
                     <FaqList items={QUESTIONS} />
                 </div>
