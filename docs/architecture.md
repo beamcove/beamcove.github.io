@@ -6,7 +6,8 @@ no client-side router, no backend of its own, and one external API call
 by GitHub Pages at [beamcove.com](https://beamcove.com).
 
 The landing page is the abstract: every section is a short summary that links
-to the page holding the full story (products, about, values, updates, contact).
+to the page holding the full story (products, about, contact). Values live on
+the About page (`/about/#values`).
 
 No project is listed publicly yet: the products page is empty, and a
 test fails if a project code or name shows up on any page. Company facts and copy
@@ -24,7 +25,7 @@ to production, see [deployment.md](deployment.md).
 
 ```
 ├── index.html, 404.html          Landing page and the Pages 404
-├── products/ about/ values/ updates/ contact/ brand/ privacy/ terms/
+├── products/ about/ updates/ contact/ brand/ privacy/ terms/
 │                                 One index.html per page (title, description, canonical)
 ├── public/                       Copied verbatim into dist/
 │   ├── boot.js                   Theme + motion flags before first paint (every page)
@@ -57,8 +58,7 @@ to production, see [deployment.md](deployment.md).
 | ------------ | --------------------- | ------------------------------- | ------------------------------------------------------- |
 | `/`          | `pages/home.tsx`      | Overprint splash (hero)         | The abstract: one summary per page, plus the newsletter |
 | `/products/` | `pages/products.tsx`  | Lagoon splash + art             | Empty state, what we build (`#what-we-build`)           |
-| `/about/`    | `pages/about.tsx`     | Tide splash + art               | Story, mission and vision, team                         |
-| `/values/`   | `pages/values.tsx`    | Flare splash + art              | The three values, vision band                           |
+| `/about/`    | `pages/about.tsx`     | Tide splash + art               | Story, mission and vision, values (`#values`), team     |
 | `/updates/`  | `pages/updates.tsx`   | Sky splash + art                | Every update by year                                    |
 | `/contact/`  | `pages/contact.tsx`   | Meadow splash + art             | Email + social channels, full FAQ                       |
 | `/brand/`    | `pages/brand.tsx`     | Rose splash + art               | Boilerplate, wordmark rules, colours, type              |
@@ -96,10 +96,9 @@ splash, the empty products state. URLs follow the plain names too
 | Hero          | `hero.tsx`, `beam-dots.tsx` | Overprint `Splash`; shapes print in once; lighthouse dots             |
 | Ticker        | `ticker.tsx`                | Mono studio lines with beacon dots, slow marquee                      |
 | What we build | `what-we-build.tsx`         | `KindGrid`: plain `Card`s topped by `RisoArt` (blooms + shapes)       |
-| Principles    | `principles.tsx`            | Cards on a `.bc-dots` field, each led by an `ink-figure` numeral      |
 | Our story     | `story.tsx`                 | Large statement; its key phrase in `flare-ink` (emphasis)             |
-| Vision        | `manifesto.tsx`             | Flare `Splash` (tide on Values); the vision inks in word by word      |
-| Logbook + Qs  | `logbook.tsx`               | Log on a dashed course with beacons, `details` with inked toggles     |
+| Vision        | `manifesto.tsx`             | Flare `Splash`; the vision inks in word by word                       |
+| Questions     | `questions.tsx`             | Top four FAQ `details` in one panel, inked toggles                    |
 | Dispatches    | `dispatches.tsx`            | Tide `Splash`, `TextField`, `Button`, `Callout`                       |
 | Footer        | `site-footer.tsx`           | Links, social marks, giant wordmark whose letters set in one by one   |
 

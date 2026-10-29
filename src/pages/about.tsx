@@ -6,7 +6,7 @@ import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { ROUTES, SITE } from "@/content/site";
-import { MISSION, STORY, VISION } from "@/content/values";
+import { MISSION, STORY, VALUES, VISION } from "@/content/values";
 import { Badge, Card } from "@/design-system";
 
 const CREW = [
@@ -53,7 +53,6 @@ export function AboutPage() {
                         id="bearing"
                         eyebrow="Mission and vision"
                         title="Why Beamcove exists."
-                        more={{ href: ROUTES.values, label: "Read our values" }}
                     />
                     {/* A course on a chart: from where we sail now to where we're headed. */}
                     <ol className="bearing" data-reveal>
@@ -66,6 +65,35 @@ export function AboutPage() {
                             <p className="bearing-text">{VISION}</p>
                         </li>
                     </ol>
+                </div>
+            </section>
+
+            <section className="section" id="values" aria-labelledby="values-title">
+                <div className="container">
+                    <SectionHead id="values" eyebrow="Values" title="Three rules we keep.">
+                        Three, because we can remember three.
+                    </SectionHead>
+                    <div className="value-list">
+                        {VALUES.map((value, i) => (
+                            <article
+                                key={value.id}
+                                id={value.id}
+                                className="value-row"
+                                data-reveal
+                                aria-labelledby={`${value.id}-title`}
+                            >
+                                <div>
+                                    <span className="ink-figure" aria-hidden="true">
+                                        {String(i + 1).padStart(2, "0")}
+                                    </span>
+                                    <h3 className="title-2 value-title" id={`${value.id}-title`}>
+                                        {value.title}
+                                    </h3>
+                                </div>
+                                <p className="body-lg value-body">{value.body}</p>
+                            </article>
+                        ))}
+                    </div>
                 </div>
             </section>
 

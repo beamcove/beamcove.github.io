@@ -6,7 +6,6 @@ export const ROUTES = {
     home: "/",
     products: "/products/",
     about: "/about/",
-    values: "/values/",
     updates: "/updates/",
     contact: "/contact/",
     brand: "/brand/",
@@ -19,7 +18,6 @@ type Route = (typeof ROUTES)[keyof typeof ROUTES];
 export const NAV: { href: Route; label: string }[] = [
     { href: ROUTES.products, label: "Products" },
     { href: ROUTES.about, label: "About" },
-    { href: ROUTES.values, label: "Values" },
     { href: ROUTES.updates, label: "Updates" },
     { href: ROUTES.contact, label: "Contact" },
 ];
@@ -29,7 +27,7 @@ export const FOOTER_GROUPS: { title: string; links: { href: string; label: strin
         title: "Company",
         links: [
             { href: ROUTES.about, label: "About" },
-            { href: ROUTES.values, label: "Values" },
+            { href: `${ROUTES.about}#values`, label: "Values" },
             { href: ROUTES.updates, label: "Updates" },
             { href: ROUTES.brand, label: "Brand kit" },
         ],

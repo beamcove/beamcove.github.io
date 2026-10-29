@@ -10,12 +10,11 @@
 [data-theme="dark"] {
   --bc-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 -9 0 0 0 3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
 }
-body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 24px; background: var(--surface); color: var(--ink); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 24px; background: var(--surface-page); color: var(--ink); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .bc-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; padding: var(--space-6); }
 
-/* ── Beacon dot eyebrow (red ink) ── */
-.bc-eyebrow { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; font-size: 13px; line-height: 20px; font-weight: 600; color: var(--ink-muted); }
-.bc-eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--flare); flex: none; }
+/* ── Eyebrow: a label printed on a pill of riso blue ── */
+.bc-eyebrow { display: inline-flex; align-items: center; gap: var(--space-2); width: fit-content; margin: 0; padding: 2px var(--space-3); border-radius: var(--radius-full); font-size: 13px; line-height: 20px; font-weight: 600; color: var(--on-beam); background-color: var(--beam); background-image: var(--bc-speck-fine); }
 
 /* ── Fitted dot grid ────────────────────────────────
    Dots sit on the interior intersections of a dot-pitch grid: the edge
@@ -123,7 +122,7 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 .bc-splash > .bc-splash-content { position: relative; max-width: 30rem; }
 .bc-splash-title { font-size: 56px; line-height: 60px; font-weight: 600; letter-spacing: -0.04em; margin: var(--space-4) 0 0; text-wrap: balance; }
 .bc-splash-body { font-size: 17px; line-height: 28px; margin: var(--space-4) 0 0; max-width: 40ch; }
-.bc-splash .bc-eyebrow { color: inherit; }
+.bc-splash .bc-eyebrow { color: var(--on-beam); }
 .bc-splash-actions { display: flex; flex-wrap: nowrap; align-items: center; gap: var(--space-3); margin-top: var(--space-8); }
 .bc-splash-actions > * { flex: none; }
 /* Overprinted shapes: a blue triangle and a red bar, multiplied like two passes of ink */
@@ -140,20 +139,20 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 }
 
 /* ── Button ─────────────────────────────────────────── */
-.bc-btn { appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); box-sizing: border-box; height: 40px; padding: 0 var(--space-4); border-radius: var(--radius-md); border: 0; font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; text-decoration: none; cursor: pointer; vertical-align: middle;
+.bc-btn { appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); box-sizing: border-box; height: 40px; padding: 0 var(--space-4); border-radius: var(--radius-full); border: 0; font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; text-decoration: none; cursor: pointer; vertical-align: middle;
   transition: background-color var(--duration-fast) ease-out, box-shadow var(--duration-fast) ease-out, color var(--duration-fast) ease-out; }
 .bc-btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
 .bc-btn:disabled { cursor: not-allowed; opacity: .45; }
-.bc-btn-sm { height: 32px; padding: 0 var(--space-3); font-size: 13px; border-radius: var(--radius-sm); gap: 6px; }
+.bc-btn-sm { height: 32px; padding: 0 var(--space-3); font-size: 13px; gap: 6px; }
 .bc-btn-lg { height: 48px; padding: 0 var(--space-6); font-size: 15px; }
 /* primary: the beam key — riso blue with a lit top edge and a firm bottom edge */
 .bc-btn-primary { background: var(--beam); color: var(--on-beam); box-shadow: inset 0 1px 0 #ffffff40, inset 0 -1px 0 #10163a33, var(--shadow-xs); }
 .bc-btn-primary:hover:not(:disabled) { background: var(--beam-hover); }
 .bc-btn-primary:focus-visible { box-shadow: inset 0 1px 0 #ffffff40, var(--shadow-focus); }
-.bc-btn-secondary { background: var(--surface-raised); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line), var(--shadow-xs); }
-.bc-btn-secondary:hover:not(:disabled) { box-shadow: inset 0 0 0 1px var(--line-strong), var(--shadow-xs); }
+.bc-btn-secondary { background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink); }
+.bc-btn-secondary:hover:not(:disabled) { background: color-mix(in srgb, var(--ink) 12%, transparent); }
 .bc-btn-tonal { background: var(--beam-soft); color: var(--beam-ink); }
-.bc-btn-tonal:hover:not(:disabled) { box-shadow: inset 0 0 0 1px var(--beam-ink); }
+.bc-btn-tonal:hover:not(:disabled) { background: color-mix(in srgb, var(--beam) 16%, var(--beam-soft)); }
 .bc-btn-ghost { background: transparent; color: var(--ink); }
 .bc-btn-ghost:hover:not(:disabled) { background: var(--surface-sunken); }
 .bc-btn-danger { background: var(--danger); color: var(--on-danger); box-shadow: inset 0 1px 0 #ffffff26, var(--shadow-xs); }
@@ -167,7 +166,7 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 /* ── Badge: soft pills with ink grain ── */
 .bc-badge { display: inline-flex; align-items: center; gap: 6px; box-sizing: border-box; height: 24px; padding: 0 10px; border-radius: var(--radius-full); font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap; vertical-align: middle; background-image: var(--bc-grain); }
 .bc-badge-dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; flex: none; }
-.bc-badge-neutral { background-color: var(--surface-sunken); color: var(--ink-muted); box-shadow: inset 0 0 0 1px var(--line); }
+.bc-badge-neutral { background-color: var(--surface-sunken); color: var(--ink-muted); }
 .bc-badge-beam { background-color: var(--beam-soft); color: var(--beam-ink); }
 .bc-badge-success { background-color: var(--success-soft); color: var(--success); }
 .bc-badge-warning { background-color: var(--warning-soft); color: var(--warning); }
@@ -179,13 +178,12 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 .bc-field-label { font-size: 14px; line-height: 20px; font-weight: 500; color: var(--ink); }
 .bc-field-hint { font-size: 13px; line-height: 20px; color: var(--ink-muted); margin: 0; }
 .bc-field-error { font-size: 13px; line-height: 20px; color: var(--danger); margin: 0; }
-.bc-input { box-sizing: border-box; width: 100%; height: 40px; padding: 0 var(--space-3); border-radius: var(--radius-md); border: 0; font: inherit; font-size: 15px; line-height: 24px; background: var(--surface-raised); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-strong); transition: box-shadow var(--duration-fast) ease-out; }
+.bc-input { box-sizing: border-box; width: 100%; height: 40px; padding: 0 var(--space-3); border-radius: var(--radius-full); border: 0; font: inherit; font-size: 15px; line-height: 24px; background: var(--surface-raised); color: var(--ink); box-shadow: none; transition: box-shadow var(--duration-fast) ease-out; }
 .bc-input::placeholder { color: var(--ink-subtle); }
-.bc-input:hover:not(:disabled) { box-shadow: inset 0 0 0 1px var(--ink-muted); }
-.bc-input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--focus); }
-.bc-input[aria-invalid="true"] { box-shadow: inset 0 0 0 1px var(--danger); }
-.bc-input[aria-invalid="true"]:focus { box-shadow: inset 0 0 0 2px var(--danger); }
-.bc-input:disabled { background: var(--surface-sunken); color: var(--ink-subtle); box-shadow: inset 0 0 0 1px var(--line); cursor: not-allowed; }
+.bc-input:focus { outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 35%, transparent); }
+.bc-input[aria-invalid="true"] { background: var(--danger-soft); }
+.bc-input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 35%, transparent); }
+.bc-input:disabled { background: var(--surface-sunken); color: var(--ink-subtle); cursor: not-allowed; }
 
 /* ── Switch ─────────────────────────────────────────── */
 .bc-switch { display: inline-flex; align-items: center; gap: var(--space-3); cursor: pointer; font-size: 15px; line-height: 24px; color: var(--ink); user-select: none; }
@@ -198,7 +196,7 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 .bc-switch input:disabled + .bc-switch-track { opacity: .45; }
 
 /* ── Segmented control: pill with an inked selection ── */
-.bc-seg { display: inline-flex; box-sizing: border-box; height: 40px; padding: 4px; gap: 2px; border-radius: var(--radius-full); background: var(--surface-raised); box-shadow: inset 0 0 0 1px var(--line), var(--shadow-xs); }
+.bc-seg { display: inline-flex; box-sizing: border-box; height: 40px; padding: 4px; gap: 2px; border-radius: var(--radius-full); background: color-mix(in srgb, var(--ink) 7%, transparent); }
 .bc-seg-item { appearance: none; border: 0; background: transparent; font: inherit; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--ink-muted); height: 32px; padding: 0 var(--space-4); border-radius: var(--radius-full); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; transition: background-color var(--duration-base) ease-out, color var(--duration-base) ease-out; }
 .bc-seg-item:hover { color: var(--ink); background-color: var(--surface-sunken); }
 .bc-seg-item[aria-checked="true"] { background-color: var(--beam); background-image: var(--bc-speck-fine); color: var(--on-beam); }
@@ -206,17 +204,15 @@ body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 2
 .bc-seg-full { display: flex; }
 .bc-seg-full .bc-seg-item { flex: 1; }
 
-/* ── Card: printed band on top ── */
-.bc-card { box-sizing: border-box; background-color: var(--surface-raised); border-radius: var(--radius-lg); padding: var(--space-6); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; }
+/* ── Card: printed band on top; no ring, the page sits a step below ── */
+.bc-card { box-sizing: border-box; background-color: var(--surface-raised); border-radius: var(--radius-lg); padding: var(--space-6); color: var(--ink); overflow: hidden; }
 .bc-card-band { padding: 0; position: relative; }
-/* The ring sits above the band, so the card's edge stays visible where the ink fades to paper. */
-.bc-card-band::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px var(--line); pointer-events: none; }
 .bc-card-band > .bc-card-strip { display: block; height: 48px; box-shadow: inset 0 -1px 0 var(--line); }
 .bc-card-band > .bc-card-content { padding: var(--space-5) var(--space-6) var(--space-6); }
 .bc-card-splash { box-shadow: inset 0 0 0 1px #10163a1f; }
 .bc-card-glass { background: var(--surface-glass); box-shadow: inset 0 0 0 1px var(--line-glass), var(--shadow-lg); -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(1.4); backdrop-filter: blur(var(--blur-glass)) saturate(1.4); }
-.bc-card-interactive { cursor: pointer; transition: box-shadow var(--duration-fast) ease-out; }
-.bc-card-interactive:hover { box-shadow: inset 0 0 0 1px var(--line), var(--shadow-md); }
+.bc-card-interactive { cursor: pointer; transition: background-color var(--duration-fast) ease-out; }
+.bc-card-interactive:hover { background-color: color-mix(in srgb, var(--surface-raised) 94%, var(--ink)); }
 .bc-card .bc-eyebrow { margin-bottom: var(--space-3); }
 .bc-card-title { font-size: 16px; line-height: 24px; font-weight: 600; margin: 0; }
 .bc-card-body { font-size: 15px; line-height: 24px; color: var(--ink-muted); margin: var(--space-1) 0 0; }

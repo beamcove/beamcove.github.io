@@ -76,7 +76,7 @@ a:focus-visible {
     position: sticky;
     top: 0;
     z-index: 5;
-    background: color-mix(in srgb, var(--surface) 86%, transparent);
+    background: color-mix(in srgb, var(--surface-page) 86%, transparent);
     transition: box-shadow var(--duration-base) ease-out;
     -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(1.4);
     backdrop-filter: blur(var(--blur-glass)) saturate(1.4);
@@ -111,6 +111,22 @@ a:focus-visible {
     align-items: center;
     gap: var(--space-2);
 }
+/* wordmark left, actions right, the nav pill dead center (phones hide the
+   nav behind the menu button) */
+@media (min-width: 761px) {
+    .site-header-inner > .wordmark,
+    .site-header-actions {
+        flex: 1;
+    }
+    .site-nav {
+        display: flex;
+        flex: 0 1 auto;
+        justify-content: center;
+    }
+    .site-header-actions {
+        justify-content: flex-end;
+    }
+}
 
 /* ── Hero: the page's printed moment ─────────────── */
 .hero-wrap {
@@ -133,18 +149,37 @@ a:focus-visible {
 }
 
 /* ── Sections ─────────────────────────────────────── */
+/* an airy rhythm: 144px between sections on desktop, 64px on phones */
 .section {
-    padding-top: var(--space-24);
+    padding-top: calc(var(--space-24) * 1.5);
 }
 main > .section:last-child {
-    padding-bottom: var(--space-24);
+    padding-bottom: calc(var(--space-24) * 1.5);
 }
 .section-head {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-6);
-    align-items: end;
+    justify-items: start;
+    gap: var(--space-4);
     margin-bottom: var(--space-12);
+}
+/* the rail: every section reads along one line, its heading in a sticky
+   left column and its content down the right (one column on small screens) */
+.section > .container:has(> .section-head) {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: var(--space-12);
+    align-items: start;
+}
+.section > .container > .section-head {
+    position: sticky;
+    top: var(--space-24);
+    grid-row: 1 / span 20;
+    grid-column: 1;
+    margin-bottom: 0;
+}
+.section > .container:has(> .section-head) > :not(.section-head) {
+    grid-column: 2;
+    margin-top: 0;
 }
 .section-title {
     margin-top: var(--space-3);
@@ -155,7 +190,6 @@ main > .section:last-child {
 }
 .section-lead {
     max-width: 44ch;
-    justify-self: end;
 }
 
 /* ── What we build: three printed compositions ─────
@@ -170,14 +204,6 @@ main > .section:last-child {
 .kind-card {
     position: relative;
     height: 100%;
-}
-.kind-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    box-shadow: inset 0 0 0 1px var(--line);
-    pointer-events: none;
 }
 .kind-art {
     position: relative;
@@ -292,34 +318,6 @@ main > .section:last-child {
     color: transparent;
 }
 
-/* ── Principles: three cards, each led by a dot figure ──
-   They rest on a field of the fitted dot grid, on paper: no tint, just a ring. */
-.principles {
-    border-radius: var(--radius-xl);
-    padding: var(--space-12);
-    box-shadow: inset 0 0 0 1px var(--line);
-}
-.principles .section-head {
-    margin-bottom: var(--space-12);
-}
-.principle-list {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-6);
-}
-.principle-list li {
-    padding: var(--space-6);
-    border-radius: var(--radius-lg);
-    background: var(--surface-raised);
-    box-shadow: inset 0 0 0 1px var(--line);
-}
-.principle-list h3 {
-    margin-top: var(--space-8);
-}
-.principle-list p {
-    margin-top: var(--space-2);
-}
-
 /* ── Story: one statement, its key phrase in red ink ── */
 .story-statement {
     display: grid;
@@ -351,18 +349,27 @@ main > .section:last-child {
 .dispatches.bc-splash {
     padding: var(--space-16) var(--space-6) 160px;
 }
+/* one capsule: the Subscribe button sits inside the field's right end */
 .dispatch-form {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
     width: 100%;
     max-width: 28rem;
     margin-top: var(--space-8);
     text-align: left;
 }
-/* line the button up with the input, under the 20px label + 6px gap */
+/* 20px label + 6px gap + 4px inset puts the button inside the 40px field */
 .dispatch-form > .bc-btn {
-    margin-top: 26px;
+    position: absolute;
+    top: 30px;
+    right: 4px;
+    height: 32px;
+    padding: 0 var(--space-4);
+}
+.dispatch-form .bc-input {
+    padding-right: 120px;
 }
 .dispatch-done {
     margin-top: var(--space-8);
@@ -535,15 +542,6 @@ main > .section:last-child {
 }
 
 /* ── Logbook + questions ──────────────────────────── */
-.logbook-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-16);
-    align-items: start;
-}
-.split-head h2 {
-    margin-top: var(--space-3);
-}
 .logbook {
     position: relative;
     margin-top: var(--space-8);
@@ -579,13 +577,20 @@ main > .section:last-child {
     height: 9px;
     border-radius: var(--radius-full);
     background: var(--flare);
-    box-shadow: 0 0 0 3px var(--surface);
+    box-shadow: 0 0 0 3px var(--surface-page);
 }
+/* the questions sit in one raised panel, divided by hairlines */
 .faq {
     margin-top: var(--space-8);
+    padding-inline: var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--surface-raised);
 }
 .faq-item {
     box-shadow: inset 0 -1px 0 var(--line);
+}
+.faq-item:last-child {
+    box-shadow: none;
 }
 .faq-item summary {
     display: flex;
@@ -599,9 +604,6 @@ main > .section:last-child {
     cursor: pointer;
     list-style: none;
     border-radius: var(--radius-xs);
-}
-.faq-item:first-child summary {
-    padding-top: 0;
 }
 .faq-item summary::-webkit-details-marker {
     display: none;
@@ -619,14 +621,14 @@ main > .section:last-child {
     padding: 6px;
     border-radius: var(--radius-full);
     color: var(--ink);
-    box-shadow: inset 0 0 0 1px var(--line-strong);
+    background-color: color-mix(in srgb, var(--ink) 7%, transparent);
     transition:
         rotate var(--duration-base) ease-out,
         background-color var(--duration-base) ease-out,
         color var(--duration-base) ease-out;
 }
 .faq-item summary:hover svg {
-    box-shadow: inset 0 0 0 1px var(--ink);
+    background-color: color-mix(in srgb, var(--ink) 12%, transparent);
 }
 .faq-item[open] summary svg {
     rotate: 45deg;
@@ -652,6 +654,17 @@ main > .section:last-child {
 }
 .faq-item[open]::details-content {
     block-size: auto;
+}
+/* opening an answer: it rises into place as the panel unfolds. Works in every
+   browser (the unfold above needs ::details-content); motion-gated by .motion */
+@keyframes bc-faq-open {
+    from {
+        opacity: 0;
+        translate: 0 -8px;
+    }
+}
+.motion .faq-item[open] > p {
+    animation: bc-faq-open var(--duration-slow) var(--ease-out) both;
 }
 
 /* ── Footer wordmark letters ──────────────────────── */
@@ -683,10 +696,6 @@ main > .section:last-child {
     display: grid;
     gap: var(--space-4);
     justify-items: start;
-    justify-self: end;
-}
-.section-aside .section-lead {
-    justify-self: start;
 }
 .more-link {
     display: inline-flex;
@@ -707,9 +716,6 @@ main > .section:last-child {
 }
 .more-link:hover svg {
     translate: 3px 0;
-}
-.split-more {
-    margin-top: var(--space-6);
 }
 .tick-list,
 .cross-list {
@@ -834,13 +840,13 @@ main > .section:last-child {
     height: 13px;
     border-radius: var(--radius-full);
     background-color: var(--beam);
-    box-shadow: 0 0 0 4px var(--surface);
+    box-shadow: 0 0 0 4px var(--surface-page);
 }
 .bearing-stop-ahead::before {
-    background-color: var(--surface);
+    background-color: var(--surface-page);
     box-shadow:
         inset 0 0 0 3px var(--flare),
-        0 0 0 4px var(--surface);
+        0 0 0 4px var(--surface-page);
 }
 .bearing-label {
     color: var(--ink-subtle);
@@ -947,15 +953,13 @@ main > .section:last-child {
     padding: var(--space-6);
     border-radius: var(--radius-lg);
     background: var(--surface-raised);
-    box-shadow: inset 0 0 0 1px var(--line);
     color: var(--ink);
     text-decoration: none;
-    transition: box-shadow var(--duration-fast) ease-out;
+    transition: background-color var(--duration-fast) ease-out;
 }
+/* hover tints toward the ink, like an interactive card */
 .channel:hover {
-    box-shadow:
-        inset 0 0 0 1px var(--line),
-        var(--shadow-md);
+    background-color: color-mix(in srgb, var(--surface-raised) 94%, var(--ink));
 }
 .icon-tile {
     display: grid;
@@ -998,15 +1002,6 @@ main > .section:last-child {
 }
 .channel-handle {
     color: var(--beam-ink);
-}
-.faq-page {
-    max-width: 880px;
-}
-.faq-page .section-head {
-    grid-template-columns: minmax(0, 1fr);
-}
-.faq-page .section-aside {
-    justify-self: start;
 }
 
 /* ── Brand page ───────────────────────────────────── */
@@ -1061,7 +1056,7 @@ main > .section:last-child {
 }
 .swatch-grid {
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-6);
     background: transparent;
     color: var(--ink);
@@ -1146,6 +1141,17 @@ main > .section:last-child {
     padding: var(--space-24) var(--space-6) 200px;
 }
 
+/* ── Splash frame: wide ───────────────────────────
+   Splashes run almost edge to edge with a thin gutter and keep their corners;
+   their text still lines up with the page's content column. */
+.container:has(> .bc-splash) {
+    max-width: none;
+    padding-inline: var(--space-3);
+}
+.container > .bc-splash {
+    padding-inline: max(var(--space-6), calc((100% - 1200px) / 2));
+}
+
 /* ── Mobile menu ──────────────────────────────────── */
 .menu-toggle {
     display: none;
@@ -1175,7 +1181,7 @@ main > .section:last-child {
     color: var(--beam-ink);
 }
 .site-header.is-open {
-    background: var(--surface);
+    background: var(--surface-page);
     box-shadow: var(--shadow-md);
 }
 
@@ -1323,6 +1329,13 @@ main > .section:last-child {
 
 /* ── Responsive ───────────────────────────────────── */
 @media (max-width: 960px) {
+    .section > .container:has(> .section-head) {
+        display: block;
+    }
+    .section > .container > .section-head {
+        position: static;
+        margin-bottom: var(--space-12);
+    }
     .page-splash-art {
         opacity: 0.35;
     }
@@ -1330,9 +1343,6 @@ main > .section:last-child {
     .value-row {
         grid-template-columns: minmax(0, 1fr);
         gap: var(--space-8);
-    }
-    .swatch-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     .legal {
         grid-template-columns: minmax(0, 1fr);
@@ -1345,26 +1355,12 @@ main > .section:last-child {
         grid-template-columns: repeat(2, auto);
         gap: var(--space-8) var(--space-12);
     }
-    .section-aside {
-        justify-self: start;
-    }
-    .logbook-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: var(--space-16);
-    }
     .kind-grid,
-    .principle-list,
     .story-statement {
         grid-template-columns: minmax(0, 1fr);
     }
     .story-statement {
         gap: var(--space-8);
-    }
-    .section-head {
-        grid-template-columns: minmax(0, 1fr);
-    }
-    .section-lead {
-        justify-self: start;
     }
 }
 @media (max-width: 760px) {
@@ -1396,9 +1392,6 @@ main > .section:last-child {
     }
     .site-header-actions {
         margin-left: auto;
-    }
-    .principles {
-        padding: var(--space-8) var(--space-6);
     }
     .bearing {
         grid-template-columns: minmax(0, 1fr);
@@ -1465,12 +1458,6 @@ main > .section:last-child {
     }
     .dispatches.bc-splash {
         padding: var(--space-12) var(--space-6) 128px;
-    }
-    .dispatch-form {
-        grid-template-columns: minmax(0, 1fr);
-    }
-    .dispatch-form > .bc-btn {
-        margin-top: 0;
     }
     .footer-bottom {
         flex-direction: column;

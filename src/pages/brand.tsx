@@ -30,7 +30,13 @@ const SWATCHES = [
         name: "Paper",
         token: "surface",
         hex: "#F7F6F2",
-        use: "The page. Every print starts here.",
+        use: "Printing paper. Splashes and art print on it.",
+    },
+    {
+        name: "Stone",
+        token: "surface-page",
+        hex: "#F0EFED",
+        use: "The page, a step below the white cards.",
     },
     {
         name: "Ink",
@@ -48,7 +54,7 @@ const SWATCHES = [
         name: "Fluorescent red",
         token: "print-red",
         hex: "#FF4A3D",
-        use: "The second ink: the beacon dot, blooms and the bar. Never a status.",
+        use: "The second ink: beacons, blooms and the bar. Never a status.",
     },
     {
         name: "Sun yellow",

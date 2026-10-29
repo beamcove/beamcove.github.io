@@ -69,7 +69,7 @@ export function ContactPage() {
             </section>
 
             <section className="section" id="questions" aria-labelledby="questions-title">
-                <div className="container faq-page">
+                <div className="container">
                     <SectionHead id="questions" eyebrow="FAQ" title="Asked and answered.">
                         Didn’t find yours? Email us. A real person reads every message.
                     </SectionHead>

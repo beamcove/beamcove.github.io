@@ -2,6 +2,7 @@
 @font-face { font-family: "Onest"; src: url("fonts/Onest-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 @font-face { font-family: "JetBrains Mono"; src: url("fonts/JetBrainsMono-Variable.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
 :root, [data-theme="light"] {
+  --surface-page: #f0efed;
   --surface: #f7f6f2;
   --surface-raised: #ffffff;
   --surface-sunken: #efede6;
@@ -47,6 +48,7 @@
   --shadow-focus: 0 0 0 2px #f7f6f2, 0 0 0 4px #0a6cbd;
 }
 [data-theme="dark"] {
+  --surface-page: #11152b;
   --surface: #11152b;
   --surface-raised: #181d38;
   --surface-sunken: #0c1022;

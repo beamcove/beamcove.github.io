@@ -1,7 +1,7 @@
 # Vendored design system
 
 A copy of the Beamcove design system ("Ink & tide") from the sibling
-`design-system` repository (branch `splash-tones`, commit `8042b10`). Read that repo's README for
+`design-system` repository (branch `site-design-language`, commit `423c693`). Read that repo's README for
 the rules: one printed splash per view, tokens never hex, sentence case, etc.
 
 | file             | source                                   | edit here?                  |
