@@ -1,4 +1,4 @@
-import type { RisoArtName } from "@/app/components/riso-art";
+import type { RisoArtName } from "@/app/components/riso-compositions";
 import type { SplashTone } from "@/design-system";
 
 /**

@@ -213,7 +213,7 @@ main > .section:last-child {
     background: var(--surface);
 }
 
-/* ── Riso art: shapes and blooms on paper (see riso-art.tsx) ──
+/* ── Riso art: shapes and blooms on paper (see riso-compositions.ts) ──
    Pieces multiply over the paper and each other; one layer of paper
    speckle sits on top of the whole print, as on a splash. */
 .riso-art {

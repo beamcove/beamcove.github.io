@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-import { ART } from "@/app/components/riso-art";
+import { ART } from "@/app/components/riso-compositions";
 import { KINDS } from "@/content/fleet";
 
 type Name = keyof typeof ART;

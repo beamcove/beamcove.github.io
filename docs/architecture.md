@@ -118,10 +118,10 @@ splash, the empty projects state. URLs follow the plain names too
   a beam sweeps across every ~7 s and dots light under the mouse. Dots under the
   text stay dim. It only sweeps under `.motion` and while visible.
 - `RisoArt` ([riso-art.tsx](../src/app/components/riso-art.tsx)) prints the
-  other compositions in the hero's spirit: two large shapes (disc, ring, block,
-  half disc, quarter) that overprint into a third colour, cut off by the edge,
-  over one soft bloom. The triangle and bar stay the hero's own. Shapes print
-  in once.
+  compositions in [riso-compositions.ts](../src/app/components/riso-compositions.ts),
+  in the hero's spirit: two large shapes in two different full inks that cross a
+  little and multiply into a third colour, cut off by the edge, over one soft
+  bloom. The triangle and bar stay the hero's own. Shapes print in once.
 - Every page header is a splash in its own tone (design-system tones overprint,
   tide, flare, meadow, lagoon, rose, sky) with its own `RisoArt` composition,
   printed in inks that contrast with that tone. The newsletter splash repeats.
