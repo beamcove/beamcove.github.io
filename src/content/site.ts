@@ -4,7 +4,7 @@ export { SITE } from "@/content/identity";
 
 export const ROUTES = {
     home: "/",
-    products: "/products/",
+    projects: "/projects/",
     about: "/about/",
     updates: "/updates/",
     contact: "/contact/",
@@ -16,7 +16,7 @@ export const ROUTES = {
 type Route = (typeof ROUTES)[keyof typeof ROUTES];
 
 export const NAV: { href: Route; label: string }[] = [
-    { href: ROUTES.products, label: "Products" },
+    { href: ROUTES.projects, label: "Projects" },
     { href: ROUTES.about, label: "About" },
     { href: ROUTES.updates, label: "Updates" },
     { href: ROUTES.contact, label: "Contact" },
@@ -33,10 +33,10 @@ export const FOOTER_GROUPS: { title: string; links: { href: string; label: strin
         ],
     },
     {
-        title: "Products",
+        title: "Projects",
         links: [
-            { href: ROUTES.products, label: "Products" },
-            { href: `${ROUTES.products}#what-we-build`, label: "What we build" },
+            { href: ROUTES.projects, label: "Projects" },
+            { href: `${ROUTES.projects}#what-we-do`, label: "What we do" },
             { href: "/#newsletter", label: "Newsletter" },
         ],
     },

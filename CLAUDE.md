@@ -30,6 +30,10 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    `components.css` and `fonts/` are verbatim copies from the sibling
    `design-system` repo (prettier-ignored) — re-copy, don't hand-edit. Follow its
    rules: tokens never hex, one printed splash per view, sentence case.
+   Riso art (`riso-art.tsx`): shapes print in two different full inks (tints
+   are for blooms), every overlap multiplies (no knockouts), and each card has
+   its own ink pair. Shapes cross a little, never one inside another. White
+   is an opaque ink printed first, under the rest. `riso-art.test.ts` checks it.
 3. **Splashes carry `data-theme="light"`** — they print on paper in both themes.
 4. **Motion is opt-in via `html.motion`** (set by `public/boot.js`). Scope every
    hidden/start state under `.motion` so content shows without JS or with

@@ -19,7 +19,7 @@ const BOILERPLATE = [
     {
         label: "Long",
         text: [
-            "Beamcove is an innovation company that turns curiosity into useful things, for work, everyday life and play. It began as a handful of personal experiments and grew into a company that follows good questions wherever they lead.",
+            "Beamcove is a technology company that turns curiosity into useful things, for work, everyday life and play. It began as a handful of personal experiments and grew into a company that follows good questions wherever they lead.",
             "It works by three values: adventure (try new things), integrity (keep your word) and balance (weigh every decision well). It brings professional care and a sense of fun to everything it makes.",
         ].join("\n\n"),
     },

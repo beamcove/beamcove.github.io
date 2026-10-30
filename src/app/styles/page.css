@@ -192,7 +192,7 @@ main > .section:last-child {
     max-width: 44ch;
 }
 
-/* ── What we build: three printed compositions ─────
+/* ── What we do: three printed compositions ─────
    Plain cards topped by a strip of dotted paper (paper in both themes, like
    card bands) with riso shapes printed on the right: speckled, multiplied
    where they overlap. The ring is drawn over the print, as on band cards. */
@@ -246,7 +246,12 @@ main > .section:last-child {
 .riso-ink-green {
     --riso: var(--ink-green);
 }
-/* screened tints: the same inks printed lighter */
+/* white: opaque, printed first so the inks above multiply over it */
+.riso-art > .riso-ink-white {
+    --riso: var(--surface-raised);
+    mix-blend-mode: normal;
+}
+/* screened tints, for blooms only: the same inks printed lighter */
 .riso-ink-sky {
     --riso: color-mix(in srgb, var(--print-blue) 42%, transparent);
 }
@@ -763,7 +768,7 @@ main > .section:last-child {
     margin-top: var(--space-6);
 }
 
-/* ── Fleet page: the empty shipyard ──────────────── */
+/* ── Projects page: the empty shipyard ──────────────── */
 .shipyard-empty.bc-card {
     padding: var(--space-8);
 }

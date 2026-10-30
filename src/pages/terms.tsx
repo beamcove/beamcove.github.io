@@ -14,8 +14,9 @@ const SECTIONS: LegalSection[] = [
                     If you don’t agree, please don’t use the site.
                 </p>
                 <p>
-                    Each Beamcove product will have its own terms when it launches. Where those
-                    terms and these ones differ, the product’s terms apply to that product.
+                    Each Beamcove product or service will have its own terms when it launches. Where
+                    those terms differ from these ones, they take precedence for that product or
+                    service.
                 </p>
             </>
         ),
@@ -74,8 +75,8 @@ const SECTIONS: LegalSection[] = [
         body: (
             <p>
                 We work hard to keep the site accurate and available, but we provide it “as is”,
-                without warranties of any kind. Plans for products, including dates and features,
-                can change before launch.
+                without warranties of any kind. Plans for products and services, including dates and
+                features, can change before launch.
             </p>
         ),
     },
@@ -133,7 +134,7 @@ export function TermsPage() {
                 "The newsletter is free and you can unsubscribe any time.",
                 "Our name and content are ours; the brand kit says how to use them.",
                 "Georgia law applies.",
-                "Each product will have its own terms when it launches.",
+                "Each product or service will have its own terms when it launches.",
             ]}
             sections={SECTIONS}
         />

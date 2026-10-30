@@ -5,7 +5,7 @@ import { Questions } from "@/app/components/questions";
 import { SiteLayout } from "@/app/components/site-layout";
 import { Story } from "@/app/components/story";
 import { Ticker } from "@/app/components/ticker";
-import { WhatWeBuild } from "@/app/components/what-we-build";
+import { WhatWeDo } from "@/app/components/what-we-do";
 
 /** The landing page: the abstract. Values and updates live on their own pages. */
 export function HomePage() {
@@ -13,7 +13,7 @@ export function HomePage() {
         <SiteLayout>
             <Hero />
             <Ticker />
-            <WhatWeBuild />
+            <WhatWeDo />
             <Story />
             {/* Printed blocks (manifesto, dispatches) never sit back to back. */}
             <Manifesto />

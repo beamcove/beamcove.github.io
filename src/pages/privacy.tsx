@@ -16,8 +16,8 @@ const SECTIONS: LegalSection[] = [
                     visiting the site or reading the newsletter.
                 </p>
                 <p>
-                    Each Beamcove product will have its own privacy notice when it launches, because
-                    each one handles different data.
+                    Each Beamcove product or service will have its own privacy notice when it
+                    launches, because each one handles different data.
                 </p>
             </>
         ),

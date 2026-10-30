@@ -6,17 +6,17 @@ import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { Badge, Card } from "@/design-system";
 
-/** The fleet is empty for now: an open shipyard and the kinds of ships it builds. */
-export function ProductsPage() {
+/** The fleet is empty for now: an open shipyard and the directions it's sailing in. */
+export function ProjectsPage() {
     return (
         <SiteLayout>
             <PageHero
                 tone="lagoon"
-                eyebrow="Products"
-                title="Nothing here yet."
-                art={<RisoArt name="products" className="page-splash-art" />}
+                eyebrow="Projects"
+                title="Our projects."
+                art={<RisoArt name="projects" className="page-splash-art" />}
             >
-                Everything we’re building will show up here when it’s ready, not a day before.
+                Everything we’re working on will show up here when it’s ready, not a day before.
             </PageHero>
 
             <section className="section section-tight" aria-labelledby="ships-title">
@@ -33,13 +33,9 @@ export function ProductsPage() {
                 </div>
             </section>
 
-            <section className="section" id="what-we-build" aria-labelledby="what-we-build-title">
+            <section className="section" id="what-we-do" aria-labelledby="what-we-do-title">
                 <div className="container">
-                    <SectionHead
-                        id="what-we-build"
-                        eyebrow="What we build"
-                        title="Where we’re headed."
-                    />
+                    <SectionHead id="what-we-do" eyebrow="What we do" title="Where we’re headed." />
                     <KindGrid />
                 </div>
             </section>

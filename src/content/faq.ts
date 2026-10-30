@@ -3,7 +3,7 @@ import { ROUTES } from "@/content/site";
 export const QUESTIONS = [
     {
         q: "What is Beamcove?",
-        a: "An innovation company. We follow good questions and turn what we find into useful things.",
+        a: "A technology company. We follow good questions and turn what we find into useful things.",
     },
     {
         q: "What has Beamcove released?",

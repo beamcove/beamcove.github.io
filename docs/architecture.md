@@ -6,10 +6,10 @@ no client-side router, no backend of its own, and one external API call
 by GitHub Pages at [beamcove.com](https://beamcove.com).
 
 The landing page is the abstract: every section is a short summary that links
-to the page holding the full story (products, about, contact). Values live on
+to the page holding the full story (projects, about, contact). Values live on
 the About page (`/about/#values`).
 
-No project is listed publicly yet: the products page is empty, and a
+No project is listed publicly yet: the projects page is empty, and a
 test fails if a project code or name shows up on any page. Company facts and copy
 (boilerplate, mission, vision, values, story) come from the company's About page
 in Notion; keep `src/content/` in step with it.
@@ -25,7 +25,7 @@ to production, see [deployment.md](deployment.md).
 
 ```
 ├── index.html, 404.html          Landing page and the Pages 404
-├── products/ about/ updates/ contact/ brand/ privacy/ terms/
+├── projects/ about/ updates/ contact/ brand/ privacy/ terms/
 │                                 One index.html per page (title, description, canonical)
 ├── public/                       Copied verbatim into dist/
 │   ├── boot.js                   Theme + motion flags before first paint (every page)
@@ -37,7 +37,7 @@ to production, see [deployment.md](deployment.md).
 │                                 (npm run social-card, with the dev server running)
 ├── src/
 │   ├── entries/                  One tiny module per page: mount(<XPage />)
-│   ├── pages/                    Page components (home, products, about, …, not-found)
+│   ├── pages/                    Page components (home, projects, about, …, not-found)
 │   ├── content/                  Copy and data shared by pages: site (routes, nav,
 │   │                             socials, email, legal name), fleet (kinds of
 │   │                             ventures), logbook, values (+ mission, vision, story), faq
@@ -57,7 +57,7 @@ to production, see [deployment.md](deployment.md).
 | URL          | Component             | Header                          | What's on it                                            |
 | ------------ | --------------------- | ------------------------------- | ------------------------------------------------------- |
 | `/`          | `pages/home.tsx`      | Overprint splash (hero)         | The abstract: one summary per page, plus the newsletter |
-| `/products/` | `pages/products.tsx`  | Lagoon splash + art             | Empty state, what we build (`#what-we-build`)           |
+| `/projects/` | `pages/projects.tsx`  | Lagoon splash + art             | Empty state, what we do (`#what-we-do`)                 |
 | `/about/`    | `pages/about.tsx`     | Tide splash + art               | Story, mission and vision, values (`#values`), team     |
 | `/updates/`  | `pages/updates.tsx`   | Sky splash + art                | Every update by year                                    |
 | `/contact/`  | `pages/contact.tsx`   | Meadow splash + art             | Email + social channels, full FAQ                       |
@@ -83,24 +83,24 @@ to production, see [deployment.md](deployment.md).
 ## Wording
 
 Titles, headings, nav labels and buttons say plainly what a page or section is
-(“Our products”, “Company updates”, “Contact us”). Nautical flavour (fleet,
+(“Our projects”, “Company updates”, “Contact us”). Nautical flavour (fleet,
 voyage, crew) stays in places that don't carry meaning: the ticker, the 404
-splash, the empty products state. URLs follow the plain names too
-(`/products/`, `/updates/`, `/#newsletter`).
+splash, the empty projects state. URLs follow the plain names too
+(`/projects/`, `/updates/`, `/#newsletter`).
 
 ## Landing sections
 
-| Section       | File                        | Design-system pieces and motion                                       |
-| ------------- | --------------------------- | --------------------------------------------------------------------- |
-| Header        | `site-header.tsx`           | Wordmark, nav as a `bc-seg` track (current page printed blue), toggle |
-| Hero          | `hero.tsx`, `beam-dots.tsx` | Overprint `Splash`; shapes print in once; lighthouse dots             |
-| Ticker        | `ticker.tsx`                | Mono studio lines with beacon dots, slow marquee                      |
-| What we build | `what-we-build.tsx`         | `KindGrid`: plain `Card`s topped by `RisoArt` (blooms + shapes)       |
-| Our story     | `story.tsx`                 | Large statement; its key phrase in `flare-ink` (emphasis)             |
-| Vision        | `manifesto.tsx`             | Flare `Splash`; the vision inks in word by word                       |
-| Questions     | `questions.tsx`             | Top four FAQ `details` in one panel, inked toggles                    |
-| Dispatches    | `dispatches.tsx`            | Tide `Splash`, `TextField`, `Button`, `Callout`                       |
-| Footer        | `site-footer.tsx`           | Links, social marks, giant wordmark whose letters set in one by one   |
+| Section    | File                        | Design-system pieces and motion                                       |
+| ---------- | --------------------------- | --------------------------------------------------------------------- |
+| Header     | `site-header.tsx`           | Wordmark, nav as a `bc-seg` track (current page printed blue), toggle |
+| Hero       | `hero.tsx`, `beam-dots.tsx` | Overprint `Splash`; shapes print in once; lighthouse dots             |
+| Ticker     | `ticker.tsx`                | Mono studio lines with beacon dots, slow marquee                      |
+| What we do | `what-we-do.tsx`            | `KindGrid`: plain `Card`s topped by `RisoArt` (blooms + shapes)       |
+| Our story  | `story.tsx`                 | Large statement; its key phrase in `flare-ink` (emphasis)             |
+| Vision     | `manifesto.tsx`             | Flare `Splash`; the vision inks in word by word                       |
+| Questions  | `questions.tsx`             | Top four FAQ `details` in one panel, inked toggles                    |
+| Dispatches | `dispatches.tsx`            | Tide `Splash`, `TextField`, `Button`, `Callout`                       |
+| Footer     | `site-footer.tsx`           | Links, social marks, giant wordmark whose letters set in one by one   |
 
 ## Motion
 

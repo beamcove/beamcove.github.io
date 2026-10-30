@@ -8,13 +8,13 @@ import { ContactPage } from "@/pages/contact";
 import { HomePage } from "@/pages/home";
 import { NotFoundPage } from "@/pages/not-found";
 import { PrivacyPage } from "@/pages/privacy";
-import { ProductsPage } from "@/pages/products";
+import { ProjectsPage } from "@/pages/projects";
 import { TermsPage } from "@/pages/terms";
 import { UpdatesPage } from "@/pages/updates";
 
 const PAGES: [string, () => ReactElement][] = [
     [ROUTES.home, () => <HomePage />],
-    [ROUTES.products, () => <ProductsPage />],
+    [ROUTES.projects, () => <ProjectsPage />],
     [ROUTES.about, () => <AboutPage />],
     [ROUTES.updates, () => <UpdatesPage />],
     [ROUTES.contact, () => <ContactPage />],
@@ -69,7 +69,7 @@ describe("HomePage", () => {
     it("summarises every section and links to the full pages", () => {
         render(<HomePage />);
         expect(screen.getByRole("heading", { level: 1, name: SITE.tagline })).toBeInTheDocument();
-        for (const name of [/see our products/i, /more about beamcove/i, /see all questions/i]) {
+        for (const name of [/see our projects/i, /more about beamcove/i, /see all questions/i]) {
             expect(screen.getByRole("link", { name })).toBeInTheDocument();
         }
     });

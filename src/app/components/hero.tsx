@@ -12,7 +12,7 @@ export function Hero() {
                 className="hero"
                 data-theme="light"
                 titleAs="h1"
-                eyebrow="Innovation company"
+                eyebrow="Technology company"
                 title={SITE.tagline}
                 art={<BeamDots />}
                 actions={
@@ -25,8 +25,8 @@ export function Hero() {
                         >
                             About Beamcove
                         </Button>
-                        <Button size="lg" variant="secondary" href="#build">
-                            What we build
+                        <Button size="lg" variant="secondary" href="#what-we-do">
+                            What we do
                         </Button>
                     </>
                 }

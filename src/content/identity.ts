@@ -11,7 +11,7 @@ export const SITE = {
     founder: "Yoan Dubuc",
     tagline: "Charting new horizons in the digital sea.",
     /** Short boilerplate: the brand kit and the home page's meta description. */
-    summary: "Beamcove is an innovation company that turns curiosity into useful things.",
+    summary: "Beamcove is a technology company that turns curiosity into useful things.",
     email: "hello@beamcove.com",
     /** Effective date of the privacy policy and terms (ISO). */
     legalUpdated: "2026-10-27",

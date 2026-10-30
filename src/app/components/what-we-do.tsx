@@ -2,15 +2,15 @@ import { KindGrid } from "@/app/components/kind-grid";
 import { SectionHead } from "@/app/components/section-head";
 import { ROUTES } from "@/content/site";
 
-export function WhatWeBuild() {
+export function WhatWeDo() {
     return (
-        <section className="section" id="build" aria-labelledby="build-title">
+        <section className="section" id="what-we-do" aria-labelledby="what-we-do-title">
             <div className="container">
                 <SectionHead
-                    id="build"
-                    eyebrow="What we build"
+                    id="what-we-do"
+                    eyebrow="What we do"
                     title="Three directions."
-                    more={{ href: ROUTES.products, label: "See our products" }}
+                    more={{ href: ROUTES.projects, label: "See our projects" }}
                 >
                     Different problems, same care.
                 </SectionHead>

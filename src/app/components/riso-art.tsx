@@ -2,29 +2,35 @@ import type { CSSProperties } from "react";
 
 /**
  * Riso compositions in the spirit of the hero: two large, simple shapes
- * printed in two inks that overprint into a third where they cross, cut off by
- * the edge, over one soft bloom. Speckle sits on top of the whole print.
+ * printed in full ink that overprint into a third colour where they cross, cut
+ * off by the edge, over one soft bloom. Speckle sits on top of the whole print.
  *
- * Inks are the print inks plus the illustration inks (yellow, green) and their
- * screened tints. Pair inks that make a clear third colour where they cross:
- * blue + yellow → green, blue + red → navy, pink + yellow → orange,
- * pink + blue → violet. Red over yellow barely changes, so never pair them.
+ * Rules: every composition prints its shapes in two different full inks, every
+ * overlap multiplies (nothing knocks out or covers what's below), and the
+ * cards in a KindGrid each use their own pair. Screened tints (sky, pink,
+ * butter, mint) are for blooms, never shapes; the types enforce it and
+ * riso-art.test.ts checks the rest. Shapes cross a little, never one inside
+ * another. White is an opaque ink printed first, under everything else, so the
+ * inks above still multiply over it (green over white stays green).
+ *
+ * Pair inks that make a clear third colour where they cross:
+ * blue + yellow → green, blue + red → navy, blue + green → deep teal,
+ * yellow + green → deep green. Red over yellow barely changes, so never pair them.
  * The hero's triangle and bar stay the hero's own.
  */
-type Shape = "bloom" | "disc" | "ring" | "block" | "diamond" | "half" | "cap" | "lune";
-type Ink = "blue" | "red" | "yellow" | "green" | "sky" | "pink" | "butter" | "mint";
+type Shape = "disc" | "ring" | "block" | "diamond" | "half" | "cap" | "lune";
+type Ink = "blue" | "red" | "yellow" | "green" | "white";
+type Tint = "sky" | "pink" | "butter" | "mint";
 
-interface Piece {
-    shape: Shape;
-    ink: Ink;
-    style: CSSProperties;
-}
+type Piece =
+    | { shape: "bloom"; ink: Ink | Tint; style: CSSProperties }
+    | { shape: Shape; ink: Ink; style: CSSProperties };
 
 export type RisoArtName =
     | "work"
     | "live"
     | "play"
-    | "products"
+    | "projects"
     | "about"
     | "values"
     | "updates"
@@ -32,28 +38,38 @@ export type RisoArtName =
     | "brand"
     | "legal";
 
-const ART: Record<RisoArtName, Piece[]> = {
+export const ART: Record<RisoArtName, Piece[]> = {
     // blue disc over a red block: violet where they cross
     work: [
         { shape: "bloom", ink: "sky", style: { right: -60, top: -110, width: 360, height: 280 } },
         { shape: "disc", ink: "blue", style: { right: -24, top: -48, width: 176, height: 176 } },
         { shape: "block", ink: "red", style: { right: 96, bottom: -32, width: 120, height: 120 } },
     ],
-    // a blue half moon off the right edge and a yellow disc: green where they meet
+    // a white sun setting behind a green hill off the right edge
     live: [
-        { shape: "bloom", ink: "butter", style: { right: 40, top: -100, width: 320, height: 260 } },
-        { shape: "lune", ink: "blue", style: { right: 0, top: -12, width: 100, height: 200 } },
-        { shape: "disc", ink: "yellow", style: { right: 58, top: 30, width: 116, height: 116 } },
-    ],
-    // a blue ball dropping into a tilted pink bowl: violet where it lands
-    play: [
-        { shape: "bloom", ink: "butter", style: { right: 30, top: -100, width: 340, height: 260 } },
+        { shape: "bloom", ink: "mint", style: { right: 20, top: -110, width: 340, height: 260 } },
+        { shape: "disc", ink: "white", style: { right: 108, bottom: 70, width: 72, height: 72 } },
         {
-            shape: "cap",
-            ink: "pink",
-            style: { right: 24, bottom: -44, width: 220, height: 110, rotate: "-14deg" },
+            shape: "half",
+            ink: "green",
+            style: { right: -70, bottom: -30, width: 280, height: 140 },
         },
-        { shape: "disc", ink: "blue", style: { right: 104, top: 36, width: 88, height: 88 } },
+    ],
+    // a yellow hoop and a blue ball bouncing through it: green where they cross
+    play: [
+        { shape: "bloom", ink: "butter", style: { right: 10, top: -130, width: 320, height: 240 } },
+        {
+            shape: "ring",
+            ink: "yellow",
+            style: {
+                right: 26,
+                top: 18,
+                width: 150,
+                height: 150,
+                "--ring": "28px",
+            } as CSSProperties,
+        },
+        { shape: "disc", ink: "blue", style: { right: 136, top: 70, width: 84, height: 84 } },
     ],
     // two half discs reaching from opposite edges, overlapping in the middle: violet
     contact: [
@@ -81,15 +97,15 @@ const ART: Record<RisoArtName, Piece[]> = {
             style: { right: 70, top: 18, width: 96, height: 230, rotate: "14deg" },
         },
     ],
-    // products (lagoon): a red and a blue block stacked like cards, violet where they overlap
-    products: [
+    // projects (lagoon): a red and a blue block stacked like cards, violet where they overlap
+    projects: [
         { shape: "block", ink: "blue", style: { right: 72, top: 28, width: 150, height: 150 } },
         { shape: "block", ink: "red", style: { right: 160, top: 104, width: 150, height: 150 } },
     ],
-    // about (tide): a yellow disc eclipsed by a pink one, an orange lens between
+    // about (tide): a yellow disc eclipsed by a blue one, a green lens between
     about: [
         { shape: "disc", ink: "yellow", style: { right: 64, top: 32, width: 172, height: 172 } },
-        { shape: "disc", ink: "pink", style: { right: 184, top: 104, width: 136, height: 136 } },
+        { shape: "disc", ink: "blue", style: { right: 184, top: 104, width: 136, height: 136 } },
     ],
     // values (flare): a blue diamond, like a compass, over a yellow disc
     values: [
@@ -115,9 +131,9 @@ const ART: Record<RisoArtName, Piece[]> = {
         },
         { shape: "disc", ink: "red", style: { right: 152, top: 102, width: 96, height: 96 } },
     ],
-    // legal (tide): a pink half moon off the right edge and a yellow disc, orange between
+    // legal (tide): a blue half moon off the right edge and a yellow disc, green between
     legal: [
-        { shape: "lune", ink: "pink", style: { right: 0, bottom: 24, width: 120, height: 240 } },
+        { shape: "lune", ink: "blue", style: { right: 0, bottom: 24, width: 120, height: 240 } },
         { shape: "disc", ink: "yellow", style: { right: 64, top: 128, width: 110, height: 110 } },
     ],
 };
