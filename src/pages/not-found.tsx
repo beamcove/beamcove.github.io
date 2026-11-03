@@ -1,40 +1,35 @@
 import { AsciiWord } from "@/app/components/ascii-word";
-import { ART } from "@/app/components/glyph-compositions";
+import { Scene } from "@/app/components/scene";
 import { SiteLayout } from "@/app/components/site-layout";
 import { ROUTES } from "@/content/site";
-import { Button, Splash } from "@/design-system";
+import { Button, Kicker } from "@/design-system";
 
 export function NotFoundPage() {
     return (
         <SiteLayout>
-            <div className="container page-hero" id="top">
-                <Splash
-                    field={ART.lost}
-                    align="center"
-                    className="not-found"
-                    titleAs="h1"
-                    eyebrow="Page not found"
-                    title={
-                        <>
-                            <AsciiWord text="404" className="not-found-figure" seed={4} />
+            <Scene name="lost" className="not-found" id="top" aria-labelledby="page-title">
+                <div className="wrap">
+                    <div className="not-found-copy" data-quiet>
+                        <AsciiWord text="404" className="not-found-figure" seed={4} />
+                        <Kicker>Page not found</Kicker>
+                        <h1 className="display page-title" id="page-title">
                             Off the map.
-                        </>
-                    }
-                    actions={
-                        <>
+                        </h1>
+                        <p className="lead">
+                            This page doesn’t exist, or it wandered off. Check the address, or head
+                            back home.
+                        </p>
+                        <div className="hero-actions">
                             <Button size="lg" href={ROUTES.home}>
                                 Go to the homepage
                             </Button>
                             <Button size="lg" variant="secondary" href={ROUTES.contact}>
                                 Contact us
                             </Button>
-                        </>
-                    }
-                >
-                    This page doesn’t exist, or it wandered off. Check the address, or head back
-                    home.
-                </Splash>
-            </div>
+                        </div>
+                    </div>
+                </div>
+            </Scene>
         </SiteLayout>
     );
 }

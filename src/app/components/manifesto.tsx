@@ -1,39 +1,26 @@
-import { useRef, type CSSProperties } from "react";
+import { Scene } from "@/app/components/scene";
+import { MISSION, VISION } from "@/content/values";
+import { LitLine } from "@/design-system";
 
-import { ART } from "@/app/components/glyph-compositions";
-import { useScrollProgress } from "@/app/utils/motion";
-import { VISION } from "@/content/values";
-import { Splash } from "@/design-system";
-
-/** The vision band: a glyph splash whose line lights up word by word as it scrolls into view. */
+/** Mission, then vision: each a single sentence that lights up word by word as you scroll. */
 export function Manifesto() {
-    const ref = useRef<HTMLDivElement>(null);
-    useScrollProgress(ref);
-    const words = VISION.split(" ");
-
     return (
-        <section className="section" aria-label="Our vision">
-            <div className="container" ref={ref}>
-                <Splash
-                    field={ART.vision}
-                    className="manifesto"
-                    eyebrow="Our vision"
-                    title={
-                        <span
-                            className="manifesto-line"
-                            style={{ "--n": words.length } as CSSProperties}
-                        >
-                            {words.map((word, i) => (
-                                <span key={i} style={{ "--i": i } as CSSProperties}>
-                                    {word}{" "}
-                                </span>
-                            ))}
-                        </span>
-                    }
-                >
-                    That’s the whole plan. The rest is details, and we like details.
-                </Splash>
-            </div>
+        <section aria-label="Mission and vision">
+            <Scene name="mission" as="div" pin>
+                <div className="statement" data-quiet>
+                    <h3 className="kicker-plain">Our mission</h3>
+                    <LitLine text={MISSION} />
+                </div>
+            </Scene>
+            <Scene name="vision" as="div" pin>
+                <div className="statement statement-big" data-quiet>
+                    <h3 className="kicker-plain">Our vision</h3>
+                    <LitLine text={VISION} />
+                    <p className="body-text">
+                        That’s the whole plan. The rest is details, and we like details.
+                    </p>
+                </div>
+            </Scene>
         </section>
     );
 }

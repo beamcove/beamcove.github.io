@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide";
 
 import { Icon } from "@/app/components/icon";
-import { ThemePicker } from "@/app/components/theme-picker";
 import { NAV, ROUTES } from "@/content/site";
 import { Button } from "@/design-system";
 
@@ -11,15 +10,7 @@ function isCurrent(href: string) {
 }
 
 export function SiteHeader() {
-    const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-
-    useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 8);
-        onScroll();
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
 
     useEffect(() => {
         if (!menuOpen) return;
@@ -30,21 +21,18 @@ export function SiteHeader() {
         return () => window.removeEventListener("keydown", onKey);
     }, [menuOpen]);
 
-    const classes = ["site-header", scrolled && "is-scrolled", menuOpen && "is-open"];
     return (
-        <header className={classes.filter(Boolean).join(" ")}>
-            <div className="container site-header-inner">
+        <header className={menuOpen ? "site-header is-open" : "site-header"}>
+            <div className="site-header-row">
                 <a className="wordmark" href={ROUTES.home}>
                     Beamcove
                     <span className="bc-cursor" aria-hidden="true" />
                 </a>
                 <nav aria-label="Main" className="site-nav">
-                    {/* The design system's segmented tabs: the current page inverts. */}
-                    <ul className="bc-seg">
+                    <ul>
                         {NAV.map((link) => (
                             <li key={link.href}>
                                 <a
-                                    className="bc-seg-item"
                                     href={link.href}
                                     aria-current={isCurrent(link.href) ? "page" : undefined}
                                 >
@@ -54,32 +42,22 @@ export function SiteHeader() {
                         ))}
                     </ul>
                 </nav>
-                <div className="site-header-actions">
-                    <ThemePicker />
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        href="/#newsletter"
-                        className="header-cta"
-                    >
-                        Subscribe
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        iconOnly
-                        className="menu-toggle"
-                        aria-label={menuOpen ? "Close menu" : "Open menu"}
-                        aria-expanded={menuOpen}
-                        aria-controls="mobile-menu"
-                        onClick={() => setMenuOpen((open) => !open)}
-                    >
-                        <Icon node={menuOpen ? X : Menu} />
-                    </Button>
-                </div>
+                <Button variant="secondary" size="sm" href="/#newsletter" className="header-cta">
+                    Subscribe
+                </Button>
+                <button
+                    type="button"
+                    className="menu-toggle"
+                    aria-label={menuOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={menuOpen}
+                    aria-controls="mobile-menu"
+                    onClick={() => setMenuOpen((open) => !open)}
+                >
+                    <Icon node={menuOpen ? X : Menu} size={20} />
+                </button>
             </div>
             <nav id="mobile-menu" className="mobile-menu" aria-label="Menu" hidden={!menuOpen}>
-                <ul className="container">
+                <ul>
                     {NAV.map((link) => (
                         <li key={link.href}>
                             <a

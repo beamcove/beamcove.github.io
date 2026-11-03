@@ -1,131 +1,67 @@
-import type { CSSProperties } from "react";
+import { ArrowRight } from "lucide";
 
-import { MoreLink } from "@/app/components/more-link";
+import { ChapterHead } from "@/app/components/chapter-head";
+import { Icon } from "@/app/components/icon";
+import { Manifesto } from "@/app/components/manifesto";
 import { PageHero } from "@/app/components/page-hero";
-import { SectionHead } from "@/app/components/section-head";
+import { Scene } from "@/app/components/scene";
 import { SiteLayout } from "@/app/components/site-layout";
+import { Story } from "@/app/components/story";
+import { Values } from "@/app/components/values";
 import { ROUTES, SITE } from "@/content/site";
-import { MISSION, STORY, VALUES, VISION } from "@/content/values";
-import { Badge, Card } from "@/design-system";
+import { Badge, type Chapter } from "@/design-system";
 
-const CREW = [
-    {
-        initials: "YD",
-        name: SITE.founder,
-        role: "Founder",
-    },
+const CREW = [{ initials: "YD", name: SITE.founder, role: "Founder" }];
+
+const CHAPTERS: Chapter[] = [
+    { id: "top", label: "Hello" },
+    { id: "story", label: "Story" },
+    { id: "values", label: "Values" },
+    { id: "team", label: "Team" },
 ];
 
 export function AboutPage() {
     return (
-        <SiteLayout>
-            <PageHero art="about" eyebrow="About" title="Hello, we’re Beamcove.">
+        <SiteLayout chapters={CHAPTERS}>
+            <PageHero scene="about" eyebrow="About" title="Hello, we’re Beamcove.">
                 Where we came from, where we’re headed, and who’s steering.
             </PageHero>
 
-            <section className="section" aria-labelledby="story-title">
-                <div className="container story">
-                    <div data-reveal>
-                        <p className="bc-eyebrow">Our story</p>
-                        <h2 className="title-1 section-title" id="story-title">
-                            How Beamcove started.
-                        </h2>
-                    </div>
-                    <div className="prose" data-reveal style={{ "--d": 1 } as CSSProperties}>
-                        {STORY.map((paragraph, i) => (
-                            <p key={paragraph} className={i === 0 ? "body-lg" : undefined}>
-                                {paragraph}
-                            </p>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <Story n={1} title="How Beamcove started." full />
+            <Manifesto />
+            <Values n={2} />
 
-            <section className="section" aria-labelledby="bearing-title">
-                <div className="container">
-                    <SectionHead
-                        id="bearing"
-                        eyebrow="Mission and vision"
-                        title="Why Beamcove exists."
-                    />
-                    {/* A course on a chart: from where we sail now to where we're headed. */}
-                    <ol className="bearing" data-reveal>
-                        <li className="bearing-stop">
-                            <p className="mono bearing-label">Mission · what we do</p>
-                            <p className="bearing-text">{MISSION}</p>
-                        </li>
-                        <li className="bearing-stop bearing-stop-ahead">
-                            <p className="mono bearing-label">Vision · where we’re going</p>
-                            <p className="bearing-text">{VISION}</p>
-                        </li>
-                    </ol>
-                </div>
-            </section>
-
-            <section className="section" id="values" aria-labelledby="values-title">
-                <div className="container">
-                    <SectionHead id="values" eyebrow="Values" title="Three rules we keep.">
-                        Three, because we can remember three.
-                    </SectionHead>
-                    <div className="value-list">
-                        {VALUES.map((value, i) => (
-                            <article
-                                key={value.id}
-                                id={value.id}
-                                className="value-row"
-                                data-reveal
-                                aria-labelledby={`${value.id}-title`}
-                            >
-                                <div>
-                                    <span className="ink-figure" aria-hidden="true">
-                                        {String(i + 1).padStart(2, "0")}
-                                    </span>
-                                    <h3 className="title-2 value-title" id={`${value.id}-title`}>
-                                        {value.title}
-                                    </h3>
-                                </div>
-                                <p className="body-lg value-body">{value.body}</p>
-                            </article>
-                        ))}
+            <Scene name="team" id="team" aria-labelledby="team-title">
+                <div className="wrap">
+                    <div className="copy" data-quiet data-reveal>
+                        <ChapterHead id="team" n={3} kicker="Team" title="Who builds it." />
                     </div>
-                </div>
-            </section>
-
-            <section className="section" aria-labelledby="crew-title">
-                <div className="container">
-                    <SectionHead id="crew" eyebrow="Team" title="Who builds it." />
-                    <ul className="crew-grid">
+                    <ul className="crew" data-quiet data-reveal>
                         {CREW.map((member) => (
-                            <li key={member.name} data-reveal>
-                                <Card variant="plain" className="crew-card">
-                                    <span className="crew-avatar" aria-hidden="true">
-                                        {member.initials}
-                                    </span>
-                                    <div>
-                                        <h3 className="headline">{member.name}</h3>
-                                        <p className="caption muted">{member.role}</p>
-                                    </div>
-                                </Card>
+                            <li key={member.name} className="crew-card">
+                                <span className="crew-avatar" aria-hidden="true">
+                                    {member.initials}
+                                </span>
+                                <div>
+                                    <h3 className="headline">{member.name}</h3>
+                                    <p className="caption">{member.role}</p>
+                                </div>
                             </li>
                         ))}
-                        <li data-reveal style={{ "--d": 1 } as CSSProperties}>
-                            <Card variant="plain" className="crew-card crew-card-open">
-                                <div>
-                                    <Badge>Not hiring yet</Badge>
-                                    <h3 className="headline crew-open-title">
-                                        Want to work with us?
-                                    </h3>
-                                    <p className="muted crew-blurb">
-                                        We’re not hiring yet, but we always enjoy meeting curious
-                                        people who build with care.
-                                    </p>
-                                    <MoreLink href={ROUTES.contact}>Say hello</MoreLink>
-                                </div>
-                            </Card>
+                        <li className="crew-card crew-card-open">
+                            <Badge>Not hiring yet</Badge>
+                            <h3 className="headline">Want to work with us?</h3>
+                            <p className="body-text">
+                                We’re not hiring yet, but we always enjoy meeting curious people who
+                                build with care.
+                            </p>
+                            <a className="bc-more" href={ROUTES.contact}>
+                                Say hello <Icon node={ArrowRight} />
+                            </a>
                         </li>
                     </ul>
                 </div>
-            </section>
+            </Scene>
         </SiteLayout>
     );
 }

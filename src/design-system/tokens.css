@@ -23,166 +23,6 @@
 }
 
 :root,
-[data-theme="paper"] {
-    color-scheme: light;
-    --glyph-blend: multiply;
-    --surface-page: #efede6;
-    --surface: #f7f6f1;
-    --surface-raised: #ffffff;
-    --surface-sunken: #e6e3d9;
-    --surface-inverse: #1a1a18;
-    --line: #d5d1c4;
-    --line-strong: #a39e90;
-    --rule: #1a1a18;
-    --ink: #141414;
-    --ink-muted: #4f4c45;
-    --ink-subtle: #7b776c;
-    --ink-inverse: #f7f6f1;
-    --ink-a: #2440ff;
-    --ink-b: #e0412f;
-    --ink-c: #0f8a5f;
-    --ink-d: #1a1a18;
-    --ink-e: #e8890c;
-    --glyph-dim: #cfcabb;
-    --beam: #2440ff;
-    --beam-hover: #1530d6;
-    --beam-ink: #2036e0;
-    --beam-soft: #2440ff1a;
-    --on-beam: #ffffff;
-    --flare: #e0412f;
-    --flare-ink: #c4321f;
-    --flare-soft: #e0412f1a;
-    --on-flare: #ffffff;
-    --success: #00804d;
-    --success-soft: #00804d1a;
-    --warning: #a86400;
-    --warning-soft: #a864001a;
-    --danger: #d42020;
-    --danger-soft: #d420201a;
-    --on-danger: #ffffff;
-    --focus: #2440ff;
-    --shadow-ink: #1a1a18;
-}
-[data-theme="platinum"] {
-    color-scheme: light;
-    --glyph-blend: multiply;
-    --surface-page: #d9d9d6;
-    --surface: #e8e8e5;
-    --surface-raised: #f5f5f3;
-    --surface-sunken: #cfcfcb;
-    --surface-inverse: #1b1b1a;
-    --line: #b9b9b4;
-    --line-strong: #8a8a85;
-    --rule: #2a2a28;
-    --ink: #1b1b1a;
-    --ink-muted: #4c4c49;
-    --ink-subtle: #6f6f69;
-    --ink-inverse: #f5f5f3;
-    --ink-a: #3a5fcd;
-    --ink-b: #b5452f;
-    --ink-c: #2f7d6d;
-    --ink-d: #c69214;
-    --ink-e: #6c4f8f;
-    --glyph-dim: #bcbcb6;
-    --beam: #3a5fcd;
-    --beam-hover: #2c4cb0;
-    --beam-ink: #2f50b8;
-    --beam-soft: #3a5fcd1f;
-    --on-beam: #ffffff;
-    --flare: #b5452f;
-    --flare-ink: #9e3a27;
-    --flare-soft: #b5452f1f;
-    --on-flare: #ffffff;
-    --success: #2f7d4f;
-    --success-soft: #2f7d4f1f;
-    --warning: #a26a00;
-    --warning-soft: #a26a001f;
-    --danger: #b8322a;
-    --danger-soft: #b8322a1f;
-    --on-danger: #ffffff;
-    --focus: #3a5fcd;
-    --shadow-ink: #2a2a28;
-}
-[data-theme="graphite"] {
-    color-scheme: dark;
-    --glyph-blend: screen;
-    --surface-page: #17181a;
-    --surface: #1e2023;
-    --surface-raised: #26292d;
-    --surface-sunken: #121315;
-    --surface-inverse: #e7e5df;
-    --line: #2e3135;
-    --line-strong: #474b51;
-    --rule: #8a8f96;
-    --ink: #e7e5df;
-    --ink-muted: #a9a7a0;
-    --ink-subtle: #75746e;
-    --ink-inverse: #17181a;
-    --ink-a: #d9c27a;
-    --ink-b: #8fb0c4;
-    --ink-c: #c98b7a;
-    --ink-d: #9fbf94;
-    --ink-e: #a99cc9;
-    --glyph-dim: #2c2f33;
-    --beam: #d9c27a;
-    --beam-hover: #e6d293;
-    --beam-ink: #e0cb85;
-    --beam-soft: #d9c27a1f;
-    --on-beam: #17181a;
-    --flare: #c98b7a;
-    --flare-ink: #d9a091;
-    --flare-soft: #c98b7a1f;
-    --on-flare: #17181a;
-    --success: #8fc79a;
-    --success-soft: #8fc79a1f;
-    --warning: #e0b25c;
-    --warning-soft: #e0b25c1f;
-    --danger: #e07a6c;
-    --danger-soft: #e07a6c1f;
-    --on-danger: #17181a;
-    --focus: #8fb0c4;
-    --shadow-ink: #000000;
-}
-[data-theme="phosphor"] {
-    color-scheme: dark;
-    --glyph-blend: screen;
-    --surface-page: #0d130f;
-    --surface: #121a15;
-    --surface-raised: #18221b;
-    --surface-sunken: #090e0b;
-    --surface-inverse: #d6e8d9;
-    --line: #1f2c23;
-    --line-strong: #34473a;
-    --rule: #7fa58a;
-    --ink: #d6e8d9;
-    --ink-muted: #93ad99;
-    --ink-subtle: #62786a;
-    --ink-inverse: #0d130f;
-    --ink-a: #7fd49a;
-    --ink-b: #5bb8b0;
-    --ink-c: #c2cf7a;
-    --ink-d: #d8ae62;
-    --ink-e: #86aecf;
-    --glyph-dim: #1d2a21;
-    --beam: #7fd49a;
-    --beam-hover: #9be0b0;
-    --beam-ink: #8bdaa4;
-    --beam-soft: #7fd49a1f;
-    --on-beam: #0d130f;
-    --flare: #d8ae62;
-    --flare-ink: #e0bb73;
-    --flare-soft: #d8ae621f;
-    --on-flare: #0d130f;
-    --success: #7fd49a;
-    --success-soft: #7fd49a1f;
-    --warning: #e0bb62;
-    --warning-soft: #e0bb621f;
-    --danger: #e07a6c;
-    --danger-soft: #e07a6c1f;
-    --on-danger: #0d130f;
-    --focus: #5bb8b0;
-    --shadow-ink: #000000;
-}
 [data-theme="midnight"] {
     color-scheme: dark;
     --glyph-blend: screen;
@@ -253,6 +93,7 @@
     --shadow-default: 0 0 0 2px var(--surface-page), 0 0 0 4px var(--rule);
     --cell: 16px;
     --cell-glyph: 11px;
+    --glyph-block-alpha: 0.72;
     --stroke: 1px;
     --stroke-bold: 2px;
     --duration-fast: 120ms;
@@ -264,57 +105,57 @@
 
 .display {
     font-family: var(--font-display);
+    font-size: 88px;
+    line-height: 99px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+.title-1 {
+    font-family: var(--font-display);
     font-size: 66px;
     line-height: 66px;
     font-weight: 400;
     letter-spacing: -0.01em;
 }
-.title-1 {
-    font-family: var(--font-mono);
-    font-size: 40px;
-    line-height: 44px;
-    font-weight: 600;
-    letter-spacing: -0.04em;
-}
 .title-2 {
+    font-family: var(--font-display);
+    font-size: 44px;
+    line-height: 44px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+.title-3 {
     font-family: var(--font-mono);
-    font-size: 28px;
+    font-size: 24px;
     line-height: 32px;
     font-weight: 600;
     letter-spacing: -0.03em;
 }
-.title-3 {
-    font-family: var(--font-mono);
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-}
 .headline {
     font-family: var(--font-mono);
-    font-size: 15px;
+    font-size: 17px;
     line-height: 24px;
     font-weight: 600;
     letter-spacing: -0.01em;
 }
 .body-lg {
     font-family: var(--font-sans);
-    font-size: 17px;
-    line-height: 28px;
+    font-size: 19px;
+    line-height: 30px;
     font-weight: 400;
     letter-spacing: 0;
 }
 .body {
     font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 24px;
+    font-size: 16px;
+    line-height: 26px;
     font-weight: 400;
     letter-spacing: 0;
 }
 .body-sm {
     font-family: var(--font-sans);
-    font-size: 13px;
-    line-height: 20px;
+    font-size: 14px;
+    line-height: 22px;
     font-weight: 400;
     letter-spacing: 0;
 }
@@ -327,10 +168,10 @@
 }
 .eyebrow {
     font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 13px;
+    line-height: 20px;
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: 0;
 }
 .caption {
     font-family: var(--font-mono);

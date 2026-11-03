@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { PageHero } from "@/app/components/page-hero";
+import { Scene } from "@/app/components/scene";
 import { SiteLayout } from "@/app/components/site-layout";
 import { formatDate, SITE } from "@/content/site";
 import { Callout } from "@/design-system";
@@ -28,11 +29,11 @@ export function LegalPage({
     return (
         <SiteLayout>
             <PageHero
-                art="legal"
+                scene="legal"
                 eyebrow={eyebrow}
                 title={title}
                 meta={
-                    <p className="mono muted">
+                    <p className="mono">
                         Last updated{" "}
                         <time dateTime={SITE.legalUpdated}>{formatDate(SITE.legalUpdated)}</time>
                     </p>
@@ -41,37 +42,39 @@ export function LegalPage({
                 {lead}
             </PageHero>
 
-            <div className="container legal">
-                <aside className="legal-toc" aria-labelledby="toc-title">
-                    <p className="caption muted" id="toc-title">
-                        On this page
-                    </p>
-                    <ol>
+            <Scene name="reading" className="reading">
+                <div className="wrap legal">
+                    <aside className="legal-toc" aria-labelledby="toc-title" data-quiet>
+                        <p className="caption" id="toc-title">
+                            On this page
+                        </p>
+                        <ol>
+                            {sections.map((section) => (
+                                <li key={section.id}>
+                                    <a href={`#${section.id}`}>{section.title}</a>
+                                </li>
+                            ))}
+                        </ol>
+                    </aside>
+                    <article className="prose legal-body" data-quiet>
+                        <Callout tone="info" title="The short version">
+                            {summary.join(" ")}
+                        </Callout>
                         {sections.map((section) => (
-                            <li key={section.id}>
-                                <a href={`#${section.id}`}>{section.title}</a>
-                            </li>
+                            <section
+                                key={section.id}
+                                id={section.id}
+                                aria-labelledby={`${section.id}-h`}
+                            >
+                                <h2 className="title-3" id={`${section.id}-h`}>
+                                    {section.title}
+                                </h2>
+                                {section.body}
+                            </section>
                         ))}
-                    </ol>
-                </aside>
-                <article className="prose legal-body">
-                    <Callout tone="info" title="The short version">
-                        {summary.join(" ")}
-                    </Callout>
-                    {sections.map((section) => (
-                        <section
-                            key={section.id}
-                            id={section.id}
-                            aria-labelledby={`${section.id}-h`}
-                        >
-                            <h2 className="title-3" id={`${section.id}-h`}>
-                                {section.title}
-                            </h2>
-                            {section.body}
-                        </section>
-                    ))}
-                </article>
-            </div>
+                    </article>
+                </div>
+            </Scene>
         </SiteLayout>
     );
 }

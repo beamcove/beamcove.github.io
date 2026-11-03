@@ -1,4 +1,4 @@
-import { buildAtlasRow } from "@/design-system/glyph/draw";
+import { buildAtlasRow } from "./draw";
 import {
     buildField,
     glyphFor,
@@ -7,7 +7,7 @@ import {
     type Field,
     type GlyphComposition,
     type RampName,
-} from "@/design-system/glyph/engine";
+} from "./engine";
 
 /** A box in canvas CSS px that the art stays quiet behind (the copy). */
 export interface Rect {
@@ -39,7 +39,6 @@ const SWEEP_MS = 4200;
 const PAUSE_MS = 3800;
 const BAND = 120;
 const SLANT = 0.45;
-const BLOCK_ALPHA = 0.72;
 
 /** Where a cell flips to the next scene: bottom rows first, with grain. */
 const flipAt = (c: number, r: number, rows: number) =>
@@ -47,8 +46,10 @@ const flipAt = (c: number, r: number, rows: number) =>
 
 /**
  * Draws glyph fields onto a canvas, cell-aligned to its top left. One
- * painter serves both the fixed stage (dissolving between scenes, with
- * shimmer and the beam) and the still prints of the no-motion layout.
+ * painter serves both the fixed Stage (dissolving between scenes, with
+ * shimmer and the beam) and the Still prints of the no-motion layout.
+ * Glyphs thin out around every quiet box (the copy), and ink blocks keep
+ * clear of it, so text never sits on ink.
  */
 export function createPainter(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
@@ -63,6 +64,7 @@ export function createPainter(canvas: HTMLCanvasElement) {
     const fields = new Map<GlyphComposition, Field>();
     const atlas = new Map<string, HTMLCanvasElement>();
     let blend: GlobalCompositeOperation = "screen";
+    let blockAlpha = 0.72;
     const colors = new Map<string, string>();
     const inkColor = (slot: string) => {
         let color = colors.get(slot);
@@ -106,10 +108,9 @@ export function createPainter(canvas: HTMLCanvasElement) {
         fields.clear();
         atlas.clear();
         colors.clear();
-        blend =
-            getComputedStyle(canvas).getPropertyValue("--glyph-blend").trim() === "multiply"
-                ? "multiply"
-                : "screen";
+        const cs = getComputedStyle(canvas);
+        blend = cs.getPropertyValue("--glyph-blend").trim() === "multiply" ? "multiply" : "screen";
+        blockAlpha = parseFloat(cs.getPropertyValue("--glyph-block-alpha")) || 0.72;
     };
 
     const fills: [number, number, string][] = [];
@@ -195,7 +196,7 @@ export function createPainter(canvas: HTMLCanvasElement) {
         }
 
         // ink blocks, cell by cell, overprinting where two cross
-        c2d.globalAlpha = BLOCK_ALPHA;
+        c2d.globalAlpha = blockAlpha;
         c2d.globalCompositeOperation = blend;
         let last = "";
         for (const [x, y, ink] of fills) {

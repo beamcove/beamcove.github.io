@@ -27,8 +27,7 @@ export interface GlyphFieldProps {
  * A field of glyphs on a canvas that fills its parent, which should be a
  * `.bc-glyphs` surface (a Splash, a card strip). Glyphs shimmer slowly, a
  * beam can sweep across, and the pointer lights them up. With motion off it
- * draws one still frame. Colours come from the theme's ink slots, so it
- * redraws when the theme changes.
+ * draws one still frame. Colours come from the ink slot tokens.
  */
 export function GlyphField({
     composition,
@@ -61,6 +60,7 @@ export function GlyphField({
         let dimRow: HTMLCanvasElement | null = null;
         let blockColors: Record<string, string> = {};
         let blend: GlobalCompositeOperation = "screen";
+        let blockAlpha = 0.72;
         let quietRect = { l: 0, t: 0, r: 0, b: 0 };
         let px = -9999;
         let py = -9999;
@@ -81,6 +81,7 @@ export function GlyphField({
             for (const b of composition.blocks ?? [])
                 blockColors[b.ink] = read(`--ink-${b.ink}`, "#c8ff1a");
             blend = read("--glyph-blend", "screen") === "multiply" ? "multiply" : "screen";
+            blockAlpha = parseFloat(read("--glyph-block-alpha", "0.72")) || 0.72;
         };
 
         const layout = () => {
@@ -172,7 +173,7 @@ export function GlyphField({
             }
 
             // ink blocks, overprinting where they cross
-            ctx.globalAlpha = 1;
+            ctx.globalAlpha = blockAlpha;
             ctx.globalCompositeOperation = blend;
             for (const b of f.blocks) {
                 ctx.fillStyle = blockColors[b.ink] ?? "#c8ff1a";
@@ -189,6 +190,7 @@ export function GlyphField({
                 if (y1 > y0) ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
             }
             ctx.globalCompositeOperation = "source-over";
+            ctx.globalAlpha = 1;
         };
 
         let frame = 0;
@@ -222,13 +224,6 @@ export function GlyphField({
         const content = host.querySelector(".bc-splash-content");
         if (content) ro.observe(content);
 
-        // re-ink when the theme changes
-        const mo = new MutationObserver(() => {
-            paint();
-            draw(performance.now());
-        });
-        mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-
         let io: IntersectionObserver | undefined;
         if (animate && typeof IntersectionObserver !== "undefined") {
             io = new IntersectionObserver(([entry]) => {
@@ -256,7 +251,6 @@ export function GlyphField({
         return () => {
             cancelAnimationFrame(frame);
             ro.disconnect();
-            mo.disconnect();
             io?.disconnect();
             host.removeEventListener("pointermove", onMove);
             host.removeEventListener("pointerleave", onLeave);

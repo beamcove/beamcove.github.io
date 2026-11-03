@@ -1,11 +1,11 @@
-import type { GlyphArtName } from "@/app/components/glyph-compositions";
+import type { SceneName } from "@/app/components/scenes";
 
 /**
  * The fleet is empty for now: no project is ready to be listed publicly.
  * When one is, add it here and give the fleet page a list again.
  */
-/** `art` picks the card's glyph composition (see glyph-compositions.ts). */
-export const KINDS: { art: GlyphArtName; title: string; body: string }[] = [
+/** `art` names the scene its screen dissolves to (see scenes.ts). */
+export const KINDS: { art: SceneName; title: string; body: string }[] = [
     {
         art: "work",
         title: "For work",

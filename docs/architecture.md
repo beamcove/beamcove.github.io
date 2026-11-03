@@ -14,9 +14,9 @@ test fails if a project code or name shows up on any page. Company facts and cop
 (boilerplate, mission, vision, values, story) come from the company's About page
 in Notion; keep `src/content/` in step with it.
 
-It is built on the Beamcove design system, **Signal** (the first desktop
-computers, made today: paper, bold 2px rules, system windows, glyph fields cut by
-ink blocks, five colour themes, Departure Mono + JetBrains Mono + Onest). A copy lives in
+It is built on the Beamcove design system, **Signal** (a night sky, a lighthouse
+and a field of glyphs: one dark theme, one glyph stage per page that changes
+scene as you scroll, Departure Mono + JetBrains Mono + Onest). A copy lives in
 [`src/design-system/`](../src/design-system/README.md), and `/design/` shows every
 piece of it.
 
@@ -49,25 +49,25 @@ to production, see [deployment.md](deployment.md).
 │       ├── components/           Layout (site-layout/header/footer, page-hero,
 │       │                         legal-page) and sections (hero, story, manifesto, …)
 │       ├── styles/page.css       Page layout + motion on top of the design system
-│       └── utils/                theme.ts (colour themes), motion.ts (reveals, scroll progress)
+│       └── utils/                subscribe.ts (the newsletter), motion.ts (reveals, scroll progress)
 ├── tests/setup.ts                Vitest setup (jest-dom, RTL cleanup, storage polyfill)
 └── docs/                         You are here
 ```
 
 ## Pages
 
-| URL          | Component             | Header                      | What's on it                                            |
-| ------------ | --------------------- | --------------------------- | ------------------------------------------------------- |
-| `/`          | `pages/home.tsx`      | `hero` field + beam         | The abstract: one summary per page, plus the newsletter |
-| `/projects/` | `pages/projects.tsx`  | `projects` field            | Empty state, what we do (`#what-we-do`)                 |
-| `/about/`    | `pages/about.tsx`     | `about` field               | Story, mission and vision, values (`#values`), team     |
-| `/updates/`  | `pages/updates.tsx`   | `updates` field             | Every update by year                                    |
-| `/contact/`  | `pages/contact.tsx`   | `contact` field             | Email + social channels, full FAQ                       |
-| `/brand/`    | `pages/brand.tsx`     | `brand` field               | Boilerplate, wordmark rules, colours, type              |
-| `/design/`   | `pages/design.tsx`    | `design` field              | Principles, themes, type, glyphs, every component       |
-| `/privacy/`  | `pages/privacy.tsx`   | `legal` field (`LegalPage`) | Privacy policy with contents sidebar                    |
-| `/terms/`    | `pages/terms.tsx`     | `legal` field (`LegalPage`) | Terms of use with contents sidebar                      |
-| 404          | `pages/not-found.tsx` | `lost` field                | Glyph “404”, “Off the map”                              |
+| URL          | Component             | First screen (scene)  | What's on it                                         |
+| ------------ | --------------------- | --------------------- | ---------------------------------------------------- |
+| `/`          | `pages/home.tsx`      | `hero`, with the beam | The whole company as one scroll, plus the newsletter |
+| `/projects/` | `pages/projects.tsx`  | `projects`            | Empty state, what we do (`#what-we-do`), newsletter  |
+| `/about/`    | `pages/about.tsx`     | `about`               | Story, mission and vision, values (`#values`), team  |
+| `/updates/`  | `pages/updates.tsx`   | `log`                 | Every update by year, newsletter                     |
+| `/contact/`  | `pages/contact.tsx`   | `hello`               | Email + social channels, full FAQ (`#questions`)     |
+| `/brand/`    | `pages/brand.tsx`     | `brand`               | Boilerplate, wordmark rules, colours, type, voice    |
+| `/design/`   | `pages/design.tsx`    | `design`              | Principles, colour, type, glyphs, stage, components  |
+| `/privacy/`  | `pages/privacy.tsx`   | `legal` (`LegalPage`) | Privacy policy with contents sidebar                 |
+| `/terms/`    | `pages/terms.tsx`     | `legal` (`LegalPage`) | Terms of use with contents sidebar                   |
+| 404          | `pages/not-found.tsx` | `lost`                | Glyph “404”, “Off the map”                           |
 
 ### Adding a page
 
@@ -87,23 +87,30 @@ to production, see [deployment.md](deployment.md).
 
 Titles, headings, nav labels and buttons say plainly what a page or section is
 (“Our projects”, “Company updates”, “Contact us”). Nautical flavour (fleet,
-voyage, crew) stays in places that don't carry meaning: the ticker, the 404
-splash, the empty projects state. URLs follow the plain names too
+voyage, crew) stays in places that don't carry meaning: the 404 screen and
+the empty projects state. URLs follow the plain names too
 (`/projects/`, `/updates/`, `/#newsletter`).
 
-## Landing sections
+## Landing screens
 
-| Section    | File              | Design-system pieces and motion                                            |
-| ---------- | ----------------- | -------------------------------------------------------------------------- |
-| Header     | `site-header.tsx` | Wordmark + cursor, nav as slash tabs (current page inverts), `ThemePicker` |
-| Hero       | `hero.tsx`        | `Splash` with the `hero` field and the lighthouse beam; title decodes      |
-| Ticker     | `ticker.tsx`      | A `> status` line, slow marquee                                            |
-| What we do | `what-we-do.tsx`  | `KindGrid`: `art` cards, each with its own two-ink glyph strip             |
-| Our story  | `story.tsx`       | Large mono statement; its key phrase inverted like a selection             |
-| Vision     | `manifesto.tsx`   | `vision` field; the line lights up word by word                            |
-| Questions  | `questions.tsx`   | Top four FAQ `details`, `[+]` toggles                                      |
-| Dispatches | `dispatches.tsx`  | `newsletter` field, `TextField`, `Button`, `Callout`                       |
-| Footer     | `site-footer.tsx` | Links, social marks, a glyph wordmark that lights left to right            |
+The home page is the whole company as one scroll, one idea per screen, over a
+single glyph Stage. A chapter rail on wide screens shows where you are.
+
+| Screen     | File                 | Scene(s)            | What happens                                     |
+| ---------- | -------------------- | ------------------- | ------------------------------------------------ |
+| Hero       | `hero.tsx`           | `hero`              | The tagline alone, decoding in; the beam sweeps  |
+| What we do | `what-we-do.tsx`     | `intro`, kinds      | An intro, then one screen per kind of work       |
+| Story      | `story.tsx`          | `story`             | The story, its key phrase highlighted            |
+| Mission    | `manifesto.tsx`      | `mission`, `vision` | Two pinned statements that light up word by word |
+| Values     | `values.tsx`         | `values`            | One pinned screen; each value takes its turn     |
+| Updates    | `latest-updates.tsx` | `updates`           | The newest log entries                           |
+| FAQ        | `questions.tsx`      | `faq`               | Top four questions (all of them on Contact)      |
+| Newsletter | `dispatches.tsx`     | `contact`           | The sign-up form and the other ways to say hello |
+| Footer     | `site-footer.tsx`    | —                   | Links, social marks, a glyph wordmark            |
+
+Inner pages open with `PageHero` (a kicker, the title, a lead, on the page's
+own scene) and reuse the same screens. Long reading (Brand, Design, Privacy,
+Terms) sits on the sparse `reading` scene.
 
 ## Motion
 
@@ -111,21 +118,19 @@ splash, the empty projects state. URLs follow the plain names too
   the visitor hasn't asked for reduced motion. **Every hidden starting state is
   scoped under `.motion`**, so without it the page is simply static and fully
   visible (this is also why tests see everything).
+- **The Stage** ([design-system/components/stage.tsx](../src/design-system/components/stage.tsx))
+  is one fixed canvas per page. As each `Screen` (`[data-scene]`) arrives it
+  dissolves to that screen's scene, cell by cell from the bottom up; glyphs
+  shimmer, and the hero scene sweeps the lighthouse beam. Glyphs thin out behind
+  every `[data-quiet]` box and ink blocks keep clear of it. It also writes `--p`
+  (and `data-step`) on pinned screens, which drive `LitLine` and the values. It
+  only runs under `.motion`; otherwise each Screen prints its own `Still`. The
+  drawing lives in `design-system/glyph/painter.ts`, the maths in `engine.ts`.
 - `useReveal()` ([utils/motion.ts](../src/app/utils/motion.ts)) adds `is-in`
-  to `[data-reveal]` elements as they scroll into view. Plain `data-reveal`
-  fades and rises (stagger with `--d`); `data-reveal="fill"` only triggers
-  child effects (the footer letters).
-- `useScrollProgress()` writes `--p` (0 → 1) for scroll-linked effects (the
-  manifesto line).
-- `GlyphField` ([design-system/components/glyph-field.tsx](../src/design-system/components/glyph-field.tsx))
-  draws a composition from [glyph-compositions.ts](../src/app/components/glyph-compositions.ts)
-  on a canvas: glyphs shimmer, light up under the pointer, and on the hero a
-  beam sweeps across every 8 s. Glyphs thin out and ink blocks are trimmed
-  behind the copy. It pauses off-screen, redraws on theme change, and draws one
-  still frame without `.motion`. The maths lives in `design-system/glyph/engine.ts`.
-- Page titles decode from scrambled glyphs once (`ScrambleText`); screen
-  readers get the real text straight away.
-- Big numerals (values, the year rail) use `.ink-figure`: Departure Mono.
+  to `[data-reveal]` elements as they scroll into view; `data-reveal="fill"`
+  only triggers child effects (the footer wordmark).
+- Titles decode from scrambled glyphs once (`ScrambleText`); screen readers get
+  the real text straight away.
 
 ## Styling
 
@@ -133,41 +138,9 @@ splash, the empty projects state. URLs follow the plain names too
 `page.css`. Later files build on earlier ones; keep that order.
 
 - **Tokens, never hex.** `page.css` only uses `var(--…)` tokens.
-- **Splashes follow the theme.** Every theme defines all tokens, so splashes,
-  fields and form controls re-ink together. `[data-theme]` on any element
-  previews another theme for that subtree (the Design page and theme picker use it).
-- **Typography** uses the token classes from `tokens.css` (`title-1`, `body-lg`,
-  `mono`, …) and `.bc-eyebrow` for the `///` mono eyebrow.
-
-## Theme
-
-The design system themes by `data-theme` on `<html>`: `paper` (default),
-`platinum`, `graphite`, `phosphor` and `midnight`. A small script,
-[`public/boot.js`](../public/boot.js), loaded in every page's `<head>`, restores
-the saved choice (`localStorage["bc-theme"]`, with older values such as
-`light`, `dark` or `signal` mapped to their nearest theme) before first paint; the header's `ThemePicker` sets
-and saves it, and the Design page's `ThemeGrid` does the same.
-
-## The lab
-
-`/lab/` is a gallery of five versions of the website: the same content and
-structure (header, hero, what we do, about, values, updates, FAQ, newsletter,
-contact, footer), each taking the design system in a different direction. Its
-front page previews every version live.
-
-| URL               | Folder               | Direction                                          |
-| ----------------- | -------------------- | -------------------------------------------------- |
-| `/lab/editorial/` | `src/lab/editorial/` | A design magazine: big type, asymmetric spreads    |
-| `/lab/grid/`      | `src/lab/grid/`      | Swiss: one strict grid, black and one red          |
-| `/lab/bento/`     | `src/lab/bento/`     | A product launch: a bento grid of live tiles       |
-| `/lab/cinema/`    | `src/lab/cinema/`    | A dark scroll story with a glyph-field stage       |
-| `/lab/poster/`    | `src/lab/poster/`    | Screen-printed posters: ink blocks, oversized type |
-
-Lab pages mount with `mountLab` (tokens, components and `lab-base.css`, without
-`page.css`), carry the `LabBar` switcher, pin a theme with `data-force-theme`
-(read by `boot.js`), use `LAB_ROUTES`, and are `noindex` and out of the sitemap.
-The newsletter logic they share lives in `src/app/utils/subscribe.ts`. The size
-budget counts them separately from the main site.
+- **One theme.** Signal is Midnight only: no picker, nothing stored on the device.
+- **Typography** uses the token classes from `tokens.css` (`display`, `title-1`,
+  `lead`-sized `body-lg`, `mono`, …) and `Kicker` (`01 —— What we do`) for chapter openers.
 
 ## Icons
 

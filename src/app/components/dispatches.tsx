@@ -1,26 +1,37 @@
-import { ART } from "@/app/components/glyph-compositions";
+import { ArrowUpRight, Mail } from "lucide";
+
+import { BrandIcon } from "@/app/components/brand";
+import { ChapterHead } from "@/app/components/chapter-head";
+import { Icon } from "@/app/components/icon";
+import { Scene } from "@/app/components/scene";
 import { useSubscribe } from "@/app/utils/subscribe";
-import { Button, Callout, Splash, TextField } from "@/design-system";
+import { SITE, SOCIALS } from "@/content/site";
+import { Button, Callout, TextField } from "@/design-system";
 
 export { ROSTER_URL } from "@/app/utils/subscribe";
 
-export function Dispatches() {
+/** The closing screen: the newsletter, and the other ways to say hello. */
+export function Dispatches({ n }: { n?: number }) {
     const { email, setEmail, error, done, submitting, submit } = useSubscribe();
 
     return (
-        <section className="section" id="newsletter" aria-labelledby="newsletter-title">
-            <div className="container">
-                <Splash
-                    field={ART.newsletter}
-                    align="center"
-                    className="dispatches"
-                    eyebrow="Newsletter"
-                    title={<span id="newsletter-title">Hear when we launch.</span>}
-                >
-                    <p className="bc-splash-body">
+        <Scene
+            name="contact"
+            className="dispatches"
+            id="newsletter"
+            aria-labelledby="newsletter-title"
+        >
+            <div className="wrap close">
+                <div className="copy" data-quiet data-reveal>
+                    <ChapterHead
+                        id="newsletter"
+                        n={n}
+                        kicker="Newsletter"
+                        title="Hear when we launch."
+                    >
                         A friendly email whenever there’s something worth telling you. Unsubscribe
                         any time, no hard feelings.
-                    </p>
+                    </ChapterHead>
                     {done ? (
                         <Callout
                             tone="success"
@@ -48,8 +59,29 @@ export function Dispatches() {
                             </Button>
                         </form>
                     )}
-                </Splash>
+                </div>
+                <div className="hello" data-quiet data-reveal>
+                    <h3 className="kicker-plain">Or say hello</h3>
+                    <ul>
+                        <li>
+                            <a href={`mailto:${SITE.email}`}>
+                                <Icon node={Mail} size={18} />
+                                {SITE.email}
+                            </a>
+                        </li>
+                        {SOCIALS.map((s) => (
+                            <li key={s.name}>
+                                <a href={s.href} rel="noopener noreferrer">
+                                    <BrandIcon name={s.name} />
+                                    {s.label}
+                                    <span className="handle">{s.handle}</span>
+                                    <Icon node={ArrowUpRight} />
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
-        </section>
+        </Scene>
     );
 }

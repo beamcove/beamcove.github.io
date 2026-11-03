@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Signal: the beam cursor (lime) crossed by a pink ink block, overprinting (screen) where they meet. -->
-  <rect width="64" height="64" rx="12" fill="#08090b"/>
-  <rect x="14" y="10" width="20" height="40" fill="#c8ff1a"/>
-  <rect x="28" y="32" width="24" height="22" fill="#ff3d9a"/>
-  <rect x="28" y="32" width="6" height="18" fill="#ffffa4"/>
+  <!-- Signal: the beam cursor (periwinkle) crossed by an orchid ink block on the midnight sky. -->
+  <rect width="64" height="64" rx="12" fill="#11131d"/>
+  <rect x="14" y="10" width="20" height="40" fill="#8fa2ff"/>
+  <rect x="28" y="32" width="24" height="22" fill="#d39ad6"/>
+  <rect x="28" y="32" width="6" height="18" fill="#e9dcff"/>
 </svg>

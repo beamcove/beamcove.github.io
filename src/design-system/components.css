@@ -13,10 +13,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }
-/* A nested [data-theme] previews another theme: give its subtree that theme's text. */
-[data-theme] {
-    color: var(--ink);
-}
 ::selection {
     background: var(--beam);
     color: var(--on-beam);
@@ -902,6 +898,215 @@ body {
     }
 }
 
+/* ── Stage: the page's one glyph field ────────────── */
+/* --bc-header: the height of a fixed header the screens leave room for. */
+:root {
+    --bc-header: 64px;
+}
+.bc-stage {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100lvh;
+    pointer-events: none;
+}
+.bc-still {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.bc-screen,
+.bc-pin {
+    position: relative;
+    isolation: isolate;
+}
+.bc-screen {
+    display: flex;
+    align-items: center;
+    min-height: 100svh;
+    padding: calc(var(--bc-header) + 64px) 0 112px;
+}
+.bc-pin-frame {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    padding: calc(var(--bc-header) + 48px) 0 112px;
+}
+/* pinned screens scroll for longer while the stage runs; one step per item */
+.motion .bc-pin {
+    height: 210vh;
+}
+.motion .bc-pin[data-steps] {
+    height: calc(100vh + 70vh * var(--bc-steps, 3));
+}
+/* on phones a stepped pin just scrolls: everything in it stays lit */
+@media (max-width: 767px) {
+    .motion .bc-pin[data-steps] {
+        height: auto;
+    }
+}
+@media (max-width: 767px) {
+    .bc-screen {
+        padding: calc(var(--bc-header) + 48px) 0 96px;
+    }
+}
+
+/* ── Kicker: 01 —— What we do ─────────────────────── */
+.bc-kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 500;
+    color: var(--beam-ink);
+}
+.bc-kicker-n {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--ink-subtle);
+}
+.bc-kicker-n::after {
+    content: "";
+    width: 32px;
+    height: var(--stroke-bold);
+    background: var(--line-strong);
+}
+
+/* ── LitLine: words light up with the pin's --p ──── */
+.bc-lit {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 66px;
+    line-height: 77px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--ink);
+}
+.bc-lit span {
+    transition: opacity var(--duration-fast) linear;
+}
+.motion .bc-pin .bc-lit span {
+    opacity: clamp(0.2, calc(var(--p, 1) * (var(--n) + 2) - var(--i)), 1);
+}
+@media (max-width: 1199px) {
+    .bc-lit {
+        font-size: 44px;
+        line-height: 55px;
+    }
+}
+@media (max-width: 767px) {
+    .bc-lit {
+        font-size: 33px;
+        line-height: 44px;
+    }
+}
+
+/* ── Emphasis and the more link ───────────────────── */
+.bc-em {
+    font-style: normal;
+    padding: 0 3px;
+    background: var(--flare-soft);
+    color: var(--flare-ink);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+.bc-more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-bottom: 2px;
+    border-bottom: var(--stroke-bold) solid currentColor;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--beam-ink);
+    text-decoration: none;
+}
+.bc-more:hover {
+    color: var(--ink);
+}
+.bc-more svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ── ChapterRail: pinned right, wide screens only ─── */
+.bc-rail {
+    position: fixed;
+    top: 50%;
+    right: 28px;
+    z-index: 10;
+    translate: 0 -50%;
+    display: none;
+}
+@media (min-width: 1100px) {
+    .bc-rail {
+        display: block;
+    }
+}
+.bc-rail ol {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.bc-rail a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    padding: 5px 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--ink-subtle);
+    text-decoration: none;
+}
+.bc-rail-n {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+.bc-rail-n::after {
+    content: "";
+    width: 12px;
+    height: var(--stroke-bold);
+    background: var(--line-strong);
+    transition: width var(--duration-base) var(--ease-out);
+}
+.bc-rail-label {
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out);
+}
+.bc-rail:hover .bc-rail-label,
+.bc-rail:focus-within .bc-rail-label,
+.bc-rail a[aria-current] .bc-rail-label {
+    opacity: 1;
+}
+.bc-rail a:hover,
+.bc-rail a[aria-current] {
+    color: var(--ink);
+}
+.bc-rail a[aria-current] .bc-rail-n::after {
+    width: 28px;
+    background: var(--beam);
+}
+
 /* ── Reduced motion ───────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
     .bc-btn,
@@ -910,7 +1115,10 @@ body {
     .bc-input-row,
     .bc-switch-thumb,
     .bc-seg-item,
-    .bc-card-interactive {
+    .bc-card-interactive,
+    .bc-rail-n::after,
+    .bc-rail-label,
+    .bc-lit span {
         transition: none;
     }
 }

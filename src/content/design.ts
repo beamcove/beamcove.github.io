@@ -2,39 +2,39 @@
 
 export const DESIGN_PRINCIPLES = [
     {
-        title: "Show the machine.",
-        body: "Windows, rules, prompts and glyphs are the decoration. Nothing hides behind gloss, blur or gradients.",
+        title: "One idea per screen.",
+        body: "A page is a sequence of screens. Each carries one thought, set large, with room around it.",
     },
     {
-        title: "One field per view.",
-        body: "Each view gets one glyph splash. Everything else is canvas, text and a few rules.",
-    },
-    {
-        title: "Slots, not colours.",
-        body: "Art names ink slots A to E, never colours, so every theme re-inks the same print.",
+        title: "One field per page.",
+        body: "A single glyph stage sits behind everything and changes scene as you scroll. Nothing else decorates.",
     },
     {
         title: "Copy stays quiet.",
-        body: "Text sits on the calm side of a field. Glyphs thin out behind it and never print over it.",
+        body: "Glyphs thin out behind text and ink blocks keep clear of it. Text never sits on ink.",
+    },
+    {
+        title: "Calm, not loud.",
+        body: "One dark theme, warm text, quiet inks used like light at night. Bold rules, never neon.",
     },
     {
         title: "Motion is a signal.",
-        body: "Fields shimmer, a beam sweeps, titles decode once. All of it stops when you ask for less motion.",
+        body: "The stage dissolves, a beam sweeps, statements light up as you read. All of it stops when you ask for less motion.",
     },
 ];
 
 export const TYPE_SPECIMENS = [
-    { cls: "display", note: "Departure Mono 66", sample: "Signal" },
-    { cls: "title-1", note: "JetBrains Mono 40 / 600", sample: "Section title." },
-    { cls: "title-2", note: "JetBrains Mono 28 / 600", sample: "Sub-section title." },
-    { cls: "title-3", note: "JetBrains Mono 20 / 600", sample: "Small heading." },
-    { cls: "headline", note: "JetBrains Mono 15 / 600", sample: "Card and list titles" },
+    { cls: "display", note: "Departure Mono 88", sample: "Signal" },
+    { cls: "title-1", note: "Departure Mono 66", sample: "Chapter title." },
+    { cls: "title-2", note: "Departure Mono 44", sample: "A value, a statement." },
+    { cls: "title-3", note: "JetBrains Mono 24 / 600", sample: "Entry and card titles" },
+    { cls: "headline", note: "JetBrains Mono 17 / 600", sample: "Questions and list titles" },
     {
         cls: "body-lg",
-        note: "Onest 17",
+        note: "Onest 19",
         sample: "Lead paragraphs read in a calm sans, so long copy stays easy.",
     },
-    { cls: "body", note: "Onest 15", sample: "Body copy sits beside titles and inside cards." },
+    { cls: "body", note: "Onest 16", sample: "Body copy sits beside titles and inside cards." },
     { cls: "label", note: "JetBrains Mono 13 / 500", sample: "Form label" },
     { cls: "mono", note: "JetBrains Mono 13", sample: "beamcove.com · Oct 27, 2026" },
     { cls: "caption", note: "JetBrains Mono 12", sample: "Captions and fine print" },

@@ -1,10 +1,10 @@
-// Renders the social card (see social-card.html): the hero's glyph field, still.
+// Renders the social card (see social-card.html): the hero scene, still.
 import "../src/design-system/tokens.css";
 import "../src/design-system/components.css";
 
 import { createRoot } from "react-dom/client";
 
-import { ART } from "../src/app/components/glyph-compositions";
+import { SCENES } from "../src/app/components/scenes";
 import { SITE } from "../src/content/identity";
 import { Splash } from "../src/design-system";
 
@@ -20,7 +20,7 @@ const css = `
 createRoot(document.getElementById("root")!).render(
     <>
         <style>{css}</style>
-        <Splash className="card" field={ART.hero}>
+        <Splash className="card" field={SCENES.hero}>
             <div>
                 <p className="bc-eyebrow">Technology company</p>
                 <h1 className="bc-splash-title" style={{ marginTop: 16 }}>

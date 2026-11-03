@@ -29,21 +29,20 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 2. **Design system is vendored** in `src/design-system/`. `tokens.css`,
    `components.css` and `fonts/` are verbatim copies from the sibling
    `design-system` repo (prettier-ignored) — re-copy, don't hand-edit. Follow its
-   rules: tokens never hex, one glyph splash per view, sentence case.
-   Glyph art (`glyph-compositions.ts`) names ink **slots** (`a`–`e`), never colours:
-   two or three different inks per composition, blocks only in those inks, two
-   inks cross a little but a block never sits inside another and same-ink blocks
-   never overlap; each kind card has its own ink pair. `glyph-compositions.test.ts`
-   checks it.
-3. **Themes** are `paper` (default), `platinum`, `graphite`, `phosphor`, `midnight`,
-   listed in `src/app/utils/theme.ts` and again in `public/boot.js` (keep them in
-   step). Splashes follow the active theme; copy never sits on ink (GlyphField
-   thins glyphs and trims blocks behind `.bc-splash-content`).
+   rules: tokens never hex, one idea per screen, sentence case. There is one
+   theme, Midnight (no picker, nothing stored on the device).
+3. **Every page is screens over one Stage.** `SiteLayout` renders the page's one
+   glyph `Stage`; each section is a `Scene` (a design-system `Screen` bound to a
+   scene in `src/app/components/scenes.ts`). Put `data-quiet` on copy so glyphs
+   thin out and ink blocks keep clear of it: text never sits on ink. Scenes name
+   ink **slots** (`a`–`e`), never colours: two or three different inks, blocks
+   only in those inks, crossing a little but never nested, same-ink blocks never
+   overlapping, each kind of work its own pair. `scenes.test.ts` checks it.
 4. **Motion is opt-in via `html.motion`** (set by `public/boot.js`). Scope every
    hidden/start state under `.motion` so content shows without JS or with
-   reduced motion. Glyph fields shimmer, the hero beam sweeps and titles decode
-   only under it; otherwise they draw one still frame. Don't advertise crew size
-   or location outside the legal pages.
+   reduced motion. The Stage, scene dissolves, pinned statements, the beam and
+   title decoding only run under it; otherwise each Screen prints its own still.
+   Don't advertise crew size or location outside the legal pages.
 5. **A new page touches five places**: `ROUTES` in `src/content/site.ts`,
    `src/pages/`, `src/entries/`, `<name>/index.html`, and `PAGES` in
    `vite.config.ts` (+ the page list in `src/pages/pages.test.tsx` and a line in
@@ -70,11 +69,13 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
   (routes, nav, fleet, logbook, values, faq). Edit facts there, not in sections.
   No project is public yet: don't list one (a test guards this).
 - `src/app/components/` — layout (site-layout/header/footer, page-hero,
-  legal-page) and sections (hero, story, manifesto, …), plus glyph-compositions
-  (every splash's art), ascii-word (glyph wordmark), theme-picker, icon (renders
-  Lucide icon nodes), brand (social SVGs).
-- `src/design-system/` — Signal tokens, CSS, fonts, typed component port and the
-  glyph engine (`glyph/`). `/design/` shows every piece of it.
+  legal-page, scene, chapter-head) and screens (hero, what-we-do, story,
+  manifesto, values, latest-updates, questions, dispatches), plus scenes (every
+  screen's glyph art), ascii-word (glyph wordmark), icon (renders Lucide icon
+  nodes), brand (social SVGs).
+- `src/design-system/` — Signal tokens, CSS, fonts, typed component port
+  (Stage, Screen, LitLine, ChapterRail, …) and the glyph engine and painter
+  (`glyph/`). `/design/` shows every piece of it.
 - `public/` — copied verbatim to dist (boot.js, CNAME, robots.txt, sitemap.xml,
   favicon, touch icon, social card). `scripts/` renders the two PNGs.
 
@@ -83,13 +84,3 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 Push to `main` → `.github/workflows/deploy.yml` (format check → tests → build →
 deploy-pages). Pages source must be "GitHub Actions" in repo settings. Built
 output is never committed. Details: docs/deployment.md.
-
-## The lab
-
-`/lab/` holds five versions of this website on the same design system (Editorial,
-Grid, Bento, Cinema, Poster): same content and structure, different creative
-directions. Each lives in `src/lab/<name>/` with its own CSS, mounted by
-`mountLab` (design system + `lab-base.css`, not `page.css`), and pins its theme
-with `data-force-theme` in its HTML shell. Routes live in `LAB_ROUTES`; every lab
-page is `noindex` and stays out of the sitemap and the nav. `src/lab/lab.test.tsx`
-checks them like pages.

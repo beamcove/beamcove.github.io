@@ -37,9 +37,9 @@ const SECTIONS: LegalSection[] = [
                     are served from our own domain, so loading a page doesn’t contact anyone else.
                 </p>
                 <p>
-                    <strong>On your device:</strong> if you pick a color theme, your browser
-                    remembers that choice in local storage under <code>bc-theme</code>. It never
-                    leaves your device, and clearing your site data removes it.
+                    <strong>On your device:</strong> nothing. Earlier versions of this site
+                    remembered a color theme in local storage under <code>bc-theme</code>; this one
+                    stores nothing, and clearing your site data removes any old value.
                 </p>
                 <p>
                     <strong>Hosting:</strong> the site is hosted on GitHub Pages. Like most hosts,

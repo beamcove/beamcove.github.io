@@ -1,6 +1,6 @@
 # Vendored design system
 
-A copy of the Beamcove design system ("Signal") from the sibling
+A copy of the Beamcove design system ("Signal": one dark theme, one glyph stage per page) from the sibling
 `design-system` repository. Read that repo's README for the rules: one glyph
 splash per view, tokens never hex, ink slots in art, sentence case, etc.
 
@@ -20,4 +20,4 @@ Differences from the old port: `Splash` takes a glyph `field` (and `beam`)
 instead of a tone; `Card` variants are `plain`, `framed`, `art` (with `media`)
 and `splash`; `DotMeter` is now `Meter` (a `█▓▒░` bar; the old name still
 works); new `Frame`, `Switch`, `SegmentedControl`, `GlyphField` and
-`ScrambleText` and `Window` (a system window with a striped title bar).
+`ScrambleText`, `Window`, and the stage pieces: `Stage`, `Screen`, `Still`, `LitLine`, `Kicker` and `ChapterRail` (with `glyph/painter.ts`).

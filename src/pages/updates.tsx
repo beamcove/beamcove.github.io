@@ -1,6 +1,7 @@
 import { Dispatches } from "@/app/components/dispatches";
 import { LogList } from "@/app/components/log-list";
 import { PageHero } from "@/app/components/page-hero";
+import { Scene } from "@/app/components/scene";
 import { SiteLayout } from "@/app/components/site-layout";
 import { LOGBOOK, type LogEntry } from "@/content/logbook";
 
@@ -16,22 +17,20 @@ function byYear(entries: LogEntry[]) {
 export function UpdatesPage() {
     return (
         <SiteLayout>
-            <PageHero art="updates" eyebrow="Updates" title="What’s new.">
+            <PageHero scene="log" eyebrow="Updates" title="What’s new.">
                 Launches, milestones and the occasional bit of news, newest first.
             </PageHero>
 
-            <section className="section section-tight" aria-label="Log entries">
-                <div className="container log-years">
+            <Scene name="updates" aria-label="Log entries">
+                <div className="wrap log-years">
                     {byYear(LOGBOOK).map(([year, entries]) => (
-                        <div key={year} className="log-year">
-                            <h2 className="title-3 log-year-title" data-reveal>
-                                {year}
-                            </h2>
-                            <LogList entries={entries} tags />
+                        <div key={year} className="log-year" data-quiet data-reveal>
+                            <h2 className="title-1 log-year-title">{year}</h2>
+                            <LogList entries={entries} />
                         </div>
                     ))}
                 </div>
-            </section>
+            </Scene>
 
             <Dispatches />
         </SiteLayout>

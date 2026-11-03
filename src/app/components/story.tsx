@@ -1,34 +1,56 @@
-import { MoreLink } from "@/app/components/more-link";
+import { ArrowRight } from "lucide";
+
+import { ChapterHead } from "@/app/components/chapter-head";
+import { Icon } from "@/app/components/icon";
+import { Scene } from "@/app/components/scene";
 import { ROUTES } from "@/content/site";
 import { STORY, STORY_MARK } from "@/content/values";
 
-/** Landing abstract of the About page: one statement, its key phrase inverted like a selection. */
-export function Story() {
-    const text = STORY[0] ?? "";
-    const at = text.indexOf(STORY_MARK);
-
+/** The story, its key phrase highlighted, on its own screen. */
+export function Story({
+    n,
+    title = "It started with curiosity.",
+    more = false,
+    full = false,
+}: {
+    n?: number;
+    title?: string;
+    /** Link to the About page (on the home page). */
+    more?: boolean;
+    /** Every paragraph, not just the first. */
+    full?: boolean;
+}) {
+    const first = STORY[0] ?? "";
+    const at = first.indexOf(STORY_MARK);
     return (
-        <section className="section" id="story" aria-labelledby="story-title">
-            <div className="container story-statement" data-reveal>
-                <div className="story-statement-head">
-                    <p className="bc-eyebrow">About Beamcove</p>
-                    <h2 className="title-1 section-title" id="story-title">
-                        It started with curiosity.
-                    </h2>
-                    <MoreLink href={ROUTES.about}>More about Beamcove</MoreLink>
-                </div>
-                <p className="story-statement-text">
-                    {at < 0 ? (
-                        text
-                    ) : (
-                        <>
-                            {text.slice(0, at)}
-                            <em className="story-em">{STORY_MARK}</em>
-                            {text.slice(at + STORY_MARK.length)}
-                        </>
+        <Scene name="story" id="story" aria-labelledby="story-title">
+            <div className="wrap">
+                <div className="copy story" data-quiet data-reveal>
+                    <ChapterHead id="story" n={n} kicker="About" title={title} />
+                    <p className="lead">
+                        {at < 0 ? (
+                            first
+                        ) : (
+                            <>
+                                {first.slice(0, at)}
+                                <em className="bc-em">{STORY_MARK}</em>
+                                {first.slice(at + STORY_MARK.length)}
+                            </>
+                        )}
+                    </p>
+                    {full &&
+                        STORY.slice(1).map((p) => (
+                            <p key={p} className="body-text">
+                                {p}
+                            </p>
+                        ))}
+                    {more && (
+                        <a className="bc-more more" href={ROUTES.about}>
+                            More about Beamcove <Icon node={ArrowRight} />
+                        </a>
                     )}
-                </p>
+                </div>
             </div>
-        </section>
+        </Scene>
     );
 }

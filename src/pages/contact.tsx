@@ -1,13 +1,11 @@
-import type { CSSProperties } from "react";
 import { ArrowUpRight, Mail } from "lucide";
 
 import { BrandIcon } from "@/app/components/brand";
-import { FaqList } from "@/app/components/faq-list";
 import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
-import { SectionHead } from "@/app/components/section-head";
+import { Questions } from "@/app/components/questions";
+import { Scene } from "@/app/components/scene";
 import { SiteLayout } from "@/app/components/site-layout";
-import { QUESTIONS } from "@/content/faq";
 import { SITE, SOCIALS } from "@/content/site";
 
 const BEST_FOR: Record<string, string> = {
@@ -18,58 +16,47 @@ const BEST_FOR: Record<string, string> = {
 export function ContactPage() {
     return (
         <SiteLayout>
-            <PageHero art="contact" eyebrow="Contact" title="Say hello.">
+            <PageHero scene="hello" eyebrow="Contact" title="Say hello.">
                 Questions, partnerships, press, or just a kind word: here’s how to reach us.
             </PageHero>
 
-            <section className="section section-tight" aria-labelledby="channels-title">
-                <div className="container">
+            <Scene name="channels" aria-labelledby="channels-title">
+                <div className="wrap">
                     <h2 className="visually-hidden" id="channels-title">
                         Ways to reach us
                     </h2>
-                    <ul className="channel-grid">
-                        <li data-reveal className="channel-wide">
+                    <ul className="channels" data-quiet data-reveal>
+                        <li className="channel-wide">
                             <a className="channel" href={`mailto:${SITE.email}`}>
-                                <span className="icon-tile">
-                                    <Icon node={Mail} size={20} />
-                                </span>
+                                <Icon node={Mail} size={22} />
                                 <span className="channel-text">
-                                    <span className="headline">Email</span>
-                                    <span className="mono channel-handle">{SITE.email}</span>
-                                    <span className="muted">
+                                    <span className="kicker-plain">Email</span>
+                                    <span className="title-2 channel-handle">{SITE.email}</span>
+                                    <span className="body-text">
                                         Best for anything that needs a proper reply.
                                     </span>
                                 </span>
-                                <Icon node={ArrowUpRight} size={18} />
+                                <Icon node={ArrowUpRight} size={20} />
                             </a>
                         </li>
-                        {SOCIALS.map((s, i) => (
-                            <li key={s.name} data-reveal style={{ "--d": i + 1 } as CSSProperties}>
+                        {SOCIALS.map((s) => (
+                            <li key={s.name}>
                                 <a className="channel" href={s.href} rel="noopener noreferrer">
-                                    <span className="icon-tile">
-                                        <BrandIcon name={s.name} />
-                                    </span>
+                                    <BrandIcon name={s.name} />
                                     <span className="channel-text">
-                                        <span className="headline">{s.label}</span>
-                                        <span className="mono channel-handle">{s.handle}</span>
-                                        <span className="muted">{BEST_FOR[s.name]}</span>
+                                        <span className="kicker-plain">{s.label}</span>
+                                        <span className="title-3 channel-handle">{s.handle}</span>
+                                        <span className="body-text">{BEST_FOR[s.name]}</span>
                                     </span>
-                                    <Icon node={ArrowUpRight} size={18} />
+                                    <Icon node={ArrowUpRight} size={20} />
                                 </a>
                             </li>
                         ))}
                     </ul>
                 </div>
-            </section>
+            </Scene>
 
-            <section className="section" id="questions" aria-labelledby="questions-title">
-                <div className="container">
-                    <SectionHead id="questions" eyebrow="FAQ" title="Asked and answered.">
-                        Didn’t find yours? Email us. A real person reads every message.
-                    </SectionHead>
-                    <FaqList items={QUESTIONS} />
-                </div>
-            </section>
+            <Questions all />
         </SiteLayout>
     );
 }

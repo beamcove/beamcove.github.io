@@ -16,20 +16,6 @@ export const ROUTES = {
 
 type Route = (typeof ROUTES)[keyof typeof ROUTES];
 
-/**
- * The lab: five versions of this website, each taking the design system in a
- * different direction. Not in the
- * sitemap or the nav; every lab page carries `noindex`.
- */
-export const LAB_ROUTES = {
-    lab: "/lab/",
-    editorial: "/lab/editorial/",
-    grid: "/lab/grid/",
-    bento: "/lab/bento/",
-    cinema: "/lab/cinema/",
-    poster: "/lab/poster/",
-} as const;
-
 export const NAV: { href: Route; label: string }[] = [
     { href: ROUTES.projects, label: "Projects" },
     { href: ROUTES.about, label: "About" },

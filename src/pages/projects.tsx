@@ -1,39 +1,34 @@
+import { ChapterHead } from "@/app/components/chapter-head";
 import { Dispatches } from "@/app/components/dispatches";
-import { KindGrid } from "@/app/components/kind-grid";
 import { PageHero } from "@/app/components/page-hero";
-import { SectionHead } from "@/app/components/section-head";
+import { Scene } from "@/app/components/scene";
 import { SiteLayout } from "@/app/components/site-layout";
-import { Badge, Card } from "@/design-system";
+import { WhatWeDo } from "@/app/components/what-we-do";
+import { Badge } from "@/design-system";
 
 /** The fleet is empty for now: an open shipyard and the directions it's sailing in. */
 export function ProjectsPage() {
     return (
         <SiteLayout>
-            <PageHero art="projects" eyebrow="Projects" title="Our projects.">
+            <PageHero scene="projects" eyebrow="Projects" title="Our projects.">
                 Everything we’re working on will show up here when it’s ready, not a day before.
             </PageHero>
 
-            <section className="section section-tight" aria-labelledby="ships-title">
-                <div className="container">
-                    <h2 className="visually-hidden" id="ships-title">
-                        Ships
-                    </h2>
-                    <Card variant="plain" className="shipyard-empty" data-reveal>
+            <Scene name="shipyard" aria-labelledby="ships-title">
+                <div className="wrap">
+                    <div className="copy shipyard" data-quiet data-reveal>
                         <Badge tone="beam" dot>
                             In development
                         </Badge>
-                        <p className="title-2">No ships at sea yet.</p>
-                    </Card>
+                        <ChapterHead id="ships" kicker="Shipyard" title="No ships at sea yet.">
+                            The first ones are in the works. Subscribe below and you’ll hear the day
+                            one launches.
+                        </ChapterHead>
+                    </div>
                 </div>
-            </section>
+            </Scene>
 
-            <section className="section" id="what-we-do" aria-labelledby="what-we-do-title">
-                <div className="container">
-                    <SectionHead id="what-we-do" eyebrow="What we do" title="Where we’re headed." />
-                    <KindGrid />
-                </div>
-            </section>
-
+            <WhatWeDo title="Where we’re headed." more={false} />
             <Dispatches />
         </SiteLayout>
     );

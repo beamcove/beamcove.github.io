@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check, Copy } from "lucide";
 
 import { AsciiWord } from "@/app/components/ascii-word";
 import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
-import { SectionHead } from "@/app/components/section-head";
+import { ChapterHead } from "@/app/components/chapter-head";
+import { Scene } from "@/app/components/scene";
 import { SiteLayout } from "@/app/components/site-layout";
 import { SITE } from "@/content/site";
 import { Button, Card } from "@/design-system";
@@ -29,8 +30,12 @@ const SWATCHES: { group: string; items: { name: string; token: string; use: stri
     {
         group: "Interface",
         items: [
-            { name: "Desk", token: "surface-page", use: "The page the windows sit on." },
-            { name: "Rule", token: "rule", use: "The bold 2px line around windows and controls." },
+            {
+                name: "Night",
+                token: "surface-page",
+                use: "The canvas the glyph stage is drawn on.",
+            },
+            { name: "Rule", token: "rule", use: "The bold 2px line around controls and panels." },
             { name: "Text", token: "ink", use: "Text and the wordmark." },
             {
                 name: "Beam",
@@ -52,19 +57,12 @@ const SWATCHES: { group: string; items: { name: string; token: string; use: stri
     },
 ];
 
-/** A token's value in the current theme, read live so it follows the theme picker. */
+/** A token's value, read from the stylesheet so it never drifts from the tokens. */
 function TokenValue({ token }: { token: string }) {
-    const [value, setValue] = useState("");
-    useEffect(() => {
-        const read = () =>
-            setValue(
-                getComputedStyle(document.documentElement).getPropertyValue(`--${token}`).trim(),
-            );
-        read();
-        window.addEventListener("bc-theme", read);
-        return () => window.removeEventListener("bc-theme", read);
-    }, [token]);
-    return <span className="mono muted">{value ? `${value} · ${token}` : token}</span>;
+    const [value] = useState(() =>
+        getComputedStyle(document.documentElement).getPropertyValue(`--${token}`).trim(),
+    );
+    return <span className="mono">{value ? `${value} · ${token}` : token}</span>;
 }
 
 function DoDont({ dos, donts }: { dos: string[]; donts: string[] }) {
@@ -115,20 +113,20 @@ function CopyButton({ text }: { text: string }) {
 export function BrandPage() {
     return (
         <SiteLayout>
-            <PageHero art="brand" eyebrow="Brand kit" title="Brand guidelines.">
+            <PageHero scene="brand" eyebrow="Brand kit" title="Brand guidelines.">
                 For press, partners and anyone writing about Beamcove. Use it freely; just don’t
                 change it.
             </PageHero>
 
-            <section className="section section-tight" aria-labelledby="boilerplate-title">
-                <div className="container">
-                    <SectionHead
+            <Scene name="reading" className="chapter" aria-labelledby="boilerplate-title">
+                <div className="wrap chapter-body" data-quiet>
+                    <ChapterHead
                         id="boilerplate"
-                        eyebrow="Boilerplate"
+                        kicker="Boilerplate"
                         title="Company descriptions."
                     >
                         Ready to copy for bios, press and app stores.
-                    </SectionHead>
+                    </ChapterHead>
                     <div className="boilerplate-list">
                         {BOILERPLATE.map((item) => (
                             <Card
@@ -150,15 +148,15 @@ export function BrandPage() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </Scene>
 
-            <section className="section" aria-labelledby="wordmark-title">
-                <div className="container">
-                    <SectionHead id="wordmark" eyebrow="Wordmark" title="Using the wordmark.">
+            <Scene name="reading" className="chapter" aria-labelledby="wordmark-title">
+                <div className="wrap chapter-body" data-quiet>
+                    <ChapterHead id="wordmark" kicker="Wordmark" title="Using the wordmark.">
                         There’s no logo mark yet. Until there is, the name is the logo: Beamcove,
                         set in Departure Mono and followed by a block cursor. For big moments, it
                         can be drawn in glyphs.
-                    </SectionHead>
+                    </ChapterHead>
                     <div className="wordmark-grid">
                         <figure className="wordmark-sample" data-reveal>
                             <span className="wordmark-big">
@@ -175,7 +173,7 @@ export function BrandPage() {
                     <DoDont
                         dos={[
                             "Set it in Departure Mono, with the block cursor in the beam ink.",
-                            "Use the theme’s text colour on its canvas, or the glyph version for big moments.",
+                            "Use the text colour on the midnight canvas, or the glyph version for big moments.",
                             "Write it as one word with a capital B. The company’s legal name is Beamcove LLC.",
                         ]}
                         donts={[
@@ -185,15 +183,14 @@ export function BrandPage() {
                         ]}
                     />
                 </div>
-            </section>
+            </Scene>
 
-            <section className="section" aria-labelledby="color-title">
-                <div className="container">
-                    <SectionHead id="color" eyebrow="Color" title="Brand colors.">
-                        Beamcove looks like the first desktop computers, built today: paper, a bold
-                        black rule, one action ink and five glyph inks. Pick a theme in the header
-                        and every colour here changes with it.
-                    </SectionHead>
+            <Scene name="reading" className="chapter" aria-labelledby="color-title">
+                <div className="wrap chapter-body" data-quiet>
+                    <ChapterHead id="color" kicker="Color" title="Brand colors.">
+                        Beamcove is a night sky lit by a lighthouse: a calm ink-blue canvas, warm
+                        text, one action ink and five quiet glyph inks for the art.
+                    </ChapterHead>
                     {SWATCHES.map((group) => (
                         <div key={group.group} className="swatch-group">
                             <p className="caption muted swatch-group-title">{group.group}</p>
@@ -217,7 +214,7 @@ export function BrandPage() {
                         dos={[
                             "Give each view one glyph splash, and keep the rest canvas and text.",
                             "Keep text on the quiet side of a glyph field.",
-                            "Name ink slots in art, never colours, so every theme re-inks it.",
+                            "Name ink slots in art, never colours.",
                         ]}
                         donts={[
                             "Put text over dense glyphs or an ink block.",
@@ -226,14 +223,14 @@ export function BrandPage() {
                         ]}
                     />
                 </div>
-            </section>
+            </Scene>
 
-            <section className="section" aria-labelledby="type-title">
-                <div className="container">
-                    <SectionHead id="type" eyebrow="Type" title="Typography.">
+            <Scene name="reading" className="chapter" aria-labelledby="type-title">
+                <div className="wrap chapter-body" data-quiet>
+                    <ChapterHead id="type" kicker="Type" title="Typography.">
                         Departure Mono for display, JetBrains Mono for the interface and data, and
                         Onest for reading.
-                    </SectionHead>
+                    </ChapterHead>
                     <div className="type-grid">
                         <Card variant="plain" data-reveal>
                             <p className="caption muted">Departure Mono · display</p>
@@ -252,14 +249,14 @@ export function BrandPage() {
                         </Card>
                     </div>
                 </div>
-            </section>
+            </Scene>
 
-            <section className="section" aria-labelledby="voice-title">
-                <div className="container">
-                    <SectionHead id="voice" eyebrow="Voice" title="How we write.">
+            <Scene name="reading" className="chapter" aria-labelledby="voice-title">
+                <div className="wrap chapter-body" data-quiet>
+                    <ChapterHead id="voice" kicker="Voice" title="How we write.">
                         Clear, warm and quietly confident: plain words first, and a little play
                         where the ink is.
-                    </SectionHead>
+                    </ChapterHead>
                     <DoDont
                         dos={[
                             "Say “we” for Beamcove and “you” for the reader.",
@@ -274,7 +271,7 @@ export function BrandPage() {
                         ]}
                     />
                 </div>
-            </section>
+            </Scene>
         </SiteLayout>
     );
 }
