@@ -1,16 +1,16 @@
 # Vendored design system
 
-A copy of the Beamcove design system ("Signal": one dark theme, one glyph stage per page) from the sibling
+A copy of the Beamcove design system ("Signal": one page grid, art that belongs to its section, one voice) from the sibling
 `design-system` repository. Read that repo's README for the rules: one glyph
 splash per view, tokens never hex, ink slots in art, sentence case, etc.
 
-| file             | source                                           | edit here?                      |
-| ---------------- | ------------------------------------------------ | ------------------------------- |
-| `tokens.css`     | `tokens.css` (built from `tokens.json`)          | no — copy again on update       |
-| `components.css` | `components/bundle.css`                          | no — copy again on update       |
-| `fonts/`         | `fonts/` (Departure Mono, JetBrains Mono, Onest) | no                              |
-| `components/`    | typed TSX port                                   | yes — the source of `bundle.js` |
-| `glyph/`         | the glyph engine (noise, ramps, drawing)         | yes — the source of `bundle.js` |
+| file             | source                                   | edit here?                      |
+| ---------------- | ---------------------------------------- | ------------------------------- |
+| `tokens.css`     | `tokens.css` (built from `tokens.json`)  | no — copy again on update       |
+| `components.css` | `components/bundle.css`                  | no — copy again on update       |
+| `fonts/`         | `fonts/` (Onest, Departure Mono)         | no                              |
+| `components/`    | typed TSX port                           | yes — the source of `bundle.js` |
+| `glyph/`         | the glyph engine (noise, ramps, drawing) | yes — the source of `bundle.js` |
 
 The TSX port is now the source of the design system's `components/bundle.js`:
 after changing it, regenerate the bundle (see the design-system README →
@@ -20,4 +20,4 @@ Differences from the old port: `Splash` takes a glyph `field` (and `beam`)
 instead of a tone; `Card` variants are `plain`, `framed`, `art` (with `media`)
 and `splash`; `DotMeter` is now `Meter` (a `█▓▒░` bar; the old name still
 works); new `Frame`, `Switch`, `SegmentedControl`, `GlyphField` and
-`ScrambleText`, `Window`, and the stage pieces: `Stage`, `Screen`, `Still`, `LitLine`, `Kicker` and `ChapterRail` (with `glyph/painter.ts`).
+`ScrambleText`, and the page pieces: `Screen`, `Field`, `LitLine`, `Kicker` and `ChapterRail` (with `glyph/lattice.ts` and `glyph/painter.ts`).

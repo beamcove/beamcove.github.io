@@ -6,7 +6,6 @@
     --gutter: 24px;
     --wrap: min(1120px, 100% - 2 * var(--gutter));
     scroll-padding-top: var(--bc-header);
-    background: var(--surface-page);
 }
 :root.motion {
     scroll-behavior: smooth;
@@ -74,6 +73,7 @@ button:focus-visible {
     border: 0;
 }
 .skip-link {
+    font-weight: 500;
     position: fixed;
     top: 8px;
     left: 8px;
@@ -81,8 +81,8 @@ button:focus-visible {
     padding: 8px 12px;
     border: var(--stroke-bold) solid var(--rule);
     background: var(--surface-raised);
-    font-family: var(--font-mono);
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: 14px;
     translate: 0 -200%;
 }
 .skip-link:focus {
@@ -131,10 +131,11 @@ button:focus-visible {
     color: var(--beam-ink);
 }
 .kicker-plain {
-    font-family: var(--font-mono);
+    letter-spacing: 0.01em;
+    font-family: var(--font-pixel);
     font-size: 13px;
     line-height: 20px;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--beam-ink);
 }
 .chapter-title {
@@ -145,7 +146,7 @@ button:focus-visible {
     margin-top: var(--space-8);
 }
 .count {
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-size: 22px;
     line-height: 22px;
 }
@@ -158,7 +159,7 @@ button:focus-visible {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-size: 22px;
     line-height: 22px;
     color: var(--ink);
@@ -196,8 +197,8 @@ button:focus-visible {
     display: block;
     padding: 6px 10px;
     border-bottom: var(--stroke-bold) solid transparent;
-    font-family: var(--font-mono);
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: 14px;
     font-weight: 500;
     color: var(--ink-muted);
     text-decoration: none;
@@ -238,11 +239,12 @@ button:focus-visible {
     padding: var(--space-2) 0 var(--space-4);
 }
 .mobile-menu a {
+    font-weight: 500;
     display: block;
     padding: 12px var(--gutter);
     border-left: var(--stroke-bold) solid transparent;
-    font-family: var(--font-mono);
-    font-size: 16px;
+    font-family: var(--font-sans);
+    font-size: 17px;
     color: var(--ink);
     text-decoration: none;
 }
@@ -280,15 +282,16 @@ button:focus-visible {
     width: min(1060px, 100% - 2 * var(--gutter));
 }
 .hero-eyebrow {
+    letter-spacing: 0.01em;
     display: flex;
     align-items: center;
     gap: var(--space-3);
     width: fit-content;
     margin-inline: auto;
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: 13px;
     line-height: 20px;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--ink-muted);
 }
 .hero-eyebrow::before,
@@ -318,6 +321,9 @@ button:focus-visible {
     margin: var(--space-12) auto 0;
 }
 .hero-cue {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    line-height: 16px;
     position: absolute;
     left: 50%;
     bottom: 76px;
@@ -325,8 +331,8 @@ button:focus-visible {
     display: grid;
     justify-items: center;
     gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: 12px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
     color: var(--ink-subtle);
 }
 .hero-cue::after {
@@ -336,17 +342,124 @@ button:focus-visible {
     background: var(--line-strong);
 }
 
-/* ── Inner page heroes ────────────────────────────── */
-.page-hero .page-hero-copy {
-    max-width: 760px;
+/* ── Inner pages: a compact header, then the content ── */
+/* The header is a band, not a screen: the content starts within the first view. */
+.page-hero.bc-screen-fit {
+    padding: calc(var(--bc-header) + var(--space-16)) 0 var(--space-16);
+    border-bottom: var(--stroke-bold) solid var(--line);
+}
+/* the page's scene, in its own field on the right of the band, fading in from the copy */
+.page-hero-copy {
+    max-width: 680px;
 }
 .page-title {
-    margin-top: var(--space-6);
+    margin-top: var(--space-5);
     text-wrap: balance;
 }
+.page-hero .lead {
+    margin-top: var(--space-5);
+}
 .page-meta {
-    margin-top: var(--space-6);
+    margin-top: var(--space-5);
     color: var(--ink-muted);
+}
+
+/* Reading sections: a 2px rule, the heading in a sticky column, the content beside it. */
+.section.bc-screen-fit {
+    padding: var(--space-16) 0;
+}
+.section + .section .section-grid {
+    padding-top: var(--space-16);
+    border-top: var(--stroke-bold) solid var(--line);
+}
+.section + .section.bc-screen-fit {
+    padding-top: 0;
+}
+.section-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--space-8) var(--space-16);
+    align-items: start;
+}
+.section-head {
+    position: sticky;
+    top: calc(var(--bc-header) + var(--space-8));
+    display: grid;
+    gap: var(--space-4);
+}
+.section-title {
+    text-wrap: balance;
+}
+.section-lead {
+    max-width: 40ch;
+    font-size: 16px;
+    line-height: 26px;
+    color: var(--ink-muted);
+}
+.section-lead a {
+    color: var(--beam-ink);
+}
+.section-body {
+    min-width: 0;
+}
+.section-body > .lead:first-child,
+.section-body > .lead-first {
+    margin-top: 0;
+}
+.section-stacked .section-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+.section-stacked .section-head {
+    position: static;
+    max-width: 720px;
+}
+
+/* the reading-page pieces */
+.kind-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+.kind-cards > li {
+    display: flex;
+}
+.kind-cards .bc-card {
+    width: 100%;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+.statements {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+}
+.statements > div {
+    display: grid;
+    gap: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: var(--stroke-bold) solid var(--line-strong);
+}
+.statements > div:last-child {
+    border-top-color: var(--beam);
+}
+.statement-text {
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 28px;
+    line-height: 36px;
+    text-wrap: balance;
+}
+.value-list-flat {
+    margin-top: 0;
+}
+.shipyard {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+}
+.shipyard .lead {
+    margin-top: 0;
 }
 
 /* ── What we do ───────────────────────────────────── */
@@ -370,8 +483,8 @@ button:focus-visible {
     margin-top: var(--space-8);
 }
 .statement-big .bc-lit {
-    font-size: 88px;
-    line-height: 99px;
+    font-size: 72px;
+    line-height: 76px;
 }
 .statement .body-text {
     margin-top: var(--space-8);
@@ -392,16 +505,13 @@ button:focus-visible {
         border-color var(--duration-slow) var(--ease-out);
 }
 .value-n {
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-size: 22px;
     line-height: 22px;
     color: var(--ink-subtle);
 }
 .value-title {
     margin-top: var(--space-4);
-}
-#values > .bc-pin-frame > .wrap > .more {
-    display: inline-flex;
 }
 
 /* ── Updates ──────────────────────────────────────── */
@@ -414,10 +524,13 @@ button:focus-visible {
     border-bottom: var(--stroke) solid var(--line);
 }
 .entry-meta {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    line-height: 16px;
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: 13px;
     color: var(--ink-muted);
 }
@@ -458,7 +571,7 @@ button:focus-visible {
 .faq-item summary::after {
     content: "+";
     flex: none;
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-size: 22px;
     color: var(--beam-ink);
 }
@@ -515,8 +628,8 @@ button:focus-visible {
     gap: var(--space-3);
     padding: var(--space-4) 0;
     border-bottom: var(--stroke) solid var(--line);
-    font-family: var(--font-mono);
-    font-size: 14px;
+    font-family: var(--font-sans);
+    font-size: 15px;
     font-weight: 600;
     text-decoration: none;
 }
@@ -541,9 +654,6 @@ button:focus-visible {
 }
 
 /* ── Projects ─────────────────────────────────────── */
-.shipyard .bc-badge {
-    margin-bottom: var(--space-6);
-}
 
 /* ── About: the team ──────────────────────────────── */
 .crew {
@@ -580,7 +690,7 @@ button:focus-visible {
     height: 56px;
     background: var(--ink-e);
     color: var(--surface-page);
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-size: 22px;
 }
 .crew-card .caption {
@@ -641,10 +751,11 @@ button:focus-visible {
 }
 
 /* ── Reading screens: legal, brand, design ────────── */
-.reading,
-.chapter,
-.design {
+.reading {
     align-items: flex-start;
+}
+.reading.bc-screen-fit {
+    padding: var(--space-16) 0 var(--space-24);
 }
 .prose {
     display: grid;
@@ -667,10 +778,13 @@ button:focus-visible {
     color: var(--ink-subtle);
 }
 .prose code {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    line-height: 16px;
     padding: 1px 6px;
     border: var(--stroke) solid var(--line);
     background: var(--surface-raised);
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: 13px;
     color: var(--ink);
 }
@@ -693,8 +807,8 @@ button:focus-visible {
     display: grid;
     gap: var(--space-1);
     counter-reset: toc;
-    font-family: var(--font-mono);
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: 14px;
     line-height: 20px;
 }
 .legal-toc li {
@@ -708,6 +822,8 @@ button:focus-visible {
     text-decoration: none;
 }
 .legal-toc a::before {
+    font-size: 13px;
+    font-family: var(--font-pixel);
     content: counter(toc, decimal-leading-zero);
     color: var(--ink-subtle);
 }
@@ -723,14 +839,6 @@ button:focus-visible {
     gap: var(--space-3);
     scroll-margin-top: calc(var(--bc-header) + var(--space-6));
 }
-.chapter-body {
-    width: var(--wrap);
-}
-.chapter-body > .chapter-head {
-    max-width: 760px;
-    margin-bottom: var(--space-12);
-}
-
 /* ── Brand ────────────────────────────────────────── */
 .boilerplate-list {
     display: grid;
@@ -762,7 +870,7 @@ button:focus-visible {
 .wordmark-big {
     display: inline-flex;
     align-items: center;
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-size: 66px;
     line-height: 66px;
 }
@@ -785,7 +893,7 @@ button:focus-visible {
     border: 1px solid var(--line);
 }
 .do-dont .headline {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
 }
 .tick-list,
 .cross-list {
@@ -799,15 +907,21 @@ button:focus-visible {
     grid-template-columns: 28px 1fr;
 }
 .tick-list li::before {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    line-height: 16px;
     content: "[✓]";
-    font-family: var(--font-mono);
-    font-size: 12px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
     color: var(--success);
 }
 .cross-list li::before {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    line-height: 16px;
     content: "[✕]";
-    font-family: var(--font-mono);
-    font-size: 12px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
     color: var(--danger);
 }
 .swatch-group + .swatch-group {
@@ -833,13 +947,16 @@ button:focus-visible {
     border: 1px solid var(--line);
 }
 .swatch-grid .mono {
-    font-size: 11px;
-    line-height: 16px;
+    font-size: 13px;
+    line-height: 20px;
 }
 .type-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
+}
+.type-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .type-grid .bc-card {
     gap: var(--space-3);
@@ -852,28 +969,16 @@ button:focus-visible {
     letter-spacing: -0.04em;
 }
 .type-specimen-mono {
-    font-family: var(--font-mono);
-    font-weight: 600;
+    font-family: var(--font-pixel);
+    font-weight: 400;
 }
 .type-specimen-display {
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-weight: 400;
     letter-spacing: 0;
 }
 
 /* ── Design page ──────────────────────────────────── */
-.design-body {
-    display: grid;
-    gap: calc(var(--space-24) * 1.25);
-    min-width: 0;
-}
-.design-section {
-    display: grid;
-    gap: var(--space-8);
-}
-.design-section > .section-head {
-    margin-bottom: 0;
-}
 .principles {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -887,9 +992,9 @@ button:focus-visible {
     gap: var(--space-3);
 }
 .principle-n {
-    font-family: var(--font-display);
-    font-size: 33px;
-    line-height: 33px;
+    font-family: var(--font-pixel);
+    font-size: 22px;
+    line-height: 22px;
     color: var(--beam-ink);
 }
 .principles > li:nth-child(5n + 2) .principle-n {
@@ -933,8 +1038,8 @@ button:focus-visible {
     border-bottom: 1px solid var(--line);
 }
 .type-scale-meta {
-    font-size: 11px;
-    line-height: 16px;
+    font-size: 13px;
+    line-height: 20px;
 }
 .type-scale .display {
     font-size: clamp(44px, 6vw, 66px);
@@ -954,7 +1059,7 @@ button:focus-visible {
     border: 1px solid var(--line);
 }
 .ramp-chars {
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: 22px;
     line-height: 28px;
     letter-spacing: 0.3em;
@@ -992,8 +1097,15 @@ button:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-8) var(--space-4);
 }
+/* a component on its own: a pixel label over a quiet panel */
 .specimen {
-    padding: var(--space-8) var(--space-6) var(--space-6);
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    margin: 0;
+}
+.specimen-label {
+    color: var(--ink-subtle);
 }
 .specimen-wide {
     grid-column: 1 / -1;
@@ -1001,6 +1113,9 @@ button:focus-visible {
 .specimen-body {
     display: grid;
     gap: var(--space-4);
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
 }
 .field-grid,
 .callout-grid,
@@ -1106,23 +1221,23 @@ button:focus-visible {
     gap: var(--space-2);
 }
 
-.stage-demo {
+.grid-demo {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
 }
-.stage-frame {
+.grid-frame {
     display: grid;
     gap: var(--space-2);
 }
-.stage-frame-art {
+.grid-frame-art {
     position: relative;
     aspect-ratio: 16 / 10;
     border: var(--stroke-bold) solid var(--line-strong);
     background: var(--surface-page);
     overflow: hidden;
 }
-.stage-frame .caption {
+.grid-frame .caption {
     color: var(--ink-subtle);
 }
 .lit-demo {
@@ -1135,7 +1250,7 @@ button:focus-visible {
     line-height: 55px;
 }
 @media (max-width: 767px) {
-    .stage-demo {
+    .grid-demo {
         grid-template-columns: minmax(0, 1fr);
     }
     .lit-demo .bc-lit {
@@ -1164,8 +1279,35 @@ button:focus-visible {
         grid-template-columns: minmax(0, 1fr);
         gap: var(--space-2);
     }
-    .specimen {
-        padding: var(--space-6) var(--space-4) var(--space-4);
+    .specimen-body {
+        padding: var(--space-4);
+    }
+}
+
+@media (max-width: 959px) {
+    .section-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .section-head {
+        position: static;
+    }
+    .kind-cards {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+@media (max-width: 767px) {
+    .page-hero.bc-screen-fit {
+        padding: calc(var(--bc-header) + var(--space-12)) 0 var(--space-12);
+    }
+    .section.bc-screen-fit {
+        padding: var(--space-12) 0;
+    }
+    .section + .section .section-grid {
+        padding-top: var(--space-12);
+    }
+    .statement-text {
+        font-size: 22px;
+        line-height: 30px;
     }
 }
 
@@ -1245,10 +1387,11 @@ button:focus-visible {
     gap: var(--space-3);
 }
 .footer-heading {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 500;
+    letter-spacing: 0.01em;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
     color: var(--ink-subtle);
 }
 .footer-cols ul {
@@ -1256,8 +1399,9 @@ button:focus-visible {
     gap: var(--space-2);
 }
 .footer-cols a {
-    font-family: var(--font-mono);
-    font-size: 13px;
+    font-weight: 400;
+    font-family: var(--font-sans);
+    font-size: 14px;
     color: var(--ink-muted);
     text-decoration: none;
 }
@@ -1269,14 +1413,17 @@ button:focus-visible {
     margin-top: var(--space-16);
 }
 .footer-bottom {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    line-height: 16px;
     display: flex;
     justify-content: space-between;
     gap: var(--space-4);
     margin-top: var(--space-8);
     padding-top: var(--space-6);
     border-top: var(--stroke) solid var(--line);
-    font-family: var(--font-mono);
-    font-size: 12px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
     color: var(--ink-subtle);
 }
 
@@ -1337,16 +1484,16 @@ button:focus-visible {
 @media (max-width: 1199px) {
     .display,
     .statement-big .bc-lit {
-        font-size: 66px;
-        line-height: 77px;
+        font-size: 60px;
+        line-height: 64px;
     }
     .title-1 {
-        font-size: 44px;
-        line-height: 55px;
+        font-size: 40px;
+        line-height: 44px;
     }
     .title-2 {
-        font-size: 33px;
-        line-height: 33px;
+        font-size: 28px;
+        line-height: 34px;
     }
 }
 @media (max-width: 899px) {
@@ -1371,12 +1518,16 @@ button:focus-visible {
 @media (max-width: 767px) {
     .display,
     .statement-big .bc-lit {
-        font-size: 44px;
-        line-height: 55px;
+        font-size: 40px;
+        line-height: 44px;
     }
     .title-1 {
-        font-size: 33px;
-        line-height: 44px;
+        font-size: 32px;
+        line-height: 36px;
+    }
+    .title-2 {
+        font-size: 26px;
+        line-height: 32px;
     }
     .lead,
     .hero-lead {
@@ -1416,8 +1567,8 @@ button:focus-visible {
 @media (max-height: 820px) and (min-width: 768px) {
     .hero-title {
         margin-top: var(--space-6);
-        font-size: 66px;
-        line-height: 77px;
+        font-size: 60px;
+        line-height: 64px;
     }
     .hero-lead {
         margin-top: var(--space-6);

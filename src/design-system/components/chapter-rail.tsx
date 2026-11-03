@@ -13,7 +13,7 @@ export function ChapterRail({
 }) {
     const active = useActiveChapter(chapters);
     return (
-        <nav className="bc-rail" aria-label={label} data-quiet="soft">
+        <nav className="bc-rail" aria-label={label} data-quiet="fixed">
             <ol>
                 {chapters.map((c, i) => (
                     <li key={c.id}>

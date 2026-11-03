@@ -1,13 +1,9 @@
-import { ArrowRight } from "lucide";
-
 import { ChapterHead } from "@/app/components/chapter-head";
-import { Icon } from "@/app/components/icon";
 import { Scene } from "@/app/components/scene";
-import { ROUTES } from "@/content/site";
 import { VALUES } from "@/content/values";
 
 /** The three values on one pinned screen; each takes its turn as you scroll. */
-export function Values({ n, more = false }: { n?: number; more?: boolean }) {
+export function Values({ n }: { n?: number }) {
     return (
         <Scene name="values" pin={VALUES.length} id="values" aria-labelledby="values-title">
             <div className="wrap">
@@ -27,11 +23,6 @@ export function Values({ n, more = false }: { n?: number; more?: boolean }) {
                         </li>
                     ))}
                 </ol>
-                {more && (
-                    <a className="bc-more more" href={`${ROUTES.about}#values`}>
-                        Why these three <Icon node={ArrowRight} />
-                    </a>
-                )}
             </div>
         </Scene>
     );

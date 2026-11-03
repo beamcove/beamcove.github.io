@@ -15,8 +15,8 @@ test fails if a project code or name shows up on any page. Company facts and cop
 in Notion; keep `src/content/` in step with it.
 
 It is built on the Beamcove design system, **Signal** (a night sky, a lighthouse
-and a field of glyphs: one dark theme, one glyph stage per page that changes
-scene as you scroll, Departure Mono + JetBrains Mono + Onest). A copy lives in
+and a field of glyphs: one dark theme, one dot grid through every page that
+each section prints its own glyph scene onto, Departure Mono + JetBrains Mono + Onest). A copy lives in
 [`src/design-system/`](../src/design-system/README.md), and `/design/` shows every
 piece of it.
 
@@ -64,7 +64,7 @@ to production, see [deployment.md](deployment.md).
 | `/updates/`  | `pages/updates.tsx`   | `log`                 | Every update by year, newsletter                     |
 | `/contact/`  | `pages/contact.tsx`   | `hello`               | Email + social channels, full FAQ (`#questions`)     |
 | `/brand/`    | `pages/brand.tsx`     | `brand`               | Boilerplate, wordmark rules, colours, type, voice    |
-| `/design/`   | `pages/design.tsx`    | `design`              | Principles, colour, type, glyphs, stage, components  |
+| `/design/`   | `pages/design.tsx`    | `design`              | Principles, colour, type, glyphs, grid, components   |
 | `/privacy/`  | `pages/privacy.tsx`   | `legal` (`LegalPage`) | Privacy policy with contents sidebar                 |
 | `/terms/`    | `pages/terms.tsx`     | `legal` (`LegalPage`) | Terms of use with contents sidebar                   |
 | 404          | `pages/not-found.tsx` | `lost`                | Glyph “404”, “Off the map”                           |
@@ -93,8 +93,9 @@ the empty projects state. URLs follow the plain names too
 
 ## Landing screens
 
-The home page is the whole company as one scroll, one idea per screen, over a
-single glyph Stage. A chapter rail on wide screens shows where you are.
+The home page is the whole company as one scroll, one idea per screen, each
+printing its own scene on the page grid. A chapter rail on wide screens shows
+where you are.
 
 | Screen     | File                 | Scene(s)            | What happens                                     |
 | ---------- | -------------------- | ------------------- | ------------------------------------------------ |
@@ -108,9 +109,13 @@ single glyph Stage. A chapter rail on wide screens shows where you are.
 | Newsletter | `dispatches.tsx`     | `contact`           | The sign-up form and the other ways to say hello |
 | Footer     | `site-footer.tsx`    | —                   | Links, social marks, a glyph wordmark            |
 
-Inner pages open with `PageHero` (a kicker, the title, a lead, on the page's
-own scene) and reuse the same screens. Long reading (Brand, Design, Privacy,
-Terms) sits on the sparse `reading` scene.
+Inner pages are for reading, so they put the content first. `PageHero` is a
+compact band (a pixel kicker, the title, a lead) that prints the page's scene,
+its ink blocks right of the copy. The rest of the page is `Section`s: as tall
+as their content, a 2px rule on top, the heading in a sticky left column and
+the content beside it (`stacked` for wide grids). Their scenes gather into the
+side margins, so the art runs the length of the page without touching the
+text. Only the home page uses full screens and pins.
 
 ## Motion
 
@@ -118,14 +123,19 @@ Terms) sits on the sparse `reading` scene.
   the visitor hasn't asked for reduced motion. **Every hidden starting state is
   scoped under `.motion`**, so without it the page is simply static and fully
   visible (this is also why tests see everything).
-- **The Stage** ([design-system/components/stage.tsx](../src/design-system/components/stage.tsx))
-  is one fixed canvas per page. As each `Screen` (`[data-scene]`) arrives it
-  dissolves to that screen's scene, cell by cell from the bottom up; glyphs
-  shimmer, and the hero scene sweeps the lighthouse beam. Glyphs thin out behind
-  every `[data-quiet]` box and ink blocks keep clear of it. It also writes `--p`
-  (and `data-step`) on pinned screens, which drive `LitLine` and the values. It
-  only runs under `.motion`; otherwise each Screen prints its own `Still`. The
-  drawing lives in `design-system/glyph/painter.ts`, the maths in `engine.ts`.
+- **The page grid.** One 16px dot matrix is drawn once, by CSS, on `<html>`:
+  centred horizontally (equal margins on any width) and anchored to the
+  document top. `glyph/lattice.ts` gives any element its offset onto it, so
+  every glyph lands exactly on a dot.
+- **Section art.** Each `Screen` renders a `Field`: a canvas filling the section
+  that prints its scene on the page grid (`glyph/painter.ts`, maths in
+  `engine.ts`). It scrolls with the content. The first time a section comes into
+  view its glyphs print in, row by row; then they shimmer while visible and
+  light under the pointer; the hero sweeps the lighthouse beam. Glyphs thin out
+  around `[data-quiet]` copy, and ink blocks print whole or not at all.
+  Pinned screens draw their own dots inside the sticky frame and write `--p`
+  (and `data-step`) for `LitLine` and the values. Without `.motion` every field
+  prints one still frame.
 - `useReveal()` ([utils/motion.ts](../src/app/utils/motion.ts)) adds `is-in`
   to `[data-reveal]` elements as they scroll into view; `data-reveal="fill"`
   only triggers child effects (the footer wordmark).

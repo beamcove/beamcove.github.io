@@ -4,8 +4,7 @@ import { Check, Copy } from "lucide";
 import { AsciiWord } from "@/app/components/ascii-word";
 import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
-import { ChapterHead } from "@/app/components/chapter-head";
-import { Scene } from "@/app/components/scene";
+import { Section } from "@/app/components/section";
 import { SiteLayout } from "@/app/components/site-layout";
 import { SITE } from "@/content/site";
 import { Button, Card } from "@/design-system";
@@ -33,7 +32,7 @@ const SWATCHES: { group: string; items: { name: string; token: string; use: stri
             {
                 name: "Night",
                 token: "surface-page",
-                use: "The canvas the glyph stage is drawn on.",
+                use: "The page, and the dot grid printed on it.",
             },
             { name: "Rule", token: "rule", use: "The bold 2px line around controls and panels." },
             { name: "Text", token: "ink", use: "Text and the wordmark." },
@@ -118,160 +117,159 @@ export function BrandPage() {
                 change it.
             </PageHero>
 
-            <Scene name="reading" className="chapter" aria-labelledby="boilerplate-title">
-                <div className="wrap chapter-body" data-quiet>
-                    <ChapterHead
-                        id="boilerplate"
-                        kicker="Boilerplate"
-                        title="Company descriptions."
-                    >
-                        Ready to copy for bios, press and app stores.
-                    </ChapterHead>
-                    <div className="boilerplate-list">
-                        {BOILERPLATE.map((item) => (
-                            <Card
-                                key={item.label}
-                                variant="plain"
-                                eyebrow={item.label}
-                                className="boilerplate"
-                                data-reveal
-                            >
-                                {item.text.split("\n\n").map((paragraph, i) => (
-                                    <p key={paragraph} className={i === 0 ? "body-lg" : "muted"}>
-                                        {paragraph}
-                                    </p>
-                                ))}
-                                <div className="boilerplate-actions">
-                                    <CopyButton text={item.text} />
-                                </div>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </Scene>
-
-            <Scene name="reading" className="chapter" aria-labelledby="wordmark-title">
-                <div className="wrap chapter-body" data-quiet>
-                    <ChapterHead id="wordmark" kicker="Wordmark" title="Using the wordmark.">
-                        There’s no logo mark yet. Until there is, the name is the logo: Beamcove,
-                        set in Departure Mono and followed by a block cursor. For big moments, it
-                        can be drawn in glyphs.
-                    </ChapterHead>
-                    <div className="wordmark-grid">
-                        <figure className="wordmark-sample" data-reveal>
-                            <span className="wordmark-big">
-                                Beamcove
-                                <span className="bc-cursor" aria-hidden="true" />
-                            </span>
-                            <figcaption className="caption muted">Set in Departure Mono</figcaption>
-                        </figure>
-                        <figure className="wordmark-sample wordmark-sample-glyphs" data-reveal>
-                            <AsciiWord text="Beamcove" seed={9} />
-                            <figcaption className="caption muted">Drawn in glyphs</figcaption>
-                        </figure>
-                    </div>
-                    <DoDont
-                        dos={[
-                            "Set it in Departure Mono, with the block cursor in the beam ink.",
-                            "Use the text colour on the midnight canvas, or the glyph version for big moments.",
-                            "Write it as one word with a capital B. The company’s legal name is Beamcove LLC.",
-                        ]}
-                        donts={[
-                            "Draw a symbol or mark next to it.",
-                            "Set it in two colours, or add a glow or a shadow.",
-                            "Animate anything but the cursor.",
-                        ]}
-                    />
-                </div>
-            </Scene>
-
-            <Scene name="reading" className="chapter" aria-labelledby="color-title">
-                <div className="wrap chapter-body" data-quiet>
-                    <ChapterHead id="color" kicker="Color" title="Brand colors.">
-                        Beamcove is a night sky lit by a lighthouse: a calm ink-blue canvas, warm
-                        text, one action ink and five quiet glyph inks for the art.
-                    </ChapterHead>
-                    {SWATCHES.map((group) => (
-                        <div key={group.group} className="swatch-group">
-                            <p className="caption muted swatch-group-title">{group.group}</p>
-                            <ul className="swatch-grid">
-                                {group.items.map((swatch) => (
-                                    <li key={swatch.name} data-reveal>
-                                        <span
-                                            className="swatch-chip"
-                                            style={{ background: `var(--${swatch.token})` }}
-                                            aria-hidden="true"
-                                        />
-                                        <p className="headline">{swatch.name}</p>
-                                        <TokenValue token={swatch.token} />
-                                        <p className="body-sm muted">{swatch.use}</p>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+            <Section
+                id="boilerplate"
+                kicker="Boilerplate"
+                title="Company descriptions."
+                lead="Ready to copy for bios, press and app stores."
+                stacked
+            >
+                <div className="boilerplate-list">
+                    {BOILERPLATE.map((item) => (
+                        <Card
+                            key={item.label}
+                            variant="plain"
+                            eyebrow={item.label}
+                            className="boilerplate"
+                            data-reveal
+                        >
+                            {item.text.split("\n\n").map((paragraph, i) => (
+                                <p key={paragraph} className={i === 0 ? "body-lg" : "muted"}>
+                                    {paragraph}
+                                </p>
+                            ))}
+                            <div className="boilerplate-actions">
+                                <CopyButton text={item.text} />
+                            </div>
+                        </Card>
                     ))}
-                    <DoDont
-                        dos={[
-                            "Give each view one glyph splash, and keep the rest canvas and text.",
-                            "Keep text on the quiet side of a glyph field.",
-                            "Name ink slots in art, never colours.",
-                        ]}
-                        donts={[
-                            "Put text over dense glyphs or an ink block.",
-                            "Use glyph inks for text or status.",
-                            "Use flare for warnings or errors.",
-                        ]}
-                    />
                 </div>
-            </Scene>
+            </Section>
 
-            <Scene name="reading" className="chapter" aria-labelledby="type-title">
-                <div className="wrap chapter-body" data-quiet>
-                    <ChapterHead id="type" kicker="Type" title="Typography.">
-                        Departure Mono for display, JetBrains Mono for the interface and data, and
-                        Onest for reading.
-                    </ChapterHead>
-                    <div className="type-grid">
-                        <Card variant="plain" data-reveal>
-                            <p className="caption muted">Departure Mono · display</p>
-                            <p className="type-specimen type-specimen-display">Aa</p>
-                            <p className="mono">Sizes in steps of 11px: 22, 33, 44, 66.</p>
-                        </Card>
-                        <Card variant="plain" data-reveal>
-                            <p className="caption muted">JetBrains Mono · interface and data</p>
-                            <p className="type-specimen type-specimen-mono">01</p>
-                            <p className="mono">beamcove.com · {SITE.email}</p>
-                        </Card>
-                        <Card variant="plain" data-reveal>
-                            <p className="caption muted">Onest · reading</p>
-                            <p className="type-specimen">Aa</p>
-                            <p className="body-lg">{SITE.tagline}</p>
-                        </Card>
+            <Section
+                id="wordmark"
+                kicker="Wordmark"
+                title="Using the wordmark."
+                lead="There’s no logo mark yet. Until there is, the name is the logo: Beamcove, set in Departure Mono and followed by a block cursor. For big moments, it can be drawn in glyphs."
+                stacked
+            >
+                <div className="wordmark-grid">
+                    <figure className="wordmark-sample" data-reveal>
+                        <span className="wordmark-big">
+                            Beamcove
+                            <span className="bc-cursor" aria-hidden="true" />
+                        </span>
+                        <figcaption className="caption muted">Set in Departure Mono</figcaption>
+                    </figure>
+                    <figure className="wordmark-sample wordmark-sample-glyphs" data-reveal>
+                        <AsciiWord text="Beamcove" seed={9} />
+                        <figcaption className="caption muted">Drawn in glyphs</figcaption>
+                    </figure>
+                </div>
+                <DoDont
+                    dos={[
+                        "Set it in Departure Mono, with the block cursor in the beam ink.",
+                        "Use the text colour on the midnight canvas, or the glyph version for big moments.",
+                        "Write it as one word with a capital B. The company’s legal name is Beamcove LLC.",
+                    ]}
+                    donts={[
+                        "Draw a symbol or mark next to it.",
+                        "Set it in two colours, or add a glow or a shadow.",
+                        "Animate anything but the cursor.",
+                    ]}
+                />
+            </Section>
+
+            <Section
+                id="color"
+                kicker="Color"
+                title="Brand colors."
+                lead="Beamcove is a night sky lit by a lighthouse: a calm ink-blue canvas, warm text, one action ink and five quiet glyph inks for the art."
+                stacked
+            >
+                {SWATCHES.map((group) => (
+                    <div key={group.group} className="swatch-group">
+                        <p className="caption muted swatch-group-title">{group.group}</p>
+                        <ul className="swatch-grid">
+                            {group.items.map((swatch) => (
+                                <li key={swatch.name} data-reveal>
+                                    <span
+                                        className="swatch-chip"
+                                        style={{ background: `var(--${swatch.token})` }}
+                                        aria-hidden="true"
+                                    />
+                                    <p className="headline">{swatch.name}</p>
+                                    <TokenValue token={swatch.token} />
+                                    <p className="body-sm muted">{swatch.use}</p>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                </div>
-            </Scene>
+                ))}
+                <DoDont
+                    dos={[
+                        "Give each view one glyph splash, and keep the rest canvas and text.",
+                        "Keep text on the quiet side of a glyph field.",
+                        "Name ink slots in art, never colours.",
+                    ]}
+                    donts={[
+                        "Put text over dense glyphs or an ink block.",
+                        "Use glyph inks for text or status.",
+                        "Use flare for warnings or errors.",
+                    ]}
+                />
+            </Section>
 
-            <Scene name="reading" className="chapter" aria-labelledby="voice-title">
-                <div className="wrap chapter-body" data-quiet>
-                    <ChapterHead id="voice" kicker="Voice" title="How we write.">
-                        Clear, warm and quietly confident: plain words first, and a little play
-                        where the ink is.
-                    </ChapterHead>
-                    <DoDont
-                        dos={[
-                            "Say “we” for Beamcove and “you” for the reader.",
-                            "Write in sentence case.",
-                            "Save nautical words like voyage, fleet and crew for brand moments.",
-                            "Allow one light touch per page. Keep the rest plain.",
-                        ]}
-                        donts={[
-                            "Use all-caps labels.",
-                            "Use emoji.",
-                            "Use nautical words in instructions, errors or settings.",
-                        ]}
-                    />
+            <Section
+                id="type"
+                kicker="Type"
+                title="Typography."
+                lead="One voice and one signal: Onest for everything you read, and Departure Mono for the small machine details around it."
+                stacked
+            >
+                <div className="type-grid type-grid-two">
+                    <Card variant="plain" data-reveal>
+                        <p className="signal muted">Onest · everything you read</p>
+                        <p className="type-specimen">Aa</p>
+                        <p className="body-lg">{SITE.tagline}</p>
+                        <p className="body-text">
+                            Titles, navigation, buttons, forms and body copy, in weights 400, 500
+                            and 600.
+                        </p>
+                    </Card>
+                    <Card variant="plain" data-reveal>
+                        <p className="signal muted">Departure Mono · signals</p>
+                        <p className="type-specimen type-specimen-display">01</p>
+                        <p className="signal">Oct 27, 2026 · beamcove.com · {SITE.email}</p>
+                        <p className="body-text">
+                            Kickers, dates, numbers, tags, captions and the wordmark. Only at these
+                            sizes: 13px for labels, 22 and 44px for numbers.
+                        </p>
+                    </Card>
                 </div>
-            </Scene>
+            </Section>
+
+            <Section
+                id="voice"
+                kicker="Voice"
+                title="How we write."
+                lead="Clear, warm and quietly confident: plain words first, and a little play where the ink is."
+                stacked
+            >
+                <DoDont
+                    dos={[
+                        "Say “we” for Beamcove and “you” for the reader.",
+                        "Write in sentence case.",
+                        "Save nautical words like voyage, fleet and crew for brand moments.",
+                        "Allow one light touch per page. Keep the rest plain.",
+                    ]}
+                    donts={[
+                        "Use all-caps labels.",
+                        "Use emoji.",
+                        "Use nautical words in instructions, errors or settings.",
+                    ]}
+                />
+            </Section>
         </SiteLayout>
     );
 }

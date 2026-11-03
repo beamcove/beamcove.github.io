@@ -25,7 +25,7 @@ export function HomePage() {
         <SiteLayout chapters={CHAPTERS}>
             <Hero />
             <WhatWeDo n={1} />
-            <Story n={2} more />
+            <Story n={2} />
             <Manifesto />
             <Values n={3} />
             <LatestUpdates n={4} />

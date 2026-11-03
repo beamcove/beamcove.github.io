@@ -77,8 +77,11 @@ export interface GlyphComposition {
     density: number;
     /** Cluster size in cells; default 4. */
     scale?: number;
-    /** Gather the glyphs toward one edge (the copy sits on the other). */
-    gather?: "left" | "right" | "top" | "bottom";
+    /**
+     * Gather the glyphs toward one edge (the copy sits on the other), or to
+     * both side `margins` (reading pages: the content column stays quiet).
+     */
+    gather?: "left" | "right" | "top" | "bottom" | "margins";
     blocks?: InkBlock[];
     /** Cell size in CSS px; default 16. */
     cell?: number;
@@ -165,14 +168,17 @@ export function buildField(c: GlyphComposition, cols: number, rows: number): Fie
                 const u = cols > 1 ? col / (cols - 1) : 0.5;
                 const w = rows > 1 ? r / (rows - 1) : 0.5;
                 const g =
-                    c.gather === "right"
-                        ? u
-                        : c.gather === "left"
-                          ? 1 - u
-                          : c.gather === "bottom"
-                            ? w
-                            : 1 - w;
-                v *= 0.45 + 0.9 * g;
+                    c.gather === "margins"
+                        ? Math.abs(u - 0.5) * 2
+                        : c.gather === "right"
+                          ? u
+                          : c.gather === "left"
+                            ? 1 - u
+                            : c.gather === "bottom"
+                              ? w
+                              : 1 - w;
+                // margins: near zero over the middle, rising steeply to both edges
+                v *= c.gather === "margins" ? 0.15 + 1.05 * g ** 1.6 : 0.45 + 0.9 * g;
             }
             base[i] = Math.min(1, v);
 

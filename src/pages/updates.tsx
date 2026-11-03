@@ -1,7 +1,7 @@
 import { Dispatches } from "@/app/components/dispatches";
 import { LogList } from "@/app/components/log-list";
 import { PageHero } from "@/app/components/page-hero";
-import { Scene } from "@/app/components/scene";
+import { Section } from "@/app/components/section";
 import { SiteLayout } from "@/app/components/site-layout";
 import { LOGBOOK, type LogEntry } from "@/content/logbook";
 
@@ -21,18 +21,18 @@ export function UpdatesPage() {
                 Launches, milestones and the occasional bit of news, newest first.
             </PageHero>
 
-            <Scene name="updates" aria-label="Log entries">
-                <div className="wrap log-years">
-                    {byYear(LOGBOOK).map(([year, entries]) => (
-                        <div key={year} className="log-year" data-quiet data-reveal>
-                            <h2 className="title-1 log-year-title">{year}</h2>
-                            <LogList entries={entries} />
-                        </div>
-                    ))}
-                </div>
-            </Scene>
+            {byYear(LOGBOOK).map(([year, entries]) => (
+                <Section
+                    key={year}
+                    id={`year-${year.toLowerCase()}`}
+                    kicker={`${entries.length} ${entries.length === 1 ? "entry" : "entries"}`}
+                    title={year}
+                >
+                    <LogList entries={entries} />
+                </Section>
+            ))}
 
-            <Dispatches />
+            <Dispatches compact />
         </SiteLayout>
     );
 }

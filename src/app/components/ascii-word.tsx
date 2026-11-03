@@ -19,7 +19,25 @@ const FONT: Record<string, string[]> = {
     "4": ["...#.", "..##.", ".#.#.", "#..#.", "#####", "...#.", "...#."],
     "0": [".###.", "#...#", "#..##", "#.#.#", "##..#", "#...#", ".###."],
 };
-const SHAPES = ["block", "boxx", "target", "boxdot", "block", "ring", "block"] as const;
+/**
+ * Lit pixels draw from the grid ramp (+ ✕ ▢ ⊠), weighted toward the dense end
+ * so the letters read solid; unlit cells next to a letter get a faint +, so
+ * the word sits in a little glyph field of its own.
+ */
+const GRID: [shape: string, weight: number][] = [
+    ["boxx", 0.5],
+    ["square", 0.32],
+    ["cross", 0.12],
+    ["plus", 0.06],
+];
+const pick = (h: number) => {
+    let acc = 0;
+    for (const [shape, weight] of GRID) {
+        acc += weight;
+        if (h < acc) return shape;
+    }
+    return "boxx";
+};
 const INKS = ["a", "b", "c", "d", "e"] as const;
 
 export function AsciiWord({
@@ -35,22 +53,22 @@ export function AsciiWord({
 }) {
     const letters = [...text].map((ch) => FONT[ch] ?? FONT.o!);
     const cols = letters.length * 6 - 1;
-    const cells: { on: boolean; shape: string; ink: string; x: number }[] = [];
+    const lit = (x: number, row: number) => {
+        if (x < 0 || x >= cols || row < 0 || row > 6 || x % 6 === 5) return false;
+        return letters[Math.floor(x / 6)]![row]![x % 6] === "#";
+    };
+    const cells: { cls: string; x: number }[] = [];
     for (let row = 0; row < 7; row++) {
-        letters.forEach((glyph, li) => {
-            for (let col = 0; col < 6; col++) {
-                const x = li * 6 + col;
-                if (x >= cols) continue;
-                const on = col < 5 && glyph[row]![col] === "#";
-                const h = hash(x, row, seed);
-                cells.push({
-                    on,
-                    shape: SHAPES[Math.floor(h * SHAPES.length)]!,
-                    ink: INKS[li % INKS.length]!,
-                    x,
-                });
+        for (let x = 0; x < cols; x++) {
+            if (lit(x, row)) {
+                const ink = INKS[Math.floor(x / 6) % INKS.length]!;
+                cells.push({ cls: `px g-${pick(hash(x, row, seed))} ink-${ink}`, x });
+            } else {
+                const near =
+                    lit(x - 1, row) || lit(x + 1, row) || lit(x, row - 1) || lit(x, row + 1);
+                cells.push({ cls: near ? "px g-plus g-halo" : "px g-off", x });
             }
-        });
+        }
     }
     return (
         <div
@@ -60,11 +78,7 @@ export function AsciiWord({
         >
             <div className="ascii-grid" style={{ "--cols": cols } as CSSProperties}>
                 {cells.map((cell, i) => (
-                    <span
-                        key={i}
-                        className={cell.on ? `px g-${cell.shape} ink-${cell.ink}` : "px g-off"}
-                        style={{ "--x": cell.x } as CSSProperties}
-                    />
+                    <span key={i} className={cell.cls} style={{ "--x": cell.x } as CSSProperties} />
                 ))}
             </div>
         </div>

@@ -37,6 +37,15 @@ describe("scenes", () => {
         }
     });
 
+    it.each(NAMES.filter((name) => SCENES[name].gather === "margins"))(
+        "%s keeps its blocks in the margins",
+        (name) => {
+            for (const b of SCENES[name].blocks ?? []) {
+                expect(b.x + b.w <= 0.04 + 1e-9 || b.x >= 0.96 - 1e-9).toBe(true);
+            }
+        },
+    );
+
     it("gives every kind of work its own ink pair", () => {
         const keys = KINDS.map((kind) => [...SCENES[kind.art].inks].sort().join("+"));
         expect(new Set(keys).size).toBe(keys.length);

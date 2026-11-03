@@ -1,14 +1,13 @@
 import type { ReactNode } from "react";
 
-import { SCENES } from "@/app/components/scenes";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
 import { useReveal } from "@/app/utils/motion";
-import { ChapterRail, Stage, type Chapter } from "@/design-system";
+import { ChapterRail, type Chapter } from "@/design-system";
 
 /**
- * Every page: one glyph Stage behind everything, the fixed header, an
- * optional chapter rail, the page's screens, and the footer.
+ * Every page: the fixed header, an optional chapter rail, the page's
+ * screens (each prints its own scene on the page grid), and the footer.
  */
 export function SiteLayout({ chapters, children }: { chapters?: Chapter[]; children: ReactNode }) {
     useReveal();
@@ -17,7 +16,6 @@ export function SiteLayout({ chapters, children }: { chapters?: Chapter[]; child
             <a className="skip-link" href="#main">
                 Skip to content
             </a>
-            <Stage scenes={SCENES} />
             <SiteHeader />
             {chapters && <ChapterRail chapters={chapters} />}
             <main id="main">{children}</main>

@@ -29,19 +29,27 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 2. **Design system is vendored** in `src/design-system/`. `tokens.css`,
    `components.css` and `fonts/` are verbatim copies from the sibling
    `design-system` repo (prettier-ignored) — re-copy, don't hand-edit. Follow its
-   rules: tokens never hex, one idea per screen, sentence case. There is one
-   theme, Midnight (no picker, nothing stored on the device).
-3. **Every page is screens over one Stage.** `SiteLayout` renders the page's one
-   glyph `Stage`; each section is a `Scene` (a design-system `Screen` bound to a
-   scene in `src/app/components/scenes.ts`). Put `data-quiet` on copy so glyphs
-   thin out and ink blocks keep clear of it: text never sits on ink. Scenes name
-   ink **slots** (`a`–`e`), never colours: two or three different inks, blocks
-   only in those inks, crossing a little but never nested, same-ink blocks never
-   overlapping, each kind of work its own pair. `scenes.test.ts` checks it.
+   rules: tokens never hex, sentence case, one theme (Midnight, no picker,
+   nothing stored on the device). **Two faces only:** Onest for everything you
+   read; Departure Mono only for signals (kickers, dates, numbers, tags, the
+   wordmark) at 13px for labels, 22 or 44px for numbers. Buttons and controls are solid, never outlined.
+3. **The page is the grid.** One 16px dot matrix, drawn once on `<html>`,
+   centred horizontally and anchored to the document top. Every glyph field
+   snaps to it (`glyph/lattice.ts`); never draw a second dot grid on the page.
+   Each section owns its art: a `Scene` (a design-system `Screen` bound to a
+   scene in `src/app/components/scenes.ts`) prints its scene behind its copy and
+   scrolls with it. Only the home page (and the 404) uses full screens and pins;
+   reading pages use a compact `PageHero` and `Section`s (`size="fit"`, margin
+   scenes, so art lives in the side margins). Put `data-quiet` on copy: glyphs
+   thin out and ink blocks print whole or not at all, so text never sits on
+   ink. Scenes name ink **slots** (`a`–`e`), never colours: two or three
+   different inks, blocks only in those inks, crossing a little but never
+   nested, same-ink blocks never overlapping, margin scenes' blocks in the outer
+   4%, each kind of work its own pair. `scenes.test.ts` checks it.
 4. **Motion is opt-in via `html.motion`** (set by `public/boot.js`). Scope every
    hidden/start state under `.motion` so content shows without JS or with
-   reduced motion. The Stage, scene dissolves, pinned statements, the beam and
-   title decoding only run under it; otherwise each Screen prints its own still.
+   reduced motion. The print-in, shimmer, pins, the beam and title decoding
+   only run under it; otherwise each section prints one still frame.
    Don't advertise crew size or location outside the legal pages.
 5. **A new page touches five places**: `ROUTES` in `src/content/site.ts`,
    `src/pages/`, `src/entries/`, `<name>/index.html`, and `PAGES` in
@@ -69,13 +77,14 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
   (routes, nav, fleet, logbook, values, faq). Edit facts there, not in sections.
   No project is public yet: don't list one (a test guards this).
 - `src/app/components/` — layout (site-layout/header/footer, page-hero,
-  legal-page, scene, chapter-head) and screens (hero, what-we-do, story,
-  manifesto, values, latest-updates, questions, dispatches), plus scenes (every
+  section, legal-page, scene, chapter-head), home screens (hero, what-we-do,
+  story, manifesto, values, latest-updates, questions, dispatches), reading-page
+  pieces (kind-cards, statements, value-list), plus scenes (every
   screen's glyph art), ascii-word (glyph wordmark), icon (renders Lucide icon
   nodes), brand (social SVGs).
-- `src/design-system/` — Signal tokens, CSS, fonts, typed component port
-  (Stage, Screen, LitLine, ChapterRail, …) and the glyph engine and painter
-  (`glyph/`). `/design/` shows every piece of it.
+- `src/design-system/` — Signal tokens, CSS, fonts (Onest, Departure Mono),
+  typed component port (Screen, Field, LitLine, ChapterRail, …) and the glyph
+  engine, page lattice and painter (`glyph/`). `/design/` shows every piece.
 - `public/` — copied verbatim to dist (boot.js, CNAME, robots.txt, sitemap.xml,
   favicon, touch icon, social card). `scripts/` renders the two PNGs.
 

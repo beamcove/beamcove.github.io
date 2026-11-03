@@ -42,7 +42,7 @@ export function LegalPage({
                 {lead}
             </PageHero>
 
-            <Scene name="reading" className="reading">
+            <Scene name="reading" size="fit" className="reading">
                 <div className="wrap legal">
                     <aside className="legal-toc" aria-labelledby="toc-title" data-quiet>
                         <p className="caption" id="toc-title">

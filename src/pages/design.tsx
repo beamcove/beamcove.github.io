@@ -2,10 +2,9 @@ import { useMemo, useState, type ReactNode } from "react";
 import { ArrowRight, Plus } from "lucide";
 
 import { AsciiWord } from "@/app/components/ascii-word";
-import { ChapterHead } from "@/app/components/chapter-head";
 import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
-import { Scene } from "@/app/components/scene";
+import { Section } from "@/app/components/section";
 import { SCENES, type SceneName } from "@/app/components/scenes";
 import { SiteLayout } from "@/app/components/site-layout";
 import { DESIGN_PRINCIPLES, TYPE_SPECIMENS } from "@/content/design";
@@ -25,7 +24,6 @@ import {
     Stat,
     Switch,
     TextField,
-    Window,
     type GlyphComposition,
     type InkSlot,
     type RampName,
@@ -37,7 +35,7 @@ const TOC = [
     { id: "color", label: "Colour" },
     { id: "type", label: "Type" },
     { id: "glyphs", label: "Glyphs" },
-    { id: "stage", label: "Stage" },
+    { id: "grid", label: "Grid" },
     { id: "components", label: "Components" },
     { id: "scenes", label: "Scenes" },
     { id: "together", label: "Together" },
@@ -66,20 +64,18 @@ const CORE_TOKENS = [
     "ink-e",
 ];
 
-/** One component on its own, in a window of its own. */
+/** One component on its own: a pixel label over a quiet panel. */
 function Specimen({ name, wide, children }: { name: string; wide?: boolean; children: ReactNode }) {
     return (
-        <Window
-            title={name}
-            className={wide ? "specimen specimen-wide" : "specimen"}
-            bodyClassName="specimen-body"
-        >
-            {children}
-        </Window>
+        <figure className={wide ? "specimen specimen-wide" : "specimen"}>
+            <figcaption className="signal specimen-label">{name}</figcaption>
+            <div className="specimen-body">{children}</div>
+        </figure>
     );
 }
 
-function Section({
+/** A section of the page, stacked: the heading above, the specimens full width below. */
+function DesignSection({
     id,
     eyebrow,
     title,
@@ -93,12 +89,9 @@ function Section({
     children: ReactNode;
 }) {
     return (
-        <section className="design-section" id={id} aria-labelledby={`${id}-title`}>
-            <ChapterHead id={id} kicker={eyebrow} title={title}>
-                {lead}
-            </ChapterHead>
+        <Section id={id} kicker={eyebrow} title={title} lead={lead} stacked>
             {children}
-        </section>
+        </Section>
     );
 }
 
@@ -305,335 +298,295 @@ export function DesignPage() {
                 piece on its own, then all of them together.
             </PageHero>
 
-            <Scene name="reading" className="design">
-                <div className="wrap">
-                    <div className="design-body" data-quiet>
-                        <Section id="principles" eyebrow="Principles" title="Five rules.">
-                            <ol className="principles">
-                                {DESIGN_PRINCIPLES.map((p, i) => (
-                                    <li key={p.title} data-reveal>
-                                        <Card variant="framed">
-                                            <span className="principle-n">
-                                                {String(i + 1).padStart(2, "0")}
-                                            </span>
-                                            <h3 className="headline">{p.title}</h3>
-                                            <p className="muted">{p.body}</p>
-                                        </Card>
-                                    </li>
-                                ))}
-                            </ol>
-                        </Section>
+            <DesignSection id="principles" eyebrow="Principles" title="Five rules.">
+                <ol className="principles">
+                    {DESIGN_PRINCIPLES.map((p, i) => (
+                        <li key={p.title} data-reveal>
+                            <Card variant="framed">
+                                <span className="principle-n">
+                                    {String(i + 1).padStart(2, "0")}
+                                </span>
+                                <h3 className="headline">{p.title}</h3>
+                                <p className="muted">{p.body}</p>
+                            </Card>
+                        </li>
+                    ))}
+                </ol>
+            </DesignSection>
 
-                        <Section
-                            id="color"
-                            eyebrow="Colour"
-                            title="One night, five inks."
-                            lead="Signal has one theme: an ink-blue night with warm text, a beam for actions, a flare for the one highlight, and five quiet inks that only ever print glyph art."
-                        >
-                            <ul className="token-grid">
-                                {CORE_TOKENS.map((token) => (
-                                    <li key={token}>
-                                        <span
-                                            className="token-chip"
-                                            style={{ background: `var(--${token})` }}
-                                            aria-hidden="true"
-                                        />
-                                        <span className="mono">{token}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </Section>
+            <DesignSection
+                id="color"
+                eyebrow="Colour"
+                title="One night, five inks."
+                lead="Signal has one theme: an ink-blue night with warm text, a beam for actions, a flare for the one highlight, and five quiet inks that only ever print glyph art."
+            >
+                <ul className="token-grid">
+                    {CORE_TOKENS.map((token) => (
+                        <li key={token}>
+                            <span
+                                className="token-chip"
+                                style={{ background: `var(--${token})` }}
+                                aria-hidden="true"
+                            />
+                            <span className="mono">{token}</span>
+                        </li>
+                    ))}
+                </ul>
+            </DesignSection>
 
-                        <Section
-                            id="stage"
-                            eyebrow="Stage"
-                            title="One field per page."
-                            lead="Every page has one glyph Stage behind it. Each Screen names a scene, and the stage dissolves to it as the screen arrives, cell by cell, from the bottom up. Glyphs thin out behind anything marked quiet, and ink blocks keep clear of it. Pinned screens hold still while a sentence lights up, word by word."
-                        >
-                            <div className="stage-demo">
-                                {(["hero", "mission", "values"] as SceneName[]).map((name) => (
-                                    <figure key={name} className="stage-frame">
-                                        <div className="stage-frame-art bc-glyphs">
-                                            <GlyphField composition={SCENES[name]} quiet={false} />
-                                        </div>
-                                        <figcaption className="caption">{name}</figcaption>
-                                    </figure>
-                                ))}
+            <DesignSection
+                id="grid"
+                eyebrow="Grid"
+                title="The page is the grid."
+                lead="One 16px dot matrix runs through the whole page, centred so both margins match on any screen. Every scene prints onto it: a section’s glyphs sit exactly over the page’s dots, and they print in, row by row, the first time the section comes into view. Copy stays quiet, ink blocks print whole or not at all."
+            >
+                <div className="grid-demo">
+                    {(["hero", "mission", "values"] as SceneName[]).map((name) => (
+                        <figure key={name} className="grid-frame">
+                            <div className="grid-frame-art bc-glyphs">
+                                <GlyphField composition={SCENES[name]} quiet={false} />
                             </div>
-                            <div className="lit-demo">
-                                <p className="kicker-plain">LitLine</p>
-                                <LitLine text="Make things people are glad exist." />
-                            </div>
-                        </Section>
-
-                        <Section
-                            id="type"
-                            eyebrow="Type"
-                            title="Three faces."
-                            lead="Departure Mono for display, JetBrains Mono for the interface, Onest for reading."
-                        >
-                            <ul className="type-scale">
-                                {TYPE_SPECIMENS.map((t) => (
-                                    <li key={t.cls}>
-                                        <span className="mono muted type-scale-meta">
-                                            .{t.cls}
-                                            <br />
-                                            {t.note}
-                                        </span>
-                                        <span className={t.cls}>{t.sample}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </Section>
-
-                        <Section
-                            id="glyphs"
-                            eyebrow="Glyphs"
-                            title="The alphabet."
-                            lead="Four ramps run light to dense. Values from layered noise pick the glyph; solid ink blocks cut through."
-                        >
-                            <ul className="ramps">
-                                {(Object.keys(RAMPS) as RampName[]).map((name) => (
-                                    <li key={name}>
-                                        <span className="mono muted">{name}</span>
-                                        <span className="ramp-chars" aria-hidden="true">
-                                            {RAMPS[name].map((id) => GLYPH_CHARS[id]).join(" ")}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                            <Playground />
-                        </Section>
-
-                        <Section
-                            id="components"
-                            eyebrow="Components"
-                            title="Every piece."
-                            lead="Bold rules, rounded keys, square windows. Each one alone, in every state."
-                        >
-                            <div className="specimens">
-                                <Specimen name="Button" wide>
-                                    <div className="bc-row">
-                                        <Button iconRight={<Icon node={ArrowRight} />}>
-                                            Primary
-                                        </Button>
-                                        <Button variant="secondary">Secondary</Button>
-                                        <Button variant="tonal" iconLeft={<Icon node={Plus} />}>
-                                            Tonal
-                                        </Button>
-                                        <Button variant="ghost">Ghost</Button>
-                                        <Button variant="danger">Delete</Button>
-                                    </div>
-                                    <div className="bc-row">
-                                        <Button size="lg">Large</Button>
-                                        <Button size="sm" variant="secondary">
-                                            Small
-                                        </Button>
-                                        <Button variant="secondary" iconOnly aria-label="Add">
-                                            <Icon node={Plus} />
-                                        </Button>
-                                        <Button disabled>Disabled</Button>
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Badge">
-                                    <div className="bc-row">
-                                        <Badge>Neutral</Badge>
-                                        <Badge tone="beam" dot>
-                                            Beam
-                                        </Badge>
-                                        <Badge tone="success">Success</Badge>
-                                        <Badge tone="warning">Warning</Badge>
-                                        <Badge tone="danger">Danger</Badge>
-                                        <Badge tone="flare">Now</Badge>
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Switch">
-                                    <div className="bc-row">
-                                        <Switch label="On" defaultChecked />
-                                        <Switch label="Off" />
-                                        <Switch label="Disabled" disabled />
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Text field" wide>
-                                    <div className="field-grid">
-                                        <TextField label="Default" placeholder="you@example.com" />
-                                        <TextField
-                                            label="With a hint"
-                                            hint="We only use it to send the newsletter."
-                                        />
-                                        <TextField
-                                            label="With an error"
-                                            defaultValue="you@"
-                                            error="That email doesn’t look right."
-                                        />
-                                        <TextField
-                                            label="Disabled"
-                                            disabled
-                                            placeholder="Not now"
-                                        />
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Segmented control">
-                                    <SegmentedControl
-                                        label="View"
-                                        options={["Grid", "List", "Board"]}
-                                    />
-                                </Specimen>
-                                <Specimen name="Cursor and keys">
-                                    <div className="bc-row">
-                                        <span className="mono">
-                                            ready
-                                            <span className="bc-cursor" aria-hidden="true" />
-                                        </span>
-                                        <span className="bc-kbd">⌘</span>
-                                        <span className="bc-kbd">K</span>
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Callout" wide>
-                                    <div className="callout-grid">
-                                        <Callout tone="info" title="Info">
-                                            Something worth knowing.
-                                        </Callout>
-                                        <Callout tone="success" title="Success">
-                                            It worked.
-                                        </Callout>
-                                        <Callout tone="warning" title="Warning">
-                                            Check this first.
-                                        </Callout>
-                                        <Callout tone="danger" title="Danger">
-                                            This can’t be undone.
-                                        </Callout>
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Stat">
-                                    <div className="bc-row stat-row">
-                                        <Stat
-                                            label="Uptime"
-                                            value="99.9"
-                                            unit="%"
-                                            delta="0.2%"
-                                            trend="up"
-                                            series={[3, 4, 4, 6, 5, 7, 8]}
-                                        />
-                                        <Stat
-                                            label="Latency"
-                                            value="142"
-                                            unit="ms"
-                                            delta="8ms"
-                                            trend="down"
-                                            series={[8, 7, 7, 5, 6, 4, 4]}
-                                        />
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Meter">
-                                    <div className="stack">
-                                        <Meter value={64} label="Build" />
-                                        <Meter value={37} label="Upload" size="lg" columns={18} />
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Card" wide>
-                                    <div className="card-grid">
-                                        <Card
-                                            variant="plain"
-                                            eyebrow="Plain"
-                                            title="A filled panel"
-                                        >
-                                            For one idea.
-                                        </Card>
-                                        <Card
-                                            variant="framed"
-                                            eyebrow="Framed"
-                                            title="An open frame"
-                                        >
-                                            Corner ticks, no fill.
-                                        </Card>
-                                        <Card
-                                            variant="art"
-                                            media={
-                                                <GlyphField
-                                                    composition={SCENES.play}
-                                                    quiet={false}
-                                                />
-                                            }
-                                            title="With art"
-                                            interactive
-                                        >
-                                            A glyph strip on top. Hover me.
-                                        </Card>
-                                    </div>
-                                </Specimen>
-                                <Specimen name="Window">
-                                    <Window title="Untitled" meta="2 items" onClose={() => {}}>
-                                        <p className="muted">
-                                            A system window: a bold rule, a 2px drop and a striped
-                                            bar.
-                                        </p>
-                                    </Window>
-                                </Specimen>
-                                <Specimen name="Frame">
-                                    <Frame label="status" className="frame-demo">
-                                        <span className="mono">┌ all systems nominal ┐</span>
-                                    </Frame>
-                                </Specimen>
-                                <Specimen name="Scramble text">
-                                    <ScrambleDemo />
-                                </Specimen>
-                                <Specimen name="Glyph wordmark" wide>
-                                    <AsciiWord text="Beamcove" seed={3} />
-                                </Specimen>
-                            </div>
-                        </Section>
-
-                        <Section
-                            id="scenes"
-                            eyebrow="Scenes"
-                            title="Every scene on the site."
-                            lead="Each names two or three ink slots and keeps its blocks near the edges, clear of the copy."
-                        >
-                            <ul className="composition-grid">
-                                {(Object.keys(SCENES) as SceneName[]).map((name) => (
-                                    <li key={name}>
-                                        <div className="composition-stage bc-glyphs">
-                                            <GlyphField
-                                                composition={SCENES[name]}
-                                                quiet={false}
-                                                pointer
-                                            />
-                                        </div>
-                                        <div className="composition-meta">
-                                            <span className="mono">{name}</span>
-                                            <span
-                                                className="composition-inks"
-                                                aria-label={`Inks ${SCENES[name].inks.join(", ")}`}
-                                            >
-                                                {SCENES[name].inks.map((ink) => (
-                                                    <i
-                                                        key={ink}
-                                                        style={{ background: `var(--ink-${ink})` }}
-                                                        title={ink}
-                                                    />
-                                                ))}
-                                            </span>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </Section>
-
-                        <Section
-                            id="together"
-                            eyebrow="Together"
-                            title="All at once."
-                            lead="The pieces composed into the kind of screens they’re for. Sample data only."
-                        >
-                            <div className="together">
-                                <SignupPanel />
-                                <Dashboard />
-                            </div>
-                        </Section>
-                    </div>
+                            <figcaption className="signal">{name}</figcaption>
+                        </figure>
+                    ))}
                 </div>
-            </Scene>
+                <div className="lit-demo">
+                    <p className="signal">LitLine</p>
+                    <LitLine text="Make things people are glad exist." />
+                </div>
+            </DesignSection>
+
+            <DesignSection
+                id="type"
+                eyebrow="Type"
+                title="Three faces."
+                lead="Onest for everything you read. Departure Mono only for signals: kickers, dates, numbers, tags and the wordmark, at 13px for labels and 22 or 44px for numbers. Each block switches face at most once."
+            >
+                <ul className="type-scale">
+                    {TYPE_SPECIMENS.map((t) => (
+                        <li key={t.cls}>
+                            <span className="mono muted type-scale-meta">
+                                .{t.cls}
+                                <br />
+                                {t.note}
+                            </span>
+                            <span className={t.cls}>{t.sample}</span>
+                        </li>
+                    ))}
+                </ul>
+            </DesignSection>
+
+            <DesignSection
+                id="glyphs"
+                eyebrow="Glyphs"
+                title="The alphabet."
+                lead="Four ramps run light to dense. Values from layered noise pick the glyph; solid ink blocks cut through."
+            >
+                <ul className="ramps">
+                    {(Object.keys(RAMPS) as RampName[]).map((name) => (
+                        <li key={name}>
+                            <span className="mono muted">{name}</span>
+                            <span className="ramp-chars" aria-hidden="true">
+                                {RAMPS[name].map((id) => GLYPH_CHARS[id]).join(" ")}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+                <Playground />
+            </DesignSection>
+
+            <DesignSection
+                id="components"
+                eyebrow="Components"
+                title="Every piece."
+                lead="Solid keys, quiet panels, one voice. Each one alone, in every state."
+            >
+                <div className="specimens">
+                    <Specimen name="Button" wide>
+                        <div className="bc-row">
+                            <Button iconRight={<Icon node={ArrowRight} />}>Primary</Button>
+                            <Button variant="secondary">Secondary</Button>
+                            <Button variant="tonal" iconLeft={<Icon node={Plus} />}>
+                                Tonal
+                            </Button>
+                            <Button variant="ghost">Ghost</Button>
+                            <Button variant="danger">Delete</Button>
+                        </div>
+                        <div className="bc-row">
+                            <Button size="lg">Large</Button>
+                            <Button size="sm" variant="secondary">
+                                Small
+                            </Button>
+                            <Button variant="secondary" iconOnly aria-label="Add">
+                                <Icon node={Plus} />
+                            </Button>
+                            <Button disabled>Disabled</Button>
+                        </div>
+                    </Specimen>
+                    <Specimen name="Badge">
+                        <div className="bc-row">
+                            <Badge>Neutral</Badge>
+                            <Badge tone="beam" dot>
+                                Beam
+                            </Badge>
+                            <Badge tone="success">Success</Badge>
+                            <Badge tone="warning">Warning</Badge>
+                            <Badge tone="danger">Danger</Badge>
+                            <Badge tone="flare">Now</Badge>
+                        </div>
+                    </Specimen>
+                    <Specimen name="Switch">
+                        <div className="bc-row">
+                            <Switch label="On" defaultChecked />
+                            <Switch label="Off" />
+                            <Switch label="Disabled" disabled />
+                        </div>
+                    </Specimen>
+                    <Specimen name="Text field" wide>
+                        <div className="field-grid">
+                            <TextField label="Default" placeholder="you@example.com" />
+                            <TextField
+                                label="With a hint"
+                                hint="We only use it to send the newsletter."
+                            />
+                            <TextField
+                                label="With an error"
+                                defaultValue="you@"
+                                error="That email doesn’t look right."
+                            />
+                            <TextField label="Disabled" disabled placeholder="Not now" />
+                        </div>
+                    </Specimen>
+                    <Specimen name="Segmented control">
+                        <SegmentedControl label="View" options={["Grid", "List", "Board"]} />
+                    </Specimen>
+                    <Specimen name="Cursor and keys">
+                        <div className="bc-row">
+                            <span className="mono">
+                                ready
+                                <span className="bc-cursor" aria-hidden="true" />
+                            </span>
+                            <span className="bc-kbd">⌘</span>
+                            <span className="bc-kbd">K</span>
+                        </div>
+                    </Specimen>
+                    <Specimen name="Callout" wide>
+                        <div className="callout-grid">
+                            <Callout tone="info" title="Info">
+                                Something worth knowing.
+                            </Callout>
+                            <Callout tone="success" title="Success">
+                                It worked.
+                            </Callout>
+                            <Callout tone="warning" title="Warning">
+                                Check this first.
+                            </Callout>
+                            <Callout tone="danger" title="Danger">
+                                This can’t be undone.
+                            </Callout>
+                        </div>
+                    </Specimen>
+                    <Specimen name="Stat">
+                        <div className="bc-row stat-row">
+                            <Stat
+                                label="Uptime"
+                                value="99.9"
+                                unit="%"
+                                delta="0.2%"
+                                trend="up"
+                                series={[3, 4, 4, 6, 5, 7, 8]}
+                            />
+                            <Stat
+                                label="Latency"
+                                value="142"
+                                unit="ms"
+                                delta="8ms"
+                                trend="down"
+                                series={[8, 7, 7, 5, 6, 4, 4]}
+                            />
+                        </div>
+                    </Specimen>
+                    <Specimen name="Meter">
+                        <div className="stack">
+                            <Meter value={64} label="Build" />
+                            <Meter value={37} label="Upload" size="lg" columns={18} />
+                        </div>
+                    </Specimen>
+                    <Specimen name="Card" wide>
+                        <div className="card-grid">
+                            <Card variant="plain" eyebrow="Plain" title="A filled panel">
+                                For one idea.
+                            </Card>
+                            <Card variant="framed" eyebrow="Framed" title="An open frame">
+                                Corner ticks, no fill.
+                            </Card>
+                            <Card
+                                variant="art"
+                                media={<GlyphField composition={SCENES.play} quiet={false} />}
+                                title="With art"
+                                interactive
+                            >
+                                A glyph strip on top. Hover me.
+                            </Card>
+                        </div>
+                    </Specimen>
+                    <Specimen name="Frame">
+                        <Frame label="status" className="frame-demo">
+                            <span className="mono">┌ all systems nominal ┐</span>
+                        </Frame>
+                    </Specimen>
+                    <Specimen name="Scramble text">
+                        <ScrambleDemo />
+                    </Specimen>
+                    <Specimen name="Glyph wordmark" wide>
+                        <AsciiWord text="Beamcove" seed={3} />
+                    </Specimen>
+                </div>
+            </DesignSection>
+
+            <DesignSection
+                id="scenes"
+                eyebrow="Scenes"
+                title="Every scene on the site."
+                lead="Each names two or three ink slots and keeps its blocks near the edges, clear of the copy."
+            >
+                <ul className="composition-grid">
+                    {(Object.keys(SCENES) as SceneName[]).map((name) => (
+                        <li key={name}>
+                            <div className="composition-stage bc-glyphs">
+                                <GlyphField composition={SCENES[name]} quiet={false} pointer />
+                            </div>
+                            <div className="composition-meta">
+                                <span className="mono">{name}</span>
+                                <span
+                                    className="composition-inks"
+                                    aria-label={`Inks ${SCENES[name].inks.join(", ")}`}
+                                >
+                                    {SCENES[name].inks.map((ink) => (
+                                        <i
+                                            key={ink}
+                                            style={{ background: `var(--ink-${ink})` }}
+                                            title={ink}
+                                        />
+                                    ))}
+                                </span>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </DesignSection>
+
+            <DesignSection
+                id="together"
+                eyebrow="Together"
+                title="All at once."
+                lead="The pieces composed into the kind of screens they’re for. Sample data only."
+            >
+                <div className="together">
+                    <SignupPanel />
+                    <Dashboard />
+                </div>
+            </DesignSection>
         </SiteLayout>
     );
 }

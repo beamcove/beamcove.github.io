@@ -54,7 +54,7 @@ export function Splash({
         >
             {field && <GlyphField composition={field} beam={beam} />}
             {art}
-            <div ref={innerRef} className="bc-splash-content">
+            <div ref={innerRef} className="bc-splash-content" data-quiet>
                 {eyebrow && <p className="bc-eyebrow">{eyebrow}</p>}
                 {title && <Title className="bc-splash-title">{title}</Title>}
                 {typeof children === "string" ? (

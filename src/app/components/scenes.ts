@@ -11,7 +11,9 @@ import type { GlyphComposition } from "@/design-system";
  *   another, and two blocks of the same ink never overlap.
  * - Copy sits left or centred: blocks stay near the edges (and clear of the
  *   chapter rail's middle band on the right); the copy also gets a quiet
- *   patch at draw time, so text never sits on ink.
+ *   patch at draw time, and a block that would touch it doesn't print.
+ * - Reading scenes (`gather: "margins"`) keep their blocks in the outer 4%
+ *   of the width, so on wide screens the art lives in the margins.
  * - The three kinds of work each get their own ink pair.
  */
 export type SceneName =
@@ -37,6 +39,8 @@ export type SceneName =
     | "brand"
     | "design"
     | "reading"
+    | "readingB"
+    | "readingC"
     | "legal"
     | "lost";
 
@@ -275,12 +279,37 @@ export const SCENES: Record<SceneName, GlyphComposition> = {
             { x: 0.88, y: 0.66, w: 0.12, h: 0.34, ink: "b" },
         ],
     },
-    // long reading (brand, design, legal bodies): sparse, no ink
+    // reading sections: the art lives in the side margins, the content column stays quiet;
+    // three variants so neighbouring sections never repeat the same print
     reading: {
         seed: 3,
         inks: ["b", "e"],
         ramp: "grid",
-        density: 0.28,
+        density: 0.5,
+        gather: "margins",
+        blocks: [
+            { x: 0, y: 0.18, w: 0.04, h: 0.22, ink: "b" },
+            { x: 0.96, y: 0.56, w: 0.04, h: 0.2, ink: "e" },
+        ],
+    },
+    readingB: {
+        seed: 5,
+        inks: ["a", "c"],
+        ramp: "signal",
+        density: 0.48,
+        gather: "margins",
+        blocks: [
+            { x: 0.96, y: 0.12, w: 0.04, h: 0.26, ink: "c" },
+            { x: 0, y: 0.6, w: 0.04, h: 0.18, ink: "a" },
+        ],
+    },
+    readingC: {
+        seed: 9,
+        inks: ["d", "b"],
+        ramp: "marks",
+        density: 0.48,
+        gather: "margins",
+        blocks: [{ x: 0, y: 0.34, w: 0.04, h: 0.3, ink: "d" }],
     },
     legal: {
         seed: 97,

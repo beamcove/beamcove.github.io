@@ -6,7 +6,8 @@ export function motionAllowed() {
 }
 
 /**
- * Adds `is-in` to every `[data-reveal]` element as it scrolls into view.
+ * Adds `is-in` to every `[data-reveal]` element as its top scrolls into view
+ * (threshold 0, so even very tall blocks reveal).
  * Hidden states only apply under `html.motion`, so content never stays hidden
  * where this can't run.
  */
@@ -21,7 +22,7 @@ export function useReveal() {
                     io.unobserve(entry.target);
                 }
             },
-            { rootMargin: "0px 0px -10% 0px", threshold: 0.15 },
+            { rootMargin: "0px 0px -12% 0px", threshold: 0 },
         );
         document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
         return () => io.disconnect();

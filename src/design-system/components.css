@@ -2,9 +2,9 @@
    Load after tokens.css. Class prefix: bc-. */
 
 /* ── Base ─────────────────────────────────────────── */
+/* the page colour and its dot grid live on <html> (see "The page grid") */
 body {
     margin: 0;
-    background: var(--surface-page);
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 15px;
@@ -45,40 +45,36 @@ body {
     align-items: baseline;
     gap: var(--space-2);
     margin: 0;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
     color: var(--beam-ink);
 }
 .bc-eyebrow::before {
-    content: "///";
-    color: var(--ink-subtle);
-    letter-spacing: -0.06em;
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    align-self: center;
 }
 
-/* ── Glyph surfaces ───────────────────────────────── */
-/* .bc-glyphs: the resting dot grid, one dot per cell. It is also the no-JS
-   fallback under a GlyphField; the field hides it once it draws. */
+/* ── The page grid: one dot matrix for the whole document ── */
+/* Dots on a CELL lattice, centred horizontally (equal margins on any width)
+   and anchored to the document top. Every glyph field snaps its cells to it. */
+html {
+    background-color: var(--surface-page);
+    background-image: radial-gradient(circle at center, var(--glyph-dim) 0 1.1px, transparent 1.6px);
+    background-size: var(--cell) var(--cell);
+    background-position: 50% 0;
+}
+/* a positioned host for a GlyphField (a card strip, a specimen) */
 .bc-glyphs {
     position: relative;
     isolation: isolate;
 }
-.bc-glyphs::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    pointer-events: none;
-    background-image: radial-gradient(circle at center, var(--glyph-dim) 0 1px, transparent 1.5px);
-    background-size: var(--cell) var(--cell);
-    background-position: calc(var(--cell) / 2) calc(var(--cell) / 2);
-}
-.bc-glyphs[data-live]::before {
-    opacity: 0;
-}
-.bc-glyph-field {
+.bc-print {
     position: absolute;
     inset: 0;
     z-index: -1;
@@ -113,99 +109,19 @@ body {
     background-repeat: no-repeat;
 }
 .bc-frame-label {
+    letter-spacing: 0.01em;
     position: absolute;
     top: calc(-1 * var(--stroke-bold) / 2);
     left: var(--space-4);
     translate: 0 -50%;
     padding: 0 var(--space-2);
     background: var(--frame-bg, var(--surface-page));
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 600;
-    color: var(--ink);
-    white-space: nowrap;
-}
-
-/* ── Window: a system window with a striped title bar ── */
-.bc-window {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    border: var(--stroke-bold) solid var(--rule);
-    background: var(--surface-raised);
-    color: var(--ink);
-    box-shadow: var(--shadow-sm);
-}
-.bc-window-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: none;
-    height: 24px;
-    padding: 0 3px;
-    border-bottom: var(--stroke-bold) solid var(--rule);
-    background:
-        repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 2px) 0 5px / 100%
-            11px no-repeat content-box,
-        var(--surface-raised);
-}
-.bc-window-inactive .bc-window-bar {
-    background: var(--surface-raised);
-}
-.bc-window-close {
-    position: absolute;
-    left: var(--space-2);
-    top: 50%;
-    translate: 0 -50%;
-    width: 13px;
-    height: 13px;
-    padding: 0;
-    border: var(--stroke-bold) solid var(--rule);
-    background: var(--surface-raised);
-    box-shadow: 0 0 0 2px var(--surface-raised);
-    cursor: pointer;
-}
-.bc-window-close:hover,
-.bc-window-close:focus-visible {
-    outline: none;
-    background:
-        linear-gradient(45deg, transparent 44%, var(--rule) 44% 56%, transparent 56%),
-        linear-gradient(-45deg, transparent 44%, var(--rule) 44% 56%, transparent 56%),
-        var(--surface-raised);
-}
-.bc-window-title {
-    margin: 0;
-    padding: 0 var(--space-2);
-    max-width: calc(100% - 64px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background: var(--surface-raised);
-    font-family: var(--font-display);
-    font-size: 11px;
-    line-height: 16px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 20px;
     font-weight: 400;
-    color: var(--ink);
+    color: var(--ink-muted);
     white-space: nowrap;
-}
-.bc-window-meta {
-    position: absolute;
-    right: var(--space-2);
-    top: 50%;
-    translate: 0 -50%;
-    padding-left: var(--space-1);
-    background: var(--surface-raised);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    line-height: 16px;
-    color: var(--ink-subtle);
-}
-.bc-window-body {
-    flex: 1;
-    min-width: 0;
-    padding: var(--space-5);
 }
 
 /* ── Cursor and keys ──────────────────────────────── */
@@ -228,18 +144,21 @@ body {
     }
 }
 .bc-kbd {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    line-height: 16px;
     display: inline-flex;
     align-items: center;
     height: 20px;
     padding: 0 6px;
     border: 1px solid var(--line-strong);
     border-bottom-width: 2px;
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
     color: var(--ink-muted);
 }
 
-/* ── Button: a rounded rect with a bold rule; the default ringed ── */
+/* ── Button: a solid key, no outline ─────────────── */
 .bc-btn {
     --bc-btn-h: 40px;
     position: relative;
@@ -248,13 +167,13 @@ body {
     justify-content: center;
     gap: var(--space-2);
     height: var(--bc-btn-h);
-    padding: 0 var(--space-4);
-    border: var(--stroke-bold) solid var(--rule);
+    padding: 0 var(--space-5);
+    border: 0;
     border-radius: var(--radius-md);
     background: var(--surface-raised);
     color: var(--ink);
-    font-family: var(--font-mono);
-    font-size: 14px;
+    font-family: var(--font-sans);
+    font-size: 15px;
     line-height: 1;
     font-weight: 600;
     letter-spacing: -0.01em;
@@ -263,8 +182,8 @@ body {
     cursor: pointer;
     transition:
         background-color var(--duration-fast) var(--ease-out),
-        border-color var(--duration-fast) var(--ease-out),
-        color var(--duration-fast) var(--ease-out);
+        color var(--duration-fast) var(--ease-out),
+        translate var(--duration-fast) var(--ease-out);
 }
 .bc-btn svg {
     width: 16px;
@@ -275,78 +194,51 @@ body {
     outline: none;
     box-shadow: var(--shadow-focus);
 }
-/* pressing inverts, like a system button */
+/* pressing sinks the key a pixel */
 .bc-btn:active {
-    background: var(--surface-inverse);
-    border-color: var(--surface-inverse);
-    color: var(--ink-inverse);
+    translate: 0 1px;
 }
 .bc-btn-primary {
     background: var(--beam);
-    border-color: var(--rule);
     color: var(--on-beam);
-    box-shadow: var(--shadow-default);
 }
 .bc-btn-primary:hover {
     background: var(--beam-hover);
 }
-.bc-btn-primary:focus-visible {
-    box-shadow: var(--shadow-focus);
-}
 .bc-btn-secondary:hover {
-    background: var(--surface);
+    background: color-mix(in srgb, var(--surface-raised) 80%, var(--ink) 20%);
 }
 .bc-btn-tonal {
     background: var(--beam-soft);
-    border-color: transparent;
     color: var(--beam-ink);
 }
 .bc-btn-tonal:hover {
-    border-color: var(--beam-ink);
+    background: color-mix(in srgb, var(--beam) 24%, transparent);
 }
 .bc-btn-ghost {
     background: transparent;
-    border-color: transparent;
     color: var(--ink-muted);
 }
-.bc-btn-ghost::before,
-.bc-btn-ghost::after {
-    opacity: 0;
-    transition:
-        opacity var(--duration-fast) var(--ease-out),
-        translate var(--duration-fast) var(--ease-out);
-}
-.bc-btn-ghost::before {
-    content: "[";
-}
-.bc-btn-ghost::after {
-    content: "]";
-}
 .bc-btn-ghost:hover {
+    background: var(--surface-raised);
     color: var(--ink);
-}
-.bc-btn-ghost:hover::before {
-    opacity: 1;
-    translate: -2px 0;
-}
-.bc-btn-ghost:hover::after {
-    opacity: 1;
-    translate: 2px 0;
 }
 .bc-btn-danger {
     background: var(--danger);
-    border-color: var(--rule);
     color: var(--on-danger);
+}
+.bc-btn-danger:hover {
+    background: color-mix(in srgb, var(--danger) 85%, var(--ink) 15%);
 }
 .bc-btn-sm {
     --bc-btn-h: 32px;
     padding: 0 var(--space-3);
-    font-size: 13px;
+    font-size: 14px;
 }
 .bc-btn-lg {
     --bc-btn-h: 48px;
     padding: 0 var(--space-6);
-    font-size: 15px;
+    font-size: 16px;
 }
 .bc-btn-lg svg {
     width: 18px;
@@ -356,20 +248,18 @@ body {
     width: var(--bc-btn-h);
     padding: 0;
 }
-.bc-btn-icon::before,
-.bc-btn-icon::after {
-    content: none;
-}
+/* disabled: flat and quiet, never a different shape */
 .bc-btn:disabled,
 .bc-btn[aria-disabled="true"] {
-    opacity: 0.45;
+    background: var(--surface-raised);
+    color: var(--ink-subtle);
     cursor: not-allowed;
     pointer-events: none;
-    box-shadow: none;
 }
 
 /* ── Badge: [•] label ─────────────────────────────── */
 .bc-badge {
+    letter-spacing: 0.01em;
     --bc-badge: var(--ink-muted);
     display: inline-flex;
     align-items: center;
@@ -380,10 +270,10 @@ body {
     border-radius: var(--radius-sm);
     background: color-mix(in srgb, var(--bc-badge) 10%, transparent);
     color: var(--bc-badge);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1;
-    font-weight: 500;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
     white-space: nowrap;
 }
 .bc-badge-beam {
@@ -414,30 +304,30 @@ body {
     }
 }
 
-/* ── TextField: a > prompt and the text share one line box ── */
+/* ── TextField: a filled field; the > prompt and the text share one line ── */
 .bc-field {
     display: grid;
     gap: 6px;
     text-align: start;
 }
 .bc-field-label {
-    font-family: var(--font-mono);
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: 14px;
     line-height: 20px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--ink);
 }
-/* the row is the box: prompt and input are flex items on one centre line */
 .bc-input-row {
     display: flex;
     align-items: center;
     gap: var(--space-2);
     height: 40px;
     padding: 0 var(--space-3);
-    border: var(--stroke-bold) solid var(--line-strong);
+    border: var(--stroke) solid var(--line-strong);
+    border-radius: var(--radius-md);
     background: var(--surface-raised);
-    font-family: var(--font-mono);
-    font-size: 14px;
+    font-family: var(--font-sans);
+    font-size: 15px;
     line-height: 20px;
     transition:
         border-color var(--duration-fast) var(--ease-out),
@@ -446,14 +336,15 @@ body {
 .bc-input-row::before {
     content: ">";
     flex: none;
-    font-weight: 600;
+    font-family: var(--font-pixel);
+    font-size: 13px;
     color: var(--beam-ink);
 }
 .bc-input-row:hover {
     border-color: var(--ink-subtle);
 }
 .bc-input-row:focus-within {
-    border-color: var(--rule);
+    border-color: var(--beam);
     box-shadow: var(--shadow-focus);
 }
 .bc-input {
@@ -469,7 +360,6 @@ body {
     font: inherit;
     line-height: 20px;
     caret-color: var(--beam);
-    caret-shape: block;
 }
 .bc-input::placeholder {
     color: var(--ink-subtle);
@@ -483,7 +373,9 @@ body {
     color: var(--danger);
 }
 .bc-input-row:has(.bc-input:disabled) {
-    opacity: 0.45;
+    background: var(--surface);
+    border-color: var(--line);
+    color: var(--ink-subtle);
     cursor: not-allowed;
 }
 .bc-input:disabled {
@@ -492,27 +384,23 @@ body {
 .bc-field-hint,
 .bc-field-error {
     margin: 0;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 16px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 20px;
     color: var(--ink-subtle);
 }
 .bc-field-error {
     color: var(--danger);
 }
-.bc-field-error::before {
-    content: "! ";
-    font-weight: 700;
-}
 
-/* ── Switch: a ruled track and a square thumb ───── */
+/* ── Switch: a filled track and a square thumb ──── */
 .bc-switch {
     position: relative;
     display: inline-flex;
     align-items: center;
     gap: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: 14px;
     color: var(--ink);
     cursor: pointer;
 }
@@ -526,56 +414,53 @@ body {
 .bc-switch-track {
     display: inline-flex;
     box-sizing: border-box;
-    width: 44px;
-    height: 24px;
-    padding: 2px;
-    border: var(--stroke-bold) solid var(--rule);
+    width: 40px;
+    height: 22px;
+    padding: 3px;
     border-radius: var(--radius-md);
-    background: repeating-linear-gradient(-45deg, transparent 0 3px, var(--line) 3px 4px), var(--surface-raised);
+    background: var(--surface-raised);
     transition: background-color var(--duration-base) var(--ease-out);
 }
 .bc-switch-thumb {
     width: 16px;
     height: 16px;
     border-radius: 3px;
-    background: var(--rule);
-    transition: translate var(--duration-base) var(--ease-step);
+    background: var(--ink-subtle);
+    transition:
+        translate var(--duration-base) var(--ease-step),
+        background-color var(--duration-base) var(--ease-out);
 }
 .bc-switch input:checked + .bc-switch-track {
     background: var(--beam);
 }
 .bc-switch input:checked + .bc-switch-track .bc-switch-thumb {
-    translate: 20px 0;
+    translate: 18px 0;
     background: var(--on-beam);
 }
 .bc-switch input:focus-visible + .bc-switch-track {
     box-shadow: var(--shadow-focus);
 }
 .bc-switch:has(input:disabled) {
-    opacity: 0.45;
+    color: var(--ink-subtle);
     cursor: not-allowed;
 }
 
-/* ── Segmented: one ruled group; the chosen segment inverts ── */
+/* ── Segmented: a filled track; the chosen segment is solid ── */
 .bc-seg {
     display: inline-flex;
     align-items: stretch;
+    gap: 2px;
     margin: 0;
-    padding: 0;
+    padding: 3px;
     list-style: none;
-    border: var(--stroke-bold) solid var(--rule);
     border-radius: var(--radius-md);
-    overflow: hidden;
-    background: var(--surface-raised);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 600;
+    background: var(--surface);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
 }
 .bc-seg > * {
     display: flex;
-}
-.bc-seg > * + * {
-    border-left: var(--stroke-bold) solid var(--rule);
 }
 .bc-seg-item {
     display: inline-flex;
@@ -585,6 +470,7 @@ body {
     height: 30px;
     padding: 0 var(--space-3);
     border: 0;
+    border-radius: 4px;
     background: none;
     color: var(--ink-muted);
     font: inherit;
@@ -596,16 +482,15 @@ body {
 }
 .bc-seg-item:hover {
     color: var(--ink);
-    background: var(--surface);
 }
 .bc-seg-item:focus-visible {
-    outline: 2px solid var(--focus);
-    outline-offset: -4px;
+    outline: none;
+    box-shadow: var(--shadow-focus);
 }
 .bc-seg-item[aria-checked="true"],
 .bc-seg-item[aria-current="page"] {
-    background: var(--surface-inverse);
-    color: var(--ink-inverse);
+    background: var(--surface-raised);
+    color: var(--ink);
 }
 .bc-seg-full {
     display: flex;
@@ -660,11 +545,11 @@ body {
 }
 .bc-card-title {
     margin: 0;
-    font-family: var(--font-mono);
-    font-size: 17px;
-    line-height: 24px;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 26px;
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
 }
 .bc-card-body {
     margin: 0;
@@ -698,9 +583,11 @@ body {
     margin: 0;
 }
 .bc-stat-label {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 16px;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 20px;
     color: var(--ink-muted);
 }
 .bc-stat-row {
@@ -711,30 +598,35 @@ body {
 }
 .bc-stat-value {
     margin: 0;
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-size: 44px;
     line-height: 44px;
     font-variant-numeric: tabular-nums;
     color: var(--ink);
 }
 .bc-stat-unit {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    line-height: 16px;
     margin-left: 4px;
-    font-family: var(--font-mono);
-    font-size: 14px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
     color: var(--ink-muted);
 }
 .bc-stat-spark {
-    font-family: var(--font-mono);
-    font-size: 16px;
-    line-height: 16px;
-    letter-spacing: 0.05em;
+    font-family: var(--font-pixel);
+    font-size: 22px;
+    line-height: 22px;
+    letter-spacing: 0;
     color: var(--beam-ink);
     white-space: pre;
 }
 .bc-stat-caption {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 16px;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 20px;
     color: var(--ink-subtle);
 }
 
@@ -742,7 +634,7 @@ body {
 .bc-meter {
     display: grid;
     gap: var(--space-2);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
 }
 .bc-meter-head {
     display: flex;
@@ -755,12 +647,15 @@ body {
     color: var(--ink-muted);
 }
 .bc-meter-value {
-    font-weight: 600;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    font-weight: 400;
     font-variant-numeric: tabular-nums;
     color: var(--beam-ink);
 }
 .bc-meter-bar {
     display: block;
+    font-family: var(--font-pixel);
     overflow: hidden;
     font-size: 16px;
     line-height: 16px;
@@ -776,7 +671,7 @@ body {
     line-height: 24px;
 }
 .bc-meter-lg .bc-meter-value {
-    font-family: var(--font-display);
+    font-family: var(--font-pixel);
     font-size: 22px;
     font-weight: 400;
 }
@@ -794,24 +689,25 @@ body {
     text-align: start;
 }
 .bc-callout-icon {
+    letter-spacing: 0.01em;
     display: grid;
     place-items: center;
     width: 24px;
     height: 24px;
     background: var(--bc-co);
     color: var(--surface-page);
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: 13px;
-    font-weight: 700;
-    line-height: 1;
+    font-weight: 400;
+    line-height: 16px;
 }
 .bc-callout-title,
 .bc-callout-body {
     margin: 0;
 }
 .bc-callout-title {
-    font-family: var(--font-mono);
-    font-size: 14px;
+    font-family: var(--font-sans);
+    font-size: 15px;
     line-height: 24px;
     font-weight: 600;
     color: var(--ink);
@@ -855,11 +751,11 @@ body {
 }
 .bc-splash-title {
     margin: 0;
-    font-family: var(--font-display);
-    font-size: 44px;
-    line-height: 44px;
-    font-weight: 400;
-    letter-spacing: -0.01em;
+    font-family: var(--font-sans);
+    font-size: 48px;
+    line-height: 52px;
+    font-weight: 600;
+    letter-spacing: -0.035em;
     text-wrap: balance;
     color: var(--ink);
 }
@@ -893,33 +789,15 @@ body {
         padding: var(--space-6);
     }
     .bc-splash-title {
-        font-size: 33px;
-        line-height: 33px;
+        font-size: 32px;
+        line-height: 38px;
     }
 }
 
-/* ── Stage: the page's one glyph field ────────────── */
+/* ── Screens: sections that print their own scene ── */
 /* --bc-header: the height of a fixed header the screens leave room for. */
 :root {
     --bc-header: 64px;
-}
-.bc-stage {
-    position: fixed;
-    inset: 0 0 auto;
-    z-index: 0;
-    display: block;
-    width: 100%;
-    height: 100lvh;
-    pointer-events: none;
-}
-.bc-still {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    display: block;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
 }
 .bc-screen,
 .bc-pin {
@@ -935,13 +813,16 @@ body {
 .bc-pin-frame {
     position: sticky;
     top: 0;
+    isolation: isolate;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100svh;
     padding: calc(var(--bc-header) + 48px) 0 112px;
+    /* a pinned frame holds still over the scrolling page: it draws its own dots */
+    background: var(--surface-page);
 }
-/* pinned screens scroll for longer while the stage runs; one step per item */
+/* pinned screens scroll for longer while motion runs; one step per item */
 .motion .bc-pin {
     height: 210vh;
 }
@@ -959,17 +840,24 @@ body {
         padding: calc(var(--bc-header) + 48px) 0 96px;
     }
 }
+/* reading pages: a screen as tall as its content */
+.bc-screen-fit {
+    display: block;
+    min-height: 0;
+    padding: var(--space-16) 0;
+}
 
 /* ── Kicker: 01 —— What we do ─────────────────────── */
 .bc-kicker {
+    letter-spacing: 0.01em;
     display: flex;
     align-items: center;
     gap: var(--space-3);
     margin: 0;
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: 13px;
     line-height: 20px;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--beam-ink);
 }
 .bc-kicker-n {
@@ -988,11 +876,11 @@ body {
 /* ── LitLine: words light up with the pin's --p ──── */
 .bc-lit {
     margin: 0;
-    font-family: var(--font-display);
-    font-size: 66px;
-    line-height: 77px;
-    font-weight: 400;
-    letter-spacing: -0.01em;
+    font-family: var(--font-sans);
+    font-size: 56px;
+    line-height: 64px;
+    font-weight: 600;
+    letter-spacing: -0.04em;
     text-wrap: balance;
     color: var(--ink);
 }
@@ -1005,13 +893,13 @@ body {
 @media (max-width: 1199px) {
     .bc-lit {
         font-size: 44px;
-        line-height: 55px;
+        line-height: 50px;
     }
 }
 @media (max-width: 767px) {
     .bc-lit {
-        font-size: 33px;
-        line-height: 44px;
+        font-size: 30px;
+        line-height: 36px;
     }
 }
 
@@ -1030,8 +918,8 @@ body {
     gap: var(--space-2);
     padding-bottom: 2px;
     border-bottom: var(--stroke-bold) solid currentColor;
-    font-family: var(--font-mono);
-    font-size: 14px;
+    font-family: var(--font-sans);
+    font-size: 15px;
     font-weight: 600;
     color: var(--beam-ink);
     text-decoration: none;
@@ -1061,19 +949,22 @@ body {
 .bc-rail ol {
     display: grid;
     gap: 2px;
+
     margin: 0;
     padding: 0;
     list-style: none;
 }
 .bc-rail a {
+    letter-spacing: 0.01em;
+    font-weight: 400;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: var(--space-3);
     padding: 5px 0;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 16px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 20px;
     color: var(--ink-subtle);
     text-decoration: none;
 }
@@ -1110,8 +1001,6 @@ body {
 /* ── Reduced motion ───────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
     .bc-btn,
-    .bc-btn::before,
-    .bc-btn::after,
     .bc-input-row,
     .bc-switch-thumb,
     .bc-seg-item,

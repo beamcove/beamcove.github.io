@@ -8,7 +8,7 @@ import { Button, ScrambleText } from "@/design-system";
 /** The home page's first screen: the tagline, alone, with the beam sweeping. */
 export function Hero() {
     return (
-        <Scene name="hero" className="hero" id="top" aria-labelledby="hero-title">
+        <Scene name="hero" beam className="hero" id="top" aria-labelledby="hero-title">
             <div className="hero-copy">
                 <p className="hero-eyebrow" data-quiet>
                     Beamcove is a technology company

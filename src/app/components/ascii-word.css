@@ -1,4 +1,4 @@
-/* AsciiWord: a word drawn on a 5×7 grid of glyph pixels. Loaded by the
+/* AsciiWord: a word drawn on a 5×7 grid of glyph pixels, in the grid ramp. Loaded by the
    component itself, so it works on any page. Tokens only. */
 .ascii-word {
     container-type: inline-size;
@@ -23,24 +23,26 @@
     inset: 44%;
     background: var(--glyph-dim);
 }
-.g-block::before {
-    inset: 6%;
-    background: currentColor;
+/* the grid ramp, light to dense: + ✕ ▢ ⊠ */
+.g-plus::before,
+.g-cross::before {
+    inset: 18%;
+    background:
+        linear-gradient(currentColor, currentColor) center / 0.16em 100% no-repeat,
+        linear-gradient(currentColor, currentColor) center / 100% 0.16em no-repeat;
 }
-.g-ring::before,
-.g-target::before {
-    border: 0.11em solid currentColor;
-    border-radius: 50%;
+.g-cross::before {
+    inset: 20%;
+    rotate: 45deg;
+    background:
+        linear-gradient(currentColor, currentColor) center / 0.18em 100% no-repeat,
+        linear-gradient(currentColor, currentColor) center / 100% 0.18em no-repeat;
 }
-.g-target::after {
-    content: "";
-    position: absolute;
-    inset: 40%;
-    border-radius: 50%;
-    background: currentColor;
+.g-square::before {
+    border: 0.12em solid currentColor;
 }
 .g-boxx::before {
-    border: 0.11em solid currentColor;
+    border: 0.12em solid currentColor;
     background:
         linear-gradient(
             45deg,
@@ -55,10 +57,15 @@
             transparent 0
         );
 }
-.g-boxdot::before {
-    border: 0.11em solid currentColor;
-    padding: 18%;
-    background: currentColor content-box;
+/* the faint field around a letter: small + in the resting-dot colour */
+.g-halo {
+    color: var(--line);
+}
+.g-halo::before {
+    inset: 34%;
+    background:
+        linear-gradient(currentColor, currentColor) center / 0.1em 100% no-repeat,
+        linear-gradient(currentColor, currentColor) center / 100% 0.1em no-repeat;
 }
 .ink-a {
     color: var(--ink-a);
