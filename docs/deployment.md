@@ -42,8 +42,8 @@ cancels superseded in-flight runs, so rapid pushes deploy only the latest commit
 
 1. The _Deploy_ run is green in the Actions tab.
 2. beamcove.com serves the new build (hard-refresh; HTML is cached briefly).
-3. Spot-check: fonts (Onest / JetBrains Mono), the hero splash's grain and dot
-   grid, icons, the newsletter field, the light/dark toggle, a couple of inner
+3. Spot-check: fonts (Departure Mono / JetBrains Mono / Onest), the hero glyph
+   field and beam, icons, the newsletter field, the theme picker, a couple of inner
    pages (e.g. `/projects/`, `/privacy/`) and a missing path (should show “Off the
    map”).
 

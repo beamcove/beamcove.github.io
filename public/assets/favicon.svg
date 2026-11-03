@@ -1,10 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Ink & tide: a blue triangle and a red bar on paper, overprinting to navy where they cross. -->
-  <defs>
-    <clipPath id="tri"><polygon points="14,10 50,10 32,46"/></clipPath>
-  </defs>
-  <rect width="64" height="64" rx="16" fill="#f7f6f2"/>
-  <polygon points="14,10 50,10 32,46" fill="#0a6cbd"/>
-  <rect x="10" y="36" width="44" height="14" rx="7" fill="#ff4a3d"/>
-  <rect x="10" y="36" width="44" height="14" rx="7" fill="#2a3a8c" clip-path="url(#tri)"/>
+  <!-- Signal: the beam cursor (lime) crossed by a pink ink block, overprinting (screen) where they meet. -->
+  <rect width="64" height="64" rx="12" fill="#08090b"/>
+  <rect x="14" y="10" width="20" height="40" fill="#c8ff1a"/>
+  <rect x="28" y="32" width="24" height="22" fill="#ff3d9a"/>
+  <rect x="28" y="32" width="6" height="18" fill="#ffffa4"/>
 </svg>

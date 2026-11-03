@@ -1,7 +1,6 @@
 import { Dispatches } from "@/app/components/dispatches";
 import { KindGrid } from "@/app/components/kind-grid";
 import { PageHero } from "@/app/components/page-hero";
-import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { Badge, Card } from "@/design-system";
@@ -10,12 +9,7 @@ import { Badge, Card } from "@/design-system";
 export function ProjectsPage() {
     return (
         <SiteLayout>
-            <PageHero
-                tone="lagoon"
-                eyebrow="Projects"
-                title="Our projects."
-                art={<RisoArt name="projects" className="page-splash-art" />}
-            >
+            <PageHero art="projects" eyebrow="Projects" title="Our projects.">
                 Everything we’re working on will show up here when it’s ready, not a day before.
             </PageHero>
 

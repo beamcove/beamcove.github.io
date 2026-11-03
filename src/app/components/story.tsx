@@ -2,7 +2,7 @@ import { MoreLink } from "@/app/components/more-link";
 import { ROUTES } from "@/content/site";
 import { STORY, STORY_MARK } from "@/content/values";
 
-/** Landing abstract of the About page: one statement, its key phrase in red ink. */
+/** Landing abstract of the About page: one statement, its key phrase inverted like a selection. */
 export function Story() {
     const text = STORY[0] ?? "";
     const at = text.indexOf(STORY_MARK);

@@ -1,39 +1,40 @@
 import type { ReactNode } from "react";
 
-import { Splash, type SplashTone } from "@/design-system";
+import { ART, type GlyphArtName } from "@/app/components/glyph-compositions";
+import { ScrambleText, Splash } from "@/design-system";
 
 /**
- * The top of an inner page: a compact Splash, the page's one printed moment,
- * with the fitted dot grid. Overprint headers carry riso `art` instead of the
- * hero's triangle and bar, which stay the home page's own.
+ * The top of an inner page: a compact Splash, the page's one glyph field,
+ * with the title decoding in on load.
  */
 export function PageHero({
     eyebrow,
     title,
-    tone = "tide",
-    meta,
     art,
+    meta,
     children,
 }: {
     eyebrow: string;
     title: string;
-    tone?: Exclude<SplashTone, "night">;
+    /** The page's glyph composition. */
+    art: GlyphArtName;
     meta?: ReactNode;
-    /** Printed art on the right; replaces the overprint triangle and bar. */
-    art?: ReactNode;
     children?: ReactNode;
 }) {
+    const path = `~/${eyebrow.toLowerCase().replace(/\s+/g, "-")}`;
     return (
         <div className="container page-hero" id="top">
             <Splash
-                tone={tone}
                 className="page-splash"
-                data-theme="light"
+                field={ART[art]}
                 titleAs="h1"
                 eyebrow={eyebrow}
-                title={title}
-                art={art}
-                shapes={false}
+                title={<ScrambleText text={title} trigger="mount" />}
+                art={
+                    <div className="splash-hud" aria-hidden="true">
+                        <span>{path}</span>
+                    </div>
+                }
             >
                 {children && <p className="bc-splash-body">{children}</p>}
                 {meta && <div className="page-meta">{meta}</div>}

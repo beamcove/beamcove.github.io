@@ -15,7 +15,7 @@ export function HomePage() {
             <Ticker />
             <WhatWeDo />
             <Story />
-            {/* Printed blocks (manifesto, dispatches) never sit back to back. */}
+            {/* Glyph splashes (manifesto, dispatches) never sit back to back. */}
             <Manifesto />
             <Questions />
             <Dispatches />

@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
     Source for public/assets/apple-touch-icon.png (180×180). The favicon's
-    triangle and bar on a full paper square: iOS rounds the corners itself.
+    cursor and ink block on a full black square: iOS rounds the corners itself.
     Not part of the site build; regenerate with `npm run social-card`.
 -->
 <html lang="en">
@@ -23,21 +23,10 @@
     </head>
     <body>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="180" height="180">
-            <defs>
-                <clipPath id="tri"><polygon points="14,10 50,10 32,46" /></clipPath>
-            </defs>
-            <rect width="64" height="64" fill="#f7f6f2" />
-            <polygon points="14,10 50,10 32,46" fill="#0a6cbd" />
-            <rect x="10" y="36" width="44" height="14" rx="7" fill="#ff4a3d" />
-            <rect
-                x="10"
-                y="36"
-                width="44"
-                height="14"
-                rx="7"
-                fill="#2a3a8c"
-                clip-path="url(#tri)"
-            />
+            <rect width="64" height="64" fill="#08090b" />
+            <rect x="14" y="10" width="20" height="40" fill="#c8ff1a" />
+            <rect x="28" y="32" width="24" height="22" fill="#ff3d9a" />
+            <rect x="28" y="32" width="6" height="18" fill="#ffffa4" />
         </svg>
     </body>
 </html>

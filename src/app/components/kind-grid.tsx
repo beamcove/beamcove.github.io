@@ -1,21 +1,23 @@
 import type { CSSProperties } from "react";
 
-import { RisoArt } from "@/app/components/riso-art";
+import { ART } from "@/app/components/glyph-compositions";
 import { KINDS } from "@/content/fleet";
-import { Card } from "@/design-system";
+import { Card, GlyphField } from "@/design-system";
 
-/** Each kind of venture as a card topped by its own riso print on dotted paper. */
+/** Each kind of venture as a card topped by its own two-ink glyph strip. */
 export function KindGrid() {
     return (
         <ul className="kind-grid">
             {KINDS.map((kind, i) => (
                 <li key={kind.title} data-reveal style={{ "--d": i } as CSSProperties}>
-                    <Card variant="plain" className="kind-card">
-                        <div className="kind-art bc-dots" data-theme="light">
-                            <RisoArt name={kind.art} />
-                        </div>
-                        <h3 className="bc-card-title">{kind.title}</h3>
-                        <p className="bc-card-body">{kind.body}</p>
+                    <Card
+                        variant="art"
+                        className="kind-card"
+                        media={<GlyphField composition={ART[kind.art]} quiet={false} />}
+                        eyebrow={`0${i + 1}`}
+                        title={kind.title}
+                    >
+                        {kind.body}
                     </Card>
                 </li>
             ))}

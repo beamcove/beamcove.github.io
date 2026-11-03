@@ -1,7 +1,6 @@
 import { Dispatches } from "@/app/components/dispatches";
 import { LogList } from "@/app/components/log-list";
 import { PageHero } from "@/app/components/page-hero";
-import { RisoArt } from "@/app/components/riso-art";
 import { SiteLayout } from "@/app/components/site-layout";
 import { LOGBOOK, type LogEntry } from "@/content/logbook";
 
@@ -17,12 +16,7 @@ function byYear(entries: LogEntry[]) {
 export function UpdatesPage() {
     return (
         <SiteLayout>
-            <PageHero
-                tone="sky"
-                eyebrow="Updates"
-                title="What’s new."
-                art={<RisoArt name="updates" className="page-splash-art" />}
-            >
+            <PageHero art="updates" eyebrow="Updates" title="What’s new.">
                 Launches, milestones and the occasional bit of news, newest first.
             </PageHero>
 

@@ -1,20 +1,26 @@
 import { ArrowRight } from "lucide";
 
-import { BeamDots } from "@/app/components/beam-dots";
+import { ART } from "@/app/components/glyph-compositions";
 import { Icon } from "@/app/components/icon";
 import { ROUTES, SITE } from "@/content/site";
-import { Button, Splash } from "@/design-system";
+import { Button, ScrambleText, Splash } from "@/design-system";
 
 export function Hero() {
     return (
         <div className="container hero-wrap" id="top">
             <Splash
                 className="hero"
-                data-theme="light"
+                field={ART.hero}
+                beam
                 titleAs="h1"
                 eyebrow="Technology company"
-                title={SITE.tagline}
-                art={<BeamDots />}
+                title={<ScrambleText text={SITE.tagline} trigger="mount" duration={1200} />}
+                art={
+                    <div className="splash-hud" aria-hidden="true">
+                        <span>beamcove.com</span>
+                        <span>◎ beam 01 · sweep 3.6s</span>
+                    </div>
+                }
                 actions={
                     <>
                         <Button

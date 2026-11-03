@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
 import { PageHero } from "@/app/components/page-hero";
-import { RisoArt } from "@/app/components/riso-art";
 import { SiteLayout } from "@/app/components/site-layout";
 import { formatDate, SITE } from "@/content/site";
 import { Callout } from "@/design-system";
@@ -29,8 +28,7 @@ export function LegalPage({
     return (
         <SiteLayout>
             <PageHero
-                tone="tide"
-                art={<RisoArt name="legal" className="page-splash-art" />}
+                art="legal"
                 eyebrow={eyebrow}
                 title={title}
                 meta={

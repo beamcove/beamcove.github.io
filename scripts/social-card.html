@@ -4,12 +4,10 @@
     Not part of the site build. To regenerate, run the dev server and then:
     npm run social-card
 -->
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="signal">
     <head>
         <meta charset="utf-8" />
         <title>Social card</title>
-        <link rel="stylesheet" href="/src/design-system/tokens.css" />
-        <link rel="stylesheet" href="/src/design-system/components.css" />
         <style>
             html,
             body {
@@ -17,45 +15,12 @@
                 width: 1200px;
                 height: 630px;
                 overflow: hidden;
-                background: var(--surface);
-            }
-            .card.bc-splash {
-                position: absolute;
-                inset: 32px;
-                padding: 64px 72px;
-                display: flex;
-            }
-            .card .bc-splash-content {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                max-width: 600px;
-            }
-            .card .bc-splash-title {
-                font-size: 68px;
-                line-height: 1.02;
-                letter-spacing: -0.045em;
-            }
-            .card .wordmark {
-                font-size: 34px;
-                font-weight: 600;
-                letter-spacing: -0.045em;
-                color: var(--ink);
             }
         </style>
     </head>
     <body>
-        <section class="card bc-splash bc-on-splash bc-tone-overprint bc-dotfield">
-            <div class="bc-splash-shapes" aria-hidden="true">
-                <i class="tri"></i><i class="bar"></i>
-            </div>
-            <div class="bc-splash-content">
-                <div>
-                    <p class="bc-eyebrow">Technology company</p>
-                    <h1 class="bc-splash-title">%SITE_TAGLINE%</h1>
-                </div>
-                <span class="wordmark">Beamcove</span>
-            </div>
-        </section>
+        <div id="root"></div>
+        <!-- the tagline comes from SITE, through social-card.tsx -->
+        <script type="module" src="/scripts/social-card.tsx"></script>
     </body>
 </html>

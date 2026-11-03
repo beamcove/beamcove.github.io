@@ -8,7 +8,7 @@ export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     error?: ReactNode;
 }
 
-/** Labelled 40px input with a crisp 1px outline and a 2px focus outline. */
+/** A labelled 40px input behind a > prompt, with a block caret. */
 export function TextField({ label, hint, error, className, id, ...rest }: TextFieldProps) {
     const autoId = useId();
     const fieldId = id ?? autoId;
@@ -19,13 +19,15 @@ export function TextField({ label, hint, error, className, id, ...rest }: TextFi
             <label className="bc-field-label" htmlFor={fieldId}>
                 {label}
             </label>
-            <input
-                className="bc-input"
-                id={fieldId}
-                aria-invalid={error ? "true" : undefined}
-                aria-describedby={describedBy}
-                {...rest}
-            />
+            <span className="bc-input-row">
+                <input
+                    className="bc-input"
+                    id={fieldId}
+                    aria-invalid={error ? "true" : undefined}
+                    aria-describedby={describedBy}
+                    {...rest}
+                />
+            </span>
             {error ? (
                 <p className="bc-field-error" id={`${fieldId}-err`}>
                     {error}

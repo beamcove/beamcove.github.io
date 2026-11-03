@@ -2,7 +2,6 @@ import type { CSSProperties } from "react";
 
 import { MoreLink } from "@/app/components/more-link";
 import { PageHero } from "@/app/components/page-hero";
-import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { ROUTES, SITE } from "@/content/site";
@@ -20,12 +19,7 @@ const CREW = [
 export function AboutPage() {
     return (
         <SiteLayout>
-            <PageHero
-                tone="tide"
-                eyebrow="About"
-                title="Hello, we’re Beamcove."
-                art={<RisoArt name="about" className="page-splash-art" />}
-            >
+            <PageHero art="about" eyebrow="About" title="Hello, we’re Beamcove.">
                 Where we came from, where we’re headed, and who’s steering.
             </PageHero>
 

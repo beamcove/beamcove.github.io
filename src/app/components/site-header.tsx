@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide";
 
 import { Icon } from "@/app/components/icon";
-import { ThemeToggle } from "@/app/components/theme-toggle";
+import { ThemePicker } from "@/app/components/theme-picker";
 import { NAV, ROUTES } from "@/content/site";
 import { Button } from "@/design-system";
 
@@ -36,9 +36,10 @@ export function SiteHeader() {
             <div className="container site-header-inner">
                 <a className="wordmark" href={ROUTES.home}>
                     Beamcove
+                    <span className="bc-cursor" aria-hidden="true" />
                 </a>
                 <nav aria-label="Main" className="site-nav">
-                    {/* The design system's segmented track: the current page is printed in blue. */}
+                    {/* The design system's segmented tabs: the current page inverts. */}
                     <ul className="bc-seg">
                         {NAV.map((link) => (
                             <li key={link.href}>
@@ -54,7 +55,7 @@ export function SiteHeader() {
                     </ul>
                 </nav>
                 <div className="site-header-actions">
-                    <ThemeToggle />
+                    <ThemePicker />
                     <Button
                         variant="secondary"
                         size="sm"

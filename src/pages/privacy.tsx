@@ -37,7 +37,7 @@ const SECTIONS: LegalSection[] = [
                     are served from our own domain, so loading a page doesn’t contact anyone else.
                 </p>
                 <p>
-                    <strong>On your device:</strong> if you switch to the dark theme, your browser
+                    <strong>On your device:</strong> if you pick a color theme, your browser
                     remembers that choice in local storage under <code>bc-theme</code>. It never
                     leaves your device, and clearing your site data removes it.
                 </p>

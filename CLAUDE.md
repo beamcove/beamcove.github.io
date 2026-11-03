@@ -29,16 +29,21 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 2. **Design system is vendored** in `src/design-system/`. `tokens.css`,
    `components.css` and `fonts/` are verbatim copies from the sibling
    `design-system` repo (prettier-ignored) — re-copy, don't hand-edit. Follow its
-   rules: tokens never hex, one printed splash per view, sentence case.
-   Riso art (`riso-compositions.ts`): shapes print in two different full inks (tints
-   are for blooms), every overlap multiplies (no knockouts), and each card has
-   its own ink pair. Shapes cross a little, never one inside another. White
-   is an opaque ink printed first, under the rest. `riso-compositions.test.ts` checks it.
-3. **Splashes carry `data-theme="light"`** — they print on paper in both themes.
+   rules: tokens never hex, one glyph splash per view, sentence case.
+   Glyph art (`glyph-compositions.ts`) names ink **slots** (`a`–`e`), never colours:
+   two or three different inks per composition, blocks only in those inks, two
+   inks cross a little but a block never sits inside another and same-ink blocks
+   never overlap; each kind card has its own ink pair. `glyph-compositions.test.ts`
+   checks it.
+3. **Themes** are `signal` (default), `phosphor`, `amber`, `ultraviolet`, `paper`,
+   listed in `src/app/utils/theme.ts` and again in `public/boot.js` (keep them in
+   step). Splashes follow the active theme; copy never sits on ink (GlyphField
+   thins glyphs and trims blocks behind `.bc-splash-content`).
 4. **Motion is opt-in via `html.motion`** (set by `public/boot.js`). Scope every
    hidden/start state under `.motion` so content shows without JS or with
-   reduced motion. Splash ink drifts (from the design system); never move the
-   shapes or text. Don't advertise crew size or location outside the legal pages.
+   reduced motion. Glyph fields shimmer, the hero beam sweeps and titles decode
+   only under it; otherwise they draw one still frame. Don't advertise crew size
+   or location outside the legal pages.
 5. **A new page touches five places**: `ROUTES` in `src/content/site.ts`,
    `src/pages/`, `src/entries/`, `<name>/index.html`, and `PAGES` in
    `vite.config.ts` (+ the page list in `src/pages/pages.test.tsx` and a line in
@@ -65,9 +70,11 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
   (routes, nav, fleet, logbook, values, faq). Edit facts there, not in sections.
   No project is public yet: don't list one (a test guards this).
 - `src/app/components/` — layout (site-layout/header/footer, page-hero,
-  legal-page) and sections (hero, story, manifesto, …), plus beam-dots
-  (hero lighthouse canvas), icon (renders Lucide icon nodes), brand (social SVGs).
-- `src/design-system/` — Ink & tide tokens, CSS, fonts, typed component port.
+  legal-page) and sections (hero, story, manifesto, …), plus glyph-compositions
+  (every splash's art), ascii-word (glyph wordmark), theme-picker, icon (renders
+  Lucide icon nodes), brand (social SVGs).
+- `src/design-system/` — Signal tokens, CSS, fonts, typed component port and the
+  glyph engine (`glyph/`). `/design/` shows every piece of it.
 - `public/` — copied verbatim to dist (boot.js, CNAME, robots.txt, sitemap.xml,
   favicon, touch icon, social card). `scripts/` renders the two PNGs.
 

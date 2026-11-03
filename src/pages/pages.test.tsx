@@ -5,6 +5,7 @@ import { ROUTES, SITE } from "@/content/site";
 import { AboutPage } from "@/pages/about";
 import { BrandPage } from "@/pages/brand";
 import { ContactPage } from "@/pages/contact";
+import { DesignPage } from "@/pages/design";
 import { HomePage } from "@/pages/home";
 import { NotFoundPage } from "@/pages/not-found";
 import { PrivacyPage } from "@/pages/privacy";
@@ -19,6 +20,7 @@ const PAGES: [string, () => ReactElement][] = [
     [ROUTES.updates, () => <UpdatesPage />],
     [ROUTES.contact, () => <ContactPage />],
     [ROUTES.brand, () => <BrandPage />],
+    [ROUTES.design, () => <DesignPage />],
     [ROUTES.privacy, () => <PrivacyPage />],
     [ROUTES.terms, () => <TermsPage />],
     ["/404.html", () => <NotFoundPage />],

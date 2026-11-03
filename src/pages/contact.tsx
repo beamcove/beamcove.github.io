@@ -5,7 +5,6 @@ import { BrandIcon } from "@/app/components/brand";
 import { FaqList } from "@/app/components/faq-list";
 import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
-import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { QUESTIONS } from "@/content/faq";
@@ -19,12 +18,7 @@ const BEST_FOR: Record<string, string> = {
 export function ContactPage() {
     return (
         <SiteLayout>
-            <PageHero
-                tone="meadow"
-                eyebrow="Contact"
-                title="Say hello."
-                art={<RisoArt name="contact" className="page-splash-art" />}
-            >
+            <PageHero art="contact" eyebrow="Contact" title="Say hello.">
                 Questions, partnerships, press, or just a kind word: here’s how to reach us.
             </PageHero>
 

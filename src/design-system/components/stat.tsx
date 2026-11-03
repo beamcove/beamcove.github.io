@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { sparkline } from "../glyph/engine";
 import { Badge } from "./badge";
 import { cx } from "./cx";
 
@@ -9,12 +10,14 @@ export interface StatProps {
     unit?: ReactNode;
     delta?: ReactNode;
     trend?: "up" | "down" | "flat";
+    /** Recent values, drawn as a ▁▂▃▅▇ sparkline. */
+    series?: number[];
     caption?: ReactNode;
     className?: string;
 }
 
-/** A key number with label, unit, trend and caption. */
-export function Stat({ value, label, unit, delta, trend, caption, className }: StatProps) {
+/** A key number in the display face, with label, unit, trend and sparkline. */
+export function Stat({ value, label, unit, delta, trend, series, caption, className }: StatProps) {
     const tone = trend === "down" ? "danger" : trend === "up" ? "success" : "neutral";
     const arrow = trend === "up" ? "↑ " : trend === "down" ? "↓ " : "";
     return (
@@ -32,6 +35,11 @@ export function Stat({ value, label, unit, delta, trend, caption, className }: S
                     </Badge>
                 )}
             </div>
+            {series && series.length > 1 && (
+                <p className="bc-stat-spark" aria-hidden="true">
+                    {sparkline(series)}
+                </p>
+            )}
             {caption && <p className="bc-stat-caption">{caption}</p>}
         </div>
     );

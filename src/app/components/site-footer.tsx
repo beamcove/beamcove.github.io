@@ -1,5 +1,4 @@
-import type { CSSProperties } from "react";
-
+import { AsciiWord } from "@/app/components/ascii-word";
 import { BrandIcon } from "@/app/components/brand";
 import { FOOTER_GROUPS, ROUTES, SITE, SOCIALS } from "@/content/site";
 
@@ -38,19 +37,13 @@ export function SiteFooter() {
                         ))}
                     </nav>
                 </div>
-                <p className="footer-wordmark" aria-hidden="true" data-reveal="fill">
-                    {[..."Beamcove"].map((letter, i) => (
-                        <span key={i} style={{ "--i": i } as CSSProperties}>
-                            {letter}
-                        </span>
-                    ))}
-                </p>
+                <AsciiWord text="Beamcove" className="footer-wordmark" data-reveal="fill" />
                 <div className="footer-bottom">
                     <span className="caption muted">
                         © {new Date().getFullYear()} {SITE.legalName} ·{" "}
                         <a href={ROUTES.privacy}>Privacy</a> · <a href={ROUTES.terms}>Terms</a>
                     </span>
-                    <span className="mono muted">beamcove.com</span>
+                    <span className="mono muted">beamcove.com · signal</span>
                 </div>
             </div>
         </footer>

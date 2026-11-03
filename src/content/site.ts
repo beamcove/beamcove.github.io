@@ -9,6 +9,7 @@ export const ROUTES = {
     updates: "/updates/",
     contact: "/contact/",
     brand: "/brand/",
+    design: "/design/",
     privacy: "/privacy/",
     terms: "/terms/",
 } as const;
@@ -20,6 +21,7 @@ export const NAV: { href: Route; label: string }[] = [
     { href: ROUTES.about, label: "About" },
     { href: ROUTES.updates, label: "Updates" },
     { href: ROUTES.contact, label: "Contact" },
+    { href: ROUTES.design, label: "Design" },
 ];
 
 export const FOOTER_GROUPS: { title: string; links: { href: string; label: string }[] }[] = [
@@ -30,6 +32,7 @@ export const FOOTER_GROUPS: { title: string; links: { href: string; label: strin
             { href: `${ROUTES.about}#values`, label: "Values" },
             { href: ROUTES.updates, label: "Updates" },
             { href: ROUTES.brand, label: "Brand kit" },
+            { href: ROUTES.design, label: "Design system" },
         ],
     },
     {

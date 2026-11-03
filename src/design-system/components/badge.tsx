@@ -9,7 +9,7 @@ export interface BadgeProps {
     children: ReactNode;
 }
 
-/** 24px status or category pill. `flare` is red ink with speckle, for “New”. */
+/** A 22px mono status tag. `flare` is a solid accent block, for “Now”. */
 export function Badge({ tone = "neutral", dot, className, children }: BadgeProps) {
     return (
         <span className={cx("bc-badge", `bc-badge-${tone}`, className)}>

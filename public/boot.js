@@ -1,11 +1,16 @@
 // Runs before first paint on every page (loaded synchronously from <head>).
-// Light unless the visitor saved a dark choice, and flag motion so reveal
+// Restores the visitor's colour theme (Signal unless they picked another; the
+// old light/dark choices map to Paper/Signal), and flags motion so reveal
 // animations never hide content where they can't run.
 (function () {
     var root = document.documentElement;
-    var theme = "light";
+    var themes = ["signal", "phosphor", "amber", "ultraviolet", "paper"];
+    var legacy = { dark: "signal", light: "paper" };
+    var theme = "signal";
     try {
-        if (localStorage.getItem("bc-theme") === "dark") theme = "dark";
+        var saved = localStorage.getItem("bc-theme");
+        if (saved && legacy[saved]) saved = legacy[saved];
+        if (saved && themes.indexOf(saved) >= 0) theme = saved;
     } catch (e) {}
     root.dataset.theme = theme;
     if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {

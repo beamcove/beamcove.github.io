@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, Copy } from "lucide";
 
+import { AsciiWord } from "@/app/components/ascii-word";
 import { Icon } from "@/app/components/icon";
 import { PageHero } from "@/app/components/page-hero";
-import { RisoArt } from "@/app/components/riso-art";
 import { SectionHead } from "@/app/components/section-head";
 import { SiteLayout } from "@/app/components/site-layout";
 import { SITE } from "@/content/site";
 import { Button, Card } from "@/design-system";
 
 /**
- * The marketing face of Ink & tide. The rules here follow the design-system
+ * The marketing face of Signal. The rules here follow the design-system
  * repo (beamcove/design-system); the copy follows the company's About page.
  */
 const BOILERPLATE = [
@@ -25,56 +25,50 @@ const BOILERPLATE = [
     },
 ];
 
-const SWATCHES = [
+const SWATCHES: { group: string; items: { name: string; token: string; use: string }[] }[] = [
     {
-        name: "Paper",
-        token: "surface",
-        hex: "#F7F6F2",
-        use: "Printing paper. Splashes and art print on it.",
+        group: "Interface",
+        items: [
+            {
+                name: "Canvas",
+                token: "surface-page",
+                use: "The page: a terminal canvas. In Paper, the paper.",
+            },
+            { name: "Text", token: "ink", use: "Text and the wordmark." },
+            {
+                name: "Beam",
+                token: "beam",
+                use: "The action ink: primary buttons, the cursor, links.",
+            },
+            { name: "Flare", token: "flare", use: "The accent, once per view. Never a status." },
+        ],
     },
     {
-        name: "Stone",
-        token: "surface-page",
-        hex: "#F0EFED",
-        use: "The page, a step below the white cards.",
-    },
-    {
-        name: "Ink",
-        token: "ink",
-        hex: "#1C2554",
-        use: "Text and the wordmark. A deep navy, never black.",
-    },
-    {
-        name: "Riso blue",
-        token: "print-blue",
-        hex: "#0A6CBD",
-        use: "The action ink: buttons, links and focus.",
-    },
-    {
-        name: "Fluorescent red",
-        token: "print-red",
-        hex: "#FF4A3D",
-        use: "The second ink: beacons, blooms and the bar. Never a status.",
-    },
-    {
-        name: "Sun yellow",
-        token: "ink-yellow",
-        hex: "#FFD93D",
-        use: "Illustration and splash ink: shapes, the sun bloom. Never text.",
-    },
-    {
-        name: "Meadow green",
-        token: "ink-green",
-        hex: "#00A36C",
-        use: "Illustration and splash ink: shapes, meadow and lagoon. Never a status.",
-    },
-    {
-        name: "Overprint",
-        token: "overprint",
-        hex: "#2A3A8C",
-        use: "The navy where blue prints over red.",
+        group: "Glyph inks",
+        items: [
+            { name: "Ink A", token: "ink-a", use: "Glyph art only. The hero’s main ink." },
+            { name: "Ink B", token: "ink-b", use: "Glyph art only." },
+            { name: "Ink C", token: "ink-c", use: "Glyph art only." },
+            { name: "Ink D", token: "ink-d", use: "Glyph art only." },
+            { name: "Ink E", token: "ink-e", use: "Glyph art only." },
+        ],
     },
 ];
+
+/** A token's value in the current theme, read live so it follows the theme picker. */
+function TokenValue({ token }: { token: string }) {
+    const [value, setValue] = useState("");
+    useEffect(() => {
+        const read = () =>
+            setValue(
+                getComputedStyle(document.documentElement).getPropertyValue(`--${token}`).trim(),
+            );
+        read();
+        window.addEventListener("bc-theme", read);
+        return () => window.removeEventListener("bc-theme", read);
+    }, [token]);
+    return <span className="mono muted">{value ? `${value} · ${token}` : token}</span>;
+}
 
 function DoDont({ dos, donts }: { dos: string[]; donts: string[] }) {
     return (
@@ -124,12 +118,7 @@ function CopyButton({ text }: { text: string }) {
 export function BrandPage() {
     return (
         <SiteLayout>
-            <PageHero
-                tone="rose"
-                eyebrow="Brand kit"
-                title="Brand guidelines."
-                art={<RisoArt name="brand" className="page-splash-art" />}
-            >
+            <PageHero art="brand" eyebrow="Brand kit" title="Brand guidelines.">
                 For press, partners and anyone writing about Beamcove. Use it freely; just don’t
                 change it.
             </PageHero>
@@ -170,28 +159,32 @@ export function BrandPage() {
                 <div className="container">
                     <SectionHead id="wordmark" eyebrow="Wordmark" title="Using the wordmark.">
                         There’s no logo mark yet. Until there is, the name is the logo: Beamcove,
-                        set in Onest at weight 600 with tight tracking.
+                        set in Departure Mono and followed by a block cursor. For big moments, it
+                        can be drawn in glyphs.
                     </SectionHead>
                     <div className="wordmark-grid">
-                        <figure className="wordmark-sample" data-theme="light" data-reveal>
-                            <span className="wordmark-big">Beamcove</span>
-                            <figcaption className="caption muted">Ink on paper</figcaption>
+                        <figure className="wordmark-sample" data-reveal>
+                            <span className="wordmark-big">
+                                Beamcove
+                                <span className="bc-cursor" aria-hidden="true" />
+                            </span>
+                            <figcaption className="caption muted">Set in Departure Mono</figcaption>
                         </figure>
-                        <figure className="wordmark-sample wordmark-sample-overprint" data-reveal>
-                            <span className="wordmark-big">Beamcove</span>
-                            <figcaption className="caption">Paper on overprint</figcaption>
+                        <figure className="wordmark-sample wordmark-sample-glyphs" data-reveal>
+                            <AsciiWord text="Beamcove" seed={9} />
+                            <figcaption className="caption muted">Drawn in glyphs</figcaption>
                         </figure>
                     </div>
                     <DoDont
                         dos={[
-                            "Set it in Onest 600 with −0.045em tracking.",
-                            "Use ink on paper, and paper on a solid overprint block.",
+                            "Set it in Departure Mono, with the block cursor in the beam ink.",
+                            "Use the theme’s text colour on its canvas, or the glyph version for big moments.",
                             "Write it as one word with a capital B. The company’s legal name is Beamcove LLC.",
                         ]}
                         donts={[
                             "Draw a symbol or mark next to it.",
-                            "Print it in two colors or offset a shadow in a second ink.",
-                            "Set it in black. Ink is a deep navy.",
+                            "Set it in two colours, or add a glow or a shadow.",
+                            "Animate anything but the cursor.",
                         ]}
                     />
                 </div>
@@ -200,34 +193,39 @@ export function BrandPage() {
             <section className="section" aria-labelledby="color-title">
                 <div className="container">
                     <SectionHead id="color" eyebrow="Color" title="Brand colors.">
-                        Beamcove is printed like a riso poster: paper, riso blue and fluorescent
-                        red, with sun yellow and meadow green for illustration. Inks overprint where
-                        they cross, with real grain in the color.
+                        Beamcove is a terminal printed in neon: a dark canvas, one action ink and
+                        five glyph inks. Pick a theme in the header and every colour here changes
+                        with it.
                     </SectionHead>
-                    <ul className="swatch-grid" data-theme="light">
-                        {SWATCHES.map((swatch) => (
-                            <li key={swatch.name} data-reveal>
-                                <span
-                                    className="swatch-chip"
-                                    style={{ background: `var(--${swatch.token})` }}
-                                    aria-hidden="true"
-                                />
-                                <p className="headline">{swatch.name}</p>
-                                <p className="mono muted">{swatch.hex}</p>
-                                <p className="body-sm muted">{swatch.use}</p>
-                            </li>
-                        ))}
-                    </ul>
+                    {SWATCHES.map((group) => (
+                        <div key={group.group} className="swatch-group">
+                            <p className="caption muted swatch-group-title">{group.group}</p>
+                            <ul className="swatch-grid">
+                                {group.items.map((swatch) => (
+                                    <li key={swatch.name} data-reveal>
+                                        <span
+                                            className="swatch-chip"
+                                            style={{ background: `var(--${swatch.token})` }}
+                                            aria-hidden="true"
+                                        />
+                                        <p className="headline">{swatch.name}</p>
+                                        <TokenValue token={swatch.token} />
+                                        <p className="body-sm muted">{swatch.use}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
                     <DoDont
                         dos={[
-                            "Give each piece one printed moment, and keep the rest paper and navy.",
-                            "Keep text on paper, with the ink on the right or the bottom edge.",
-                            "Keep corners soft.",
+                            "Give each view one glyph splash, and keep the rest canvas and text.",
+                            "Keep text on the quiet side of a glyph field.",
+                            "Name ink slots in art, never colours, so every theme re-inks it.",
                         ]}
                         donts={[
-                            "Put text on dense ink or under a shape.",
-                            "Overprint text, or anything that isn’t ink.",
-                            "Use red for warnings or errors.",
+                            "Put text over dense glyphs or an ink block.",
+                            "Use glyph inks for text or status.",
+                            "Use flare for warnings or errors.",
                         ]}
                     />
                 </div>
@@ -236,19 +234,24 @@ export function BrandPage() {
             <section className="section" aria-labelledby="type-title">
                 <div className="container">
                     <SectionHead id="type" eyebrow="Type" title="Typography.">
-                        Onest for everything, JetBrains Mono for codes and data, in weights 400, 500
-                        and 600.
+                        Departure Mono for display, JetBrains Mono for the interface and data, and
+                        Onest for reading.
                     </SectionHead>
                     <div className="type-grid">
                         <Card variant="plain" data-reveal>
-                            <p className="caption muted">Onest · everything</p>
-                            <p className="type-specimen">Aa</p>
-                            <p className="body-lg">{SITE.tagline}</p>
+                            <p className="caption muted">Departure Mono · display</p>
+                            <p className="type-specimen type-specimen-display">Aa</p>
+                            <p className="mono">Sizes in steps of 11px: 22, 33, 44, 66.</p>
                         </Card>
                         <Card variant="plain" data-reveal>
-                            <p className="caption muted">JetBrains Mono · codes and data</p>
+                            <p className="caption muted">JetBrains Mono · interface and data</p>
                             <p className="type-specimen type-specimen-mono">01</p>
                             <p className="mono">beamcove.com · {SITE.email}</p>
+                        </Card>
+                        <Card variant="plain" data-reveal>
+                            <p className="caption muted">Onest · reading</p>
+                            <p className="type-specimen">Aa</p>
+                            <p className="body-lg">{SITE.tagline}</p>
                         </Card>
                     </div>
                 </div>

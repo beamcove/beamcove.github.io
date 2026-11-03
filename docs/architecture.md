@@ -14,9 +14,11 @@ test fails if a project code or name shows up on any page. Company facts and cop
 (boilerplate, mission, vision, values, story) come from the company's About page
 in Notion; keep `src/content/` in step with it.
 
-It is built on the Beamcove design system, **Ink & tide** (riso paper, blue and
-red overprint splashes, the fitted dot grid, Onest + JetBrains Mono). A copy lives
-in [`src/design-system/`](../src/design-system/README.md).
+It is built on the Beamcove design system, **Signal** (a terminal printed in
+neon: glyph fields cut by ink blocks, five colour themes, Departure Mono +
+JetBrains Mono + Onest). A copy lives in
+[`src/design-system/`](../src/design-system/README.md), and `/design/` shows every
+piece of it.
 
 For the day-to-day commands, see the [README](../README.md). For how the site gets
 to production, see [deployment.md](deployment.md).
@@ -25,7 +27,7 @@ to production, see [deployment.md](deployment.md).
 
 ```
 ├── index.html, 404.html          Landing page and the Pages 404
-├── projects/ about/ updates/ contact/ brand/ privacy/ terms/
+├── projects/ about/ updates/ contact/ brand/ design/ privacy/ terms/
 │                                 One index.html per page (title, description, canonical)
 ├── public/                       Copied verbatim into dist/
 │   ├── boot.js                   Theme + motion flags before first paint (every page)
@@ -41,30 +43,31 @@ to production, see [deployment.md](deployment.md).
 │   ├── content/                  Copy and data shared by pages: site (routes, nav,
 │   │                             socials, email, legal name), fleet (kinds of
 │   │                             ventures), logbook, values (+ mission, vision, story), faq
-│   ├── design-system/            Vendored Ink & tide (see its README)
+│   ├── design-system/            Vendored Signal + typed port + glyph engine (see its README)
 │   └── app/
 │       ├── mount.tsx             CSS imports (in order) + React mount
 │       ├── components/           Layout (site-layout/header/footer, page-hero,
 │       │                         legal-page) and sections (hero, story, manifesto, …)
 │       ├── styles/page.css       Page layout + motion on top of the design system
-│       └── utils/                theme.ts (light/dark), motion.ts (reveals, scroll progress)
+│       └── utils/                theme.ts (colour themes), motion.ts (reveals, scroll progress)
 ├── tests/setup.ts                Vitest setup (jest-dom, RTL cleanup, storage polyfill)
 └── docs/                         You are here
 ```
 
 ## Pages
 
-| URL          | Component             | Header                          | What's on it                                            |
-| ------------ | --------------------- | ------------------------------- | ------------------------------------------------------- |
-| `/`          | `pages/home.tsx`      | Overprint splash (hero)         | The abstract: one summary per page, plus the newsletter |
-| `/projects/` | `pages/projects.tsx`  | Lagoon splash + art             | Empty state, what we do (`#what-we-do`)                 |
-| `/about/`    | `pages/about.tsx`     | Tide splash + art               | Story, mission and vision, values (`#values`), team     |
-| `/updates/`  | `pages/updates.tsx`   | Sky splash + art                | Every update by year                                    |
-| `/contact/`  | `pages/contact.tsx`   | Meadow splash + art             | Email + social channels, full FAQ                       |
-| `/brand/`    | `pages/brand.tsx`     | Rose splash + art               | Boilerplate, wordmark rules, colours, type              |
-| `/privacy/`  | `pages/privacy.tsx`   | Tide splash + art (`LegalPage`) | Privacy policy with contents sidebar                    |
-| `/terms/`    | `pages/terms.tsx`     | Tide splash + art (`LegalPage`) | Terms of use with contents sidebar                      |
-| 404          | `pages/not-found.tsx` | Tide splash                     | “Off the map”                                           |
+| URL          | Component             | Header                      | What's on it                                            |
+| ------------ | --------------------- | --------------------------- | ------------------------------------------------------- |
+| `/`          | `pages/home.tsx`      | `hero` field + beam         | The abstract: one summary per page, plus the newsletter |
+| `/projects/` | `pages/projects.tsx`  | `projects` field            | Empty state, what we do (`#what-we-do`)                 |
+| `/about/`    | `pages/about.tsx`     | `about` field               | Story, mission and vision, values (`#values`), team     |
+| `/updates/`  | `pages/updates.tsx`   | `updates` field             | Every update by year                                    |
+| `/contact/`  | `pages/contact.tsx`   | `contact` field             | Email + social channels, full FAQ                       |
+| `/brand/`    | `pages/brand.tsx`     | `brand` field               | Boilerplate, wordmark rules, colours, type              |
+| `/design/`   | `pages/design.tsx`    | `design` field              | Principles, themes, type, glyphs, every component       |
+| `/privacy/`  | `pages/privacy.tsx`   | `legal` field (`LegalPage`) | Privacy policy with contents sidebar                    |
+| `/terms/`    | `pages/terms.tsx`     | `legal` field (`LegalPage`) | Terms of use with contents sidebar                      |
+| 404          | `pages/not-found.tsx` | `lost` field                | Glyph “404”, “Off the map”                              |
 
 ### Adding a page
 
@@ -90,17 +93,17 @@ splash, the empty projects state. URLs follow the plain names too
 
 ## Landing sections
 
-| Section    | File                        | Design-system pieces and motion                                       |
-| ---------- | --------------------------- | --------------------------------------------------------------------- |
-| Header     | `site-header.tsx`           | Wordmark, nav as a `bc-seg` track (current page printed blue), toggle |
-| Hero       | `hero.tsx`, `beam-dots.tsx` | Overprint `Splash`; shapes print in once; lighthouse dots             |
-| Ticker     | `ticker.tsx`                | Mono studio lines with beacon dots, slow marquee                      |
-| What we do | `what-we-do.tsx`            | `KindGrid`: plain `Card`s topped by `RisoArt` (blooms + shapes)       |
-| Our story  | `story.tsx`                 | Large statement; its key phrase in `flare-ink` (emphasis)             |
-| Vision     | `manifesto.tsx`             | Flare `Splash`; the vision inks in word by word                       |
-| Questions  | `questions.tsx`             | Top four FAQ `details` in one panel, inked toggles                    |
-| Dispatches | `dispatches.tsx`            | Tide `Splash`, `TextField`, `Button`, `Callout`                       |
-| Footer     | `site-footer.tsx`           | Links, social marks, giant wordmark whose letters set in one by one   |
+| Section    | File              | Design-system pieces and motion                                            |
+| ---------- | ----------------- | -------------------------------------------------------------------------- |
+| Header     | `site-header.tsx` | Wordmark + cursor, nav as slash tabs (current page inverts), `ThemePicker` |
+| Hero       | `hero.tsx`        | `Splash` with the `hero` field and the lighthouse beam; title decodes      |
+| Ticker     | `ticker.tsx`      | A `> status` line, slow marquee                                            |
+| What we do | `what-we-do.tsx`  | `KindGrid`: `art` cards, each with its own two-ink glyph strip             |
+| Our story  | `story.tsx`       | Large mono statement; its key phrase inverted like a selection             |
+| Vision     | `manifesto.tsx`   | `vision` field; the line lights up word by word                            |
+| Questions  | `questions.tsx`   | Top four FAQ `details`, `[+]` toggles                                      |
+| Dispatches | `dispatches.tsx`  | `newsletter` field, `TextField`, `Button`, `Callout`                       |
+| Footer     | `site-footer.tsx` | Links, social marks, a glyph wordmark that lights left to right            |
 
 ## Motion
 
@@ -114,23 +117,15 @@ splash, the empty projects state. URLs follow the plain names too
   child effects (the footer letters).
 - `useScrollProgress()` writes `--p` (0 → 1) for scroll-linked effects (the
   manifesto line).
-- `BeamDots` draws on a canvas laid exactly over a splash's fitted dot grid:
-  a beam sweeps across every ~7 s and dots light under the mouse. Dots under the
-  text stay dim. It only sweeps under `.motion` and while visible.
-- `RisoArt` ([riso-art.tsx](../src/app/components/riso-art.tsx)) prints the
-  compositions in [riso-compositions.ts](../src/app/components/riso-compositions.ts),
-  in the hero's spirit: two large shapes in two different full inks that cross a
-  little and multiply into a third colour, cut off by the edge, over one soft
-  bloom. The triangle and bar stay the hero's own. Shapes print in once.
-- Every page header is a splash in its own tone (design-system tones overprint,
-  tide, flare, meadow, lagoon, rose, sky) with its own `RisoArt` composition,
-  printed in inks that contrast with that tone. The newsletter splash repeats.
-- Big numerals (values, the 404) use `.ink-figure`: Onest 600 in riso blue with
-  paper speckle.
-- Drifting ink: every `Splash` lets its ink blooms drift slowly (a design-system
-  rule, off under reduced motion). Shapes, grain, dots and text never move; the
-  hero's triangle and bar print in once on load and then stay put. No dark
-  (night) splash is used on the site.
+- `GlyphField` ([design-system/components/glyph-field.tsx](../src/design-system/components/glyph-field.tsx))
+  draws a composition from [glyph-compositions.ts](../src/app/components/glyph-compositions.ts)
+  on a canvas: glyphs shimmer, light up under the pointer, and on the hero a
+  beam sweeps across every 8 s. Glyphs thin out and ink blocks are trimmed
+  behind the copy. It pauses off-screen, redraws on theme change, and draws one
+  still frame without `.motion`. The maths lives in `design-system/glyph/engine.ts`.
+- Page titles decode from scrambled glyphs once (`ScrambleText`); screen
+  readers get the real text straight away.
+- Big numerals (values, the year rail) use `.ink-figure`: Departure Mono.
 
 ## Styling
 
@@ -138,19 +133,20 @@ splash, the empty projects state. URLs follow the plain names too
 `page.css`. Later files build on earlier ones; keep that order.
 
 - **Tokens, never hex.** `page.css` only uses `var(--…)` tokens.
-- **Splashes print on paper in both themes.** The design system's tokens flip
-  under `[data-theme="dark"]`, so each `Splash` carries `data-theme="light"` to
-  keep its form fields, callouts and error text on light-theme tokens.
+- **Splashes follow the theme.** Every theme defines all tokens, so splashes,
+  fields and form controls re-ink together. `[data-theme]` on any element
+  previews another theme for that subtree (the Design page and theme picker use it).
 - **Typography** uses the token classes from `tokens.css` (`title-1`, `body-lg`,
-  `mono`, …) and `.bc-eyebrow` for the red beacon-dot eyebrow.
+  `mono`, …) and `.bc-eyebrow` for the `///` mono eyebrow.
 
 ## Theme
 
-The design system themes by `data-theme` on `<html>`. Light is the default. A
-small script, [`public/boot.js`](../public/boot.js), loaded in every page's
-`<head>`, restores a saved dark
-choice (`localStorage["bc-theme"]`) before first paint; the header's
-`ThemeToggle` flips and saves it.
+The design system themes by `data-theme` on `<html>`: `signal` (default),
+`phosphor`, `amber`, `ultraviolet` and `paper`. A small script,
+[`public/boot.js`](../public/boot.js), loaded in every page's `<head>`, restores
+the saved choice (`localStorage["bc-theme"]`, with old `light`/`dark` values
+mapped to `paper`/`signal`) before first paint; the header's `ThemePicker` sets
+and saves it, and the Design page's `ThemeGrid` does the same.
 
 ## Icons
 

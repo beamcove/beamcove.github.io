@@ -1,14 +1,12 @@
 import { useRef, type CSSProperties } from "react";
 
+import { ART } from "@/app/components/glyph-compositions";
 import { useScrollProgress } from "@/app/utils/motion";
 import { VISION } from "@/content/values";
-import { Splash, type SplashTone } from "@/design-system";
+import { Splash } from "@/design-system";
 
-/**
- * The vision band: a paper splash whose line inks in word by word as it scrolls
- * into view. Pick a tone that differs from the page's header splash.
- */
-export function Manifesto({ tone = "flare" }: { tone?: Exclude<SplashTone, "night"> }) {
+/** The vision band: a glyph splash whose line lights up word by word as it scrolls into view. */
+export function Manifesto() {
     const ref = useRef<HTMLDivElement>(null);
     useScrollProgress(ref);
     const words = VISION.split(" ");
@@ -17,9 +15,8 @@ export function Manifesto({ tone = "flare" }: { tone?: Exclude<SplashTone, "nigh
         <section className="section" aria-label="Our vision">
             <div className="container" ref={ref}>
                 <Splash
-                    tone={tone}
+                    field={ART.vision}
                     className="manifesto"
-                    data-theme="light"
                     eyebrow="Our vision"
                     title={
                         <span

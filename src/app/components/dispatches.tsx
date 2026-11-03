@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 
+import { ART } from "@/app/components/glyph-compositions";
 import { Button, Callout, Splash, TextField } from "@/design-system";
 
 export const ROSTER_URL = "https://roster.beamcove.com/subscribers";
@@ -44,12 +45,10 @@ export function Dispatches() {
     return (
         <section className="section" id="newsletter" aria-labelledby="newsletter-title">
             <div className="container">
-                {/* Splashes print on paper in both themes, so pin their tokens to light. */}
                 <Splash
-                    tone="tide"
+                    field={ART.newsletter}
                     align="center"
                     className="dispatches"
-                    data-theme="light"
                     eyebrow="Newsletter"
                     title={<span id="newsletter-title">Hear when we launch.</span>}
                 >

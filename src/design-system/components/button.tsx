@@ -3,7 +3,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 import { cx } from "./cx";
 
 interface ButtonOwnProps {
-    /** `primary` is the riso-blue beam key — one per view. */
+    /** `primary` is a solid block of beam ink — one per view. */
     variant?: "primary" | "secondary" | "tonal" | "ghost" | "danger";
     size?: "sm" | "md" | "lg";
     /** Square button holding just an icon; requires aria-label. */

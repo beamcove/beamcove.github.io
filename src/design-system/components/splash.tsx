@@ -1,26 +1,17 @@
 import { useRef, type HTMLAttributes, type ReactNode } from "react";
 
+import type { GlyphComposition } from "../glyph/engine";
+import { useCellFit } from "./cell-fit";
 import { cx } from "./cx";
-import { useDotFit } from "./dot-fit";
-
-export type SplashTone =
-    | "overprint"
-    | "tide"
-    | "flare"
-    | "meadow"
-    | "sun"
-    | "lagoon"
-    | "rose"
-    | "sky"
-    | "night";
+import { GlyphField } from "./glyph-field";
 
 export interface SplashProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
-    tone?: SplashTone;
+    /** The glyph composition printed behind the copy. */
+    field?: GlyphComposition;
+    /** Sweep the lighthouse beam across the field (the hero's). */
+    beam?: boolean;
     /** Content alignment; default 'start'. */
     align?: "start" | "center";
-    /** Overprinted triangle and bar; default true for the overprint tone. */
-    shapes?: boolean;
-    dots?: boolean;
     eyebrow?: ReactNode;
     title?: ReactNode;
     /** Heading level for the title; default 2. */
@@ -32,12 +23,11 @@ export interface SplashProps extends Omit<HTMLAttributes<HTMLElement>, "title"> 
     children?: ReactNode;
 }
 
-/** Printed ink splash with grain and the fitted dot grid. One per view. */
+/** A dark panel holding the view's glyph field, with the copy on a quiet patch. One per view. */
 export function Splash({
-    tone = "overprint",
+    field,
+    beam = false,
     align = "start",
-    shapes = tone === "overprint",
-    dots = true,
     eyebrow,
     title,
     titleAs: Title = "h2",
@@ -49,7 +39,7 @@ export function Splash({
 }: SplashProps) {
     const ref = useRef<HTMLElement>(null);
     const innerRef = useRef<HTMLDivElement>(null);
-    useDotFit(ref, innerRef, dots);
+    useCellFit(ref, innerRef);
 
     return (
         <section
@@ -57,19 +47,12 @@ export function Splash({
             ref={ref}
             className={cx(
                 "bc-splash",
-                "bc-on-splash",
-                `bc-tone-${tone}`,
+                "bc-glyphs",
                 align === "center" && "bc-splash-center",
-                dots ? "bc-dotfield" : "bc-splash-flat",
                 className,
             )}
         >
-            {shapes && (
-                <div className="bc-splash-shapes" aria-hidden="true">
-                    <i className="tri" />
-                    <i className="bar" />
-                </div>
-            )}
+            {field && <GlyphField composition={field} beam={beam} />}
             {art}
             <div ref={innerRef} className="bc-splash-content">
                 {eyebrow && <p className="bc-eyebrow">{eyebrow}</p>}

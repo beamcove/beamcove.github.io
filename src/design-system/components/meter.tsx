@@ -1,13 +1,11 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { cx } from "./cx";
 
-export interface DotMeterProps {
+export interface MeterProps {
     value: number;
     max?: number;
-    /** Dot rows; default 3. */
-    rows?: number;
-    /** Dot columns; default 20. */
+    /** Characters in the bar; default 24. */
     columns?: number;
     label?: ReactNode;
     valueText?: ReactNode;
@@ -15,20 +13,23 @@ export interface DotMeterProps {
     className?: string;
 }
 
-/** Progress as a dot matrix that fills column by column, with a bold red figure. */
-export function DotMeter({
+/** Progress as a row of block characters: █ done, ▓▒ the leading edge, ░ to go. */
+export function Meter({
     value,
     max = 100,
-    rows = 3,
-    columns = 20,
+    columns = 24,
     label,
     valueText,
     size = "md",
     className,
-}: DotMeterProps) {
-    const total = rows * columns;
+}: MeterProps) {
     const v = Math.max(0, Math.min(max, value));
-    const on = Math.round((v / max) * total);
+    const exact = (v / max) * columns;
+    const full = Math.floor(exact);
+    const part = exact - full;
+    const edge = full < columns && part > 0 ? (part > 0.5 ? "▓" : "▒") : "";
+    const done = "█".repeat(full) + edge;
+    const rest = "░".repeat(columns - done.length);
     const text = valueText ?? `${Math.round((v / max) * 100)}%`;
 
     return (
@@ -44,19 +45,14 @@ export function DotMeter({
                 {label ? <span className="bc-meter-label">{label}</span> : <span />}
                 <span className="bc-meter-value">{text}</span>
             </div>
-            <div
-                className="bc-meter-grid"
-                style={{ "--bc-rows": rows } as CSSProperties}
-                aria-hidden="true"
-            >
-                {Array.from({ length: total }, (_, i) => (
-                    <span
-                        key={i}
-                        className={cx("bc-meter-dot", i < on && "is-on")}
-                        style={{ "--col": Math.floor(i / rows) } as CSSProperties}
-                    />
-                ))}
-            </div>
+            <span className="bc-meter-bar" aria-hidden="true">
+                {done}
+                <span className="off">{rest}</span>
+            </span>
         </div>
     );
 }
+
+/** The old name, kept so existing imports keep working. */
+export const DotMeter = Meter;
+export type DotMeterProps = MeterProps;

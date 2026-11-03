@@ -1,3 +1,5 @@
+import { AsciiWord } from "@/app/components/ascii-word";
+import { ART } from "@/app/components/glyph-compositions";
 import { SiteLayout } from "@/app/components/site-layout";
 import { ROUTES } from "@/content/site";
 import { Button, Splash } from "@/design-system";
@@ -7,17 +9,14 @@ export function NotFoundPage() {
         <SiteLayout>
             <div className="container page-hero" id="top">
                 <Splash
-                    tone="tide"
+                    field={ART.lost}
                     align="center"
                     className="not-found"
-                    data-theme="light"
                     titleAs="h1"
                     eyebrow="Page not found"
                     title={
                         <>
-                            <span className="not-found-figure">
-                                <span className="ink-figure">404</span>
-                            </span>
+                            <AsciiWord text="404" className="not-found-figure" seed={4} />
                             Off the map.
                         </>
                     }
