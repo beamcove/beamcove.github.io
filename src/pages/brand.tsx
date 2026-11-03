@@ -7,7 +7,7 @@ import { PageHero } from "@/app/components/page-hero";
 import { Section } from "@/app/components/section";
 import { SiteLayout } from "@/app/components/site-layout";
 import { SITE } from "@/content/site";
-import { Button, Card } from "@/design-system";
+import { Button, Card, Mark } from "@/design-system";
 
 /**
  * The marketing face of Signal. The rules here follow the design-system
@@ -47,11 +47,11 @@ const SWATCHES: { group: string; items: { name: string; token: string; use: stri
     {
         group: "Glyph inks",
         items: [
-            { name: "Ink A", token: "ink-a", use: "Glyph art only. The hero’s main ink." },
-            { name: "Ink B", token: "ink-b", use: "Glyph art only." },
+            { name: "Ink A", token: "ink-a", use: "Glyph art, and the mark’s ■: work." },
+            { name: "Ink B", token: "ink-b", use: "Glyph art, and the mark’s ●: everyday life." },
             { name: "Ink C", token: "ink-c", use: "Glyph art only." },
             { name: "Ink D", token: "ink-d", use: "Glyph art only." },
-            { name: "Ink E", token: "ink-e", use: "Glyph art only." },
+            { name: "Ink E", token: "ink-e", use: "Glyph art, and the mark’s ▲: play." },
         ],
     },
 ];
@@ -148,18 +148,18 @@ export function BrandPage() {
 
             <Section
                 id="wordmark"
-                kicker="Wordmark"
-                title="Using the wordmark."
-                lead="There’s no logo mark yet. Until there is, the name is the logo: Beamcove, set in Departure Mono and followed by a block cursor. For big moments, it can be drawn in glyphs."
+                kicker="Logo"
+                title="The mark and the name."
+                lead="The mark is three shapes everyone already knows, ● ▲ ■, one for each kind of work we do: everyday life, play and work, each in its own ink. It sits before the name, Beamcove, set in Departure Mono. For big moments, the name can be drawn in glyphs."
                 stacked
             >
                 <div className="wordmark-grid">
                     <figure className="wordmark-sample" data-reveal>
                         <span className="wordmark-big">
+                            <Mark size={32} />
                             Beamcove
-                            <span className="bc-cursor" aria-hidden="true" />
                         </span>
-                        <figcaption className="caption muted">Set in Departure Mono</figcaption>
+                        <figcaption className="caption muted">The mark, then the name</figcaption>
                     </figure>
                     <figure className="wordmark-sample wordmark-sample-glyphs" data-reveal>
                         <AsciiWord text="Beamcove" seed={9} />
@@ -168,14 +168,14 @@ export function BrandPage() {
                 </div>
                 <DoDont
                     dos={[
-                        "Set it in Departure Mono, with the block cursor in the beam ink.",
-                        "Use the text colour on the midnight canvas, or the glyph version for big moments.",
-                        "Write it as one word with a capital B. The company’s legal name is Beamcove LLC.",
+                        "Put the mark before the name, with the shapes in their own inks and the name in the text colour.",
+                        "Use the mark on its own where the name won’t fit, like an avatar.",
+                        "Write the name as one word with a capital B. The company’s legal name is Beamcove LLC.",
                     ]}
                     donts={[
-                        "Draw a symbol or mark next to it.",
-                        "Set it in two colours, or add a glow or a shadow.",
-                        "Animate anything but the cursor.",
+                        "Reorder the shapes, recolour one, or add a fourth.",
+                        "Draw new symbols to go with it. Ours are shapes everyone knows.",
+                        "Add a glow or a shadow, or animate it.",
                     ]}
                 />
             </Section>

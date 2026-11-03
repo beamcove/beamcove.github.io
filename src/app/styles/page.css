@@ -146,11 +146,14 @@ button:focus-visible {
     margin-top: var(--space-8);
 }
 .count {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-family: var(--font-pixel);
     font-size: 22px;
     line-height: 22px;
 }
-.count span {
+.count-of {
     color: var(--ink-subtle);
 }
 
@@ -158,7 +161,7 @@ button:focus-visible {
 .wordmark {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 12px;
     font-family: var(--font-pixel);
     font-size: 22px;
     line-height: 22px;
@@ -869,15 +872,12 @@ button:focus-visible {
 }
 .wordmark-big {
     display: inline-flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: var(--space-5);
     font-family: var(--font-pixel);
-    font-size: 66px;
-    line-height: 66px;
-}
-.wordmark-big .bc-cursor {
-    width: 33px;
-    height: 60px;
-    margin-left: 6px;
+    font-size: 44px;
+    line-height: 44px;
 }
 .do-dont {
     display: grid;
@@ -981,7 +981,7 @@ button:focus-visible {
 /* ── Design page ──────────────────────────────────── */
 .principles {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--space-4);
 }
 .principles > li {
@@ -1059,11 +1059,60 @@ button:focus-visible {
     border: 1px solid var(--line);
 }
 .ramp-chars {
-    font-family: var(--font-pixel);
-    font-size: 22px;
-    line-height: 28px;
-    letter-spacing: 0.3em;
+    display: block;
+    max-width: 100%;
     color: var(--beam-ink);
+}
+/* symbols: seven shapes, the mark, faces */
+.symbol-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: var(--space-2);
+}
+.symbol-grid li,
+.face-grid li {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-4);
+    padding: var(--space-8) var(--space-4) var(--space-5);
+    background: var(--surface);
+    color: var(--ink);
+}
+.symbol-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8) var(--space-12);
+    margin: var(--space-2) 0;
+    padding: var(--space-8);
+    background: var(--surface);
+}
+.symbol-figure {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+}
+.symbol-kinds {
+    display: grid;
+    gap: var(--space-3);
+}
+.symbol-kinds li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+.face-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-2);
+}
+@media (max-width: 767px) {
+    .symbol-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .face-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 .playground {
     border: 1px solid var(--line);
@@ -1321,8 +1370,7 @@ button:focus-visible {
     max-width: 720px;
     margin-inline: auto;
 }
-.not-found-figure {
-    width: min(360px, 70vw);
+.not-found-face {
     margin-bottom: var(--space-12);
 }
 .not-found .page-title {
@@ -1428,27 +1476,31 @@ button:focus-visible {
 }
 
 /* ── Motion (only under html.motion) ──────────────── */
+/* starts at 1%, not 0: it looks the same, but the browser counts the copy as painted
+   from the first frame instead of when the fade ends, so the page reads as loaded sooner */
 @keyframes rise {
     from {
-        opacity: 0;
+        opacity: 0.01;
         translate: 0 24px;
     }
 }
 .motion .hero-copy > *,
 .motion .page-hero-copy > * {
-    animation: rise 900ms var(--ease-out) both;
+    animation: rise 700ms var(--ease-out) both;
 }
+/* a short stagger: the copy counts as painted from its first frame, so long delays
+   hold back how soon the page reads as loaded */
 .motion .hero-copy > :nth-child(2),
 .motion .page-hero-copy > :nth-child(2) {
-    animation-delay: 120ms;
+    animation-delay: 60ms;
 }
 .motion .hero-copy > :nth-child(3),
 .motion .page-hero-copy > :nth-child(3) {
-    animation-delay: 360ms;
+    animation-delay: 120ms;
 }
 .motion .hero-copy > :nth-child(4),
 .motion .page-hero-copy > :nth-child(4) {
-    animation-delay: 480ms;
+    animation-delay: 180ms;
 }
 .motion [data-reveal]:not([data-reveal="fill"]) {
     transition:

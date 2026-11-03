@@ -63,7 +63,7 @@ to production, see [deployment.md](deployment.md).
 | `/about/`    | `pages/about.tsx`     | `about`               | Story, mission and vision, values (`#values`), team  |
 | `/updates/`  | `pages/updates.tsx`   | `log`                 | Every update by year, newsletter                     |
 | `/contact/`  | `pages/contact.tsx`   | `hello`               | Email + social channels, full FAQ (`#questions`)     |
-| `/brand/`    | `pages/brand.tsx`     | `brand`               | Boilerplate, wordmark rules, colours, type, voice    |
+| `/brand/`    | `pages/brand.tsx`     | `brand`               | Boilerplate, mark and name, colours, type, voice     |
 | `/design/`   | `pages/design.tsx`    | `design`              | Principles, colour, type, glyphs, grid, components   |
 | `/privacy/`  | `pages/privacy.tsx`   | `legal` (`LegalPage`) | Privacy policy with contents sidebar                 |
 | `/terms/`    | `pages/terms.tsx`     | `legal` (`LegalPage`) | Terms of use with contents sidebar                   |
@@ -129,8 +129,12 @@ text. Only the home page uses full screens and pins.
   every glyph lands exactly on a dot.
 - **Section art.** Each `Screen` renders a `Field`: a canvas filling the section
   that prints its scene on the page grid (`glyph/painter.ts`, maths in
-  `engine.ts`). It scrolls with the content. The first time a section comes into
-  view its glyphs print in, row by row; then they shimmer while visible and
+  `engine.ts`). It scrolls with the content. On the landing page only
+  (`SceneTakeover` in `pages/home.tsx` → `Screen takeover`), as the next
+  section's top moves from 90% to 20% of the screen, its scene takes over cell
+  by cell (bottom of the screen first, with grain, `flipAt` in `painter.ts`), in
+  both canvases, so the takeover runs across the edge; it follows scroll both
+  ways. Reading pages keep each section's own scene. Fields shimmer while visible and
   light under the pointer; the hero sweeps the lighthouse beam. Glyphs thin out
   around `[data-quiet]` copy, and ink blocks print whole or not at all.
   Pinned screens draw their own dots inside the sticky frame and write `--p`
@@ -139,8 +143,33 @@ text. Only the home page uses full screens and pins.
 - `useReveal()` ([utils/motion.ts](../src/app/utils/motion.ts)) adds `is-in`
   to `[data-reveal]` elements as they scroll into view; `data-reveal="fill"`
   only triggers child effects (the footer wordmark).
-- Titles decode from scrambled glyphs once (`ScrambleText`); screen readers get
-  the real text straight away.
+  Whatever is on screen when the page opens is revealed before the first paint,
+  without the fade.
+- Titles decode from scrambled glyphs once (`ScrambleText`): the real text
+  holds the layout (and is what screen readers get) and the noise prints over
+  it, so nothing around it moves.
+
+## Performance
+
+Measured on a production build (`npm run build && npm run preview`), on a
+phone profile (slow 4G, 4× slower CPU) and on desktop. Keep these:
+
+- **Canvases are lazy.** A `Field` lays out and holds pixels only within one
+  screen of the viewport, and gives them back further away (a canvas costs
+  width × height × 4 bytes, at up to 1.5× device pixels). It redraws only the
+  rows on screen, and only the cells whose glyph, ink or alpha changed since
+  the last frame (`drawn` in `painter.ts`). Idle shimmer runs at 12fps; the
+  beam, the pointer light and scrolling at up to 30/60fps.
+- **No layout reads while scrolling.** Positions are measured on layout
+  changes (`onLayout` in `components/doc-layout.ts`) and scroll handlers work
+  from them and `scrollY`. Measurements leave out reveal slides
+  (`restingRect` in `glyph/lattice.ts`).
+- **Nothing shifts.** Entrance animations start at 1% opacity (so the copy
+  counts as painted at once), on-screen content isn't faded in, and
+  `ScrambleText` never changes the layout.
+- **The head is lean.** `fastHead` in `vite.config.ts` inlines `public/boot.js`
+  and preloads both fonts. Chunks are three layers: `react` (rarely changes,
+  stays cached), `site` (shared code) and one small chunk per page.
 
 ## Styling
 
@@ -151,6 +180,15 @@ text. Only the home page uses full screens and pins.
 - **One theme.** Signal is Midnight only: no picker, nothing stored on the device.
 - **Typography** uses the token classes from `tokens.css` (`display`, `title-1`,
   `lead`-sized `body-lg`, `mono`, …) and `Kicker` (`01 —— What we do`) for chapter openers.
+
+## Symbols and the mark
+
+The design system's symbol set (`Shape`, `Mark`, `Face` in
+`src/design-system/components/shape.tsx`) is seven universal shapes, ● ▲ ■ ♥ ✕ + and a
+dash, drawn bold and round on one 16px cell. The mark, ● ▲ ■, sits before the name
+in the header and footer, and the favicon stacks it ▲ over ● ■. Each kind of work in
+`content/fleet.ts` wears its shape and ink (work ■ `a`, everyday life ● `b`, play ▲
+`e`). The 404 shows a `Face` with ✕ ✕ eyes. Don't draw new symbols.
 
 ## Icons
 

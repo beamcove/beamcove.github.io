@@ -29,8 +29,19 @@ body {
     border: 0;
 }
 /* ScrambleText: the visible copy is aria-hidden; the hidden copy is what's read. */
+/* the real text holds the layout; the noise prints over it, so nothing moves */
 .bc-scramble {
     position: relative;
+    display: inline-block;
+}
+.bc-scramble-noise {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+.bc-scramble[data-scrambling] > .bc-scramble-text {
+    color: transparent;
 }
 .bc-row {
     display: flex;
@@ -57,6 +68,13 @@ body {
     width: 6px;
     height: 6px;
     background: currentColor;
+    align-self: center;
+}
+/* a symbol takes the bullet's place */
+.bc-eyebrow:has(> .bc-shape)::before {
+    content: none;
+}
+.bc-eyebrow > .bc-shape {
     align-self: center;
 }
 
@@ -142,6 +160,16 @@ html {
     50% {
         opacity: 0;
     }
+}
+
+/* ── Symbols: ● ▲ ■ ✕ + —, bold and round on one cell ── */
+.bc-shape,
+.bc-mark,
+.bc-face {
+    display: inline-block;
+    flex: none;
+    overflow: visible;
+    vertical-align: middle;
 }
 .bc-kbd {
     letter-spacing: 0.01em;

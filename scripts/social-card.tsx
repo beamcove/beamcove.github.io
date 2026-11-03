@@ -6,15 +6,14 @@ import { createRoot } from "react-dom/client";
 
 import { SCENES } from "../src/app/components/scenes";
 import { SITE } from "../src/content/identity";
-import { Splash } from "../src/design-system";
+import { Mark, Splash } from "../src/design-system";
 
 const css = `
     body { background: var(--surface-page); }
     .card.bc-splash { position: absolute; inset: 32px; padding: 56px 64px; align-items: stretch; }
     .card .bc-splash-content { display: flex; flex-direction: column; justify-content: space-between; max-width: 620px; }
     .card .bc-splash-title { font-size: 64px; line-height: 68px; }
-    .card .mark { display: flex; align-items: center; margin: 0; font-family: var(--font-pixel); font-size: 33px; line-height: 33px; }
-    .card .mark .bc-cursor { width: 17px; height: 30px; margin-left: 4px; }
+    .card .mark { display: flex; align-items: center; gap: 16px; margin: 0; font-family: var(--font-pixel); font-size: 44px; line-height: 44px; }
 `;
 
 createRoot(document.getElementById("root")!).render(
@@ -28,8 +27,8 @@ createRoot(document.getElementById("root")!).render(
                 </h1>
             </div>
             <p className="mark">
+                <Mark size={28} />
                 Beamcove
-                <span className="bc-cursor" aria-hidden="true" />
             </p>
         </Splash>
     </>,

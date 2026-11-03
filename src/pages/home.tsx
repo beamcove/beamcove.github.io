@@ -3,6 +3,7 @@ import { Hero } from "@/app/components/hero";
 import { LatestUpdates } from "@/app/components/latest-updates";
 import { Manifesto } from "@/app/components/manifesto";
 import { Questions } from "@/app/components/questions";
+import { SceneTakeover } from "@/app/components/scene-takeover";
 import { SiteLayout } from "@/app/components/site-layout";
 import { Story } from "@/app/components/story";
 import { Values } from "@/app/components/values";
@@ -22,15 +23,17 @@ const CHAPTERS: Chapter[] = [
 /** The landing page: the whole company as one scroll, one idea per screen. */
 export function HomePage() {
     return (
-        <SiteLayout chapters={CHAPTERS}>
-            <Hero />
-            <WhatWeDo n={1} />
-            <Story n={2} />
-            <Manifesto />
-            <Values n={3} />
-            <LatestUpdates n={4} />
-            <Questions n={5} />
-            <Dispatches n={6} />
-        </SiteLayout>
+        <SceneTakeover.Provider value>
+            <SiteLayout chapters={CHAPTERS}>
+                <Hero />
+                <WhatWeDo n={1} />
+                <Story n={2} />
+                <Manifesto />
+                <Values n={3} />
+                <LatestUpdates n={4} />
+                <Questions n={5} />
+                <Dispatches n={6} />
+            </SiteLayout>
+        </SceneTakeover.Provider>
     );
 }

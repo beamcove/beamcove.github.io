@@ -5,6 +5,7 @@ import { Icon } from "@/app/components/icon";
 import { Scene } from "@/app/components/scene";
 import { KINDS } from "@/content/fleet";
 import { ROUTES } from "@/content/site";
+import { Shape } from "@/design-system";
 
 /** The home page's what we do: an intro screen, then one screen per kind of work. */
 export function WhatWeDo({ n }: { n?: number }) {
@@ -30,8 +31,13 @@ export function WhatWeDo({ n }: { n?: number }) {
                     <div className="wrap">
                         <div className="copy" data-quiet data-reveal>
                             <p className="count">
-                                {String(i + 1).padStart(2, "0")}{" "}
-                                <span>/ {String(KINDS.length).padStart(2, "0")}</span>
+                                <Shape name={kind.shape} ink={kind.ink} size={22} />
+                                <span>
+                                    {String(i + 1).padStart(2, "0")}{" "}
+                                    <span className="count-of">
+                                        / {String(KINDS.length).padStart(2, "0")}
+                                    </span>
+                                </span>
                             </p>
                             <h3 className="title-1 kind-title">{kind.title}</h3>
                             <p className="lead">{kind.body}</p>

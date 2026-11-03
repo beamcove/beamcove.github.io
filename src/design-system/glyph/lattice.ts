@@ -25,8 +25,38 @@ export function latticeOffset(left: number, top: number, pageWidth: number, cell
 }
 
 /** The same offset for a live element, from its rect and the current scroll. */
-export function elementLattice(el: Element) {
+/**
+ * How far an element's ancestors have slid it with `translate` or a
+ * transform right now (reveals slide in), so measurements can leave it out.
+ */
+export function slide(el: Element) {
+    let x = 0;
+    let y = 0;
+    for (let e: Element | null = el; e && e !== document.documentElement; e = e.parentElement) {
+        const cs = getComputedStyle(e);
+        if (cs.translate && cs.translate !== "none") {
+            const [tx = "0", ty = "0"] = cs.translate.split(" ");
+            x += parseFloat(tx) || 0;
+            y += parseFloat(ty) || 0;
+        }
+        if (cs.transform && cs.transform !== "none") {
+            const m = new DOMMatrixReadOnly(cs.transform);
+            x += m.m41;
+            y += m.m42;
+        }
+    }
+    return { x, y };
+}
+
+/** Where an element sits in the document at rest (any slide-in left out). */
+export function restingRect(el: Element) {
     const r = el.getBoundingClientRect();
+    const s = slide(el);
+    return { left: r.left - s.x, top: r.top - s.y, width: r.width, height: r.height };
+}
+
+export function elementLattice(el: Element) {
+    const r = restingRect(el);
     const page = document.documentElement.clientWidth;
     return latticeOffset(r.left + window.scrollX, r.top + window.scrollY, page);
 }

@@ -1,8 +1,8 @@
 import type { GlyphComposition } from "@/design-system";
 
 /**
- * The glyph scenes the Stage dissolves between, one per screen, sized for the
- * whole viewport. With motion off each Screen prints its own still.
+ * The glyph scenes, one per section. Each section prints its own scene onto
+ * the page grid; with motion off it prints one still frame.
  *
  * Rules (scenes.test.ts checks them):
  * - Scenes name ink slots (a–e), never colours.
@@ -49,7 +49,7 @@ export const SCENES: Record<SceneName, GlyphComposition> = {
     hero: {
         seed: 7,
         inks: ["a", "b"],
-        ramp: "signal",
+        ramp: "symbols",
         density: 0.52,
         scale: 5,
         blocks: [
@@ -121,7 +121,7 @@ export const SCENES: Record<SceneName, GlyphComposition> = {
     mission: {
         seed: 131,
         inks: ["b", "e"],
-        ramp: "marks",
+        ramp: "symbols",
         density: 0.46,
         blocks: [
             { x: 0, y: 0, w: 0.08, h: 0.28, ink: "b" },
@@ -207,7 +207,7 @@ export const SCENES: Record<SceneName, GlyphComposition> = {
     about: {
         seed: 59,
         inks: ["e", "b"],
-        ramp: "signal",
+        ramp: "symbols",
         density: 0.5,
         gather: "right",
         blocks: [
@@ -270,7 +270,7 @@ export const SCENES: Record<SceneName, GlyphComposition> = {
     design: {
         seed: 101,
         inks: ["a", "b", "c"],
-        ramp: "signal",
+        ramp: "symbols",
         density: 0.52,
         gather: "right",
         blocks: [
@@ -306,7 +306,7 @@ export const SCENES: Record<SceneName, GlyphComposition> = {
     readingC: {
         seed: 9,
         inks: ["d", "b"],
-        ramp: "marks",
+        ramp: "symbols",
         density: 0.48,
         gather: "margins",
         blocks: [{ x: 0, y: 0.34, w: 0.04, h: 0.3, ink: "d" }],
@@ -325,7 +325,7 @@ export const SCENES: Record<SceneName, GlyphComposition> = {
     lost: {
         seed: 404,
         inks: ["c", "a"],
-        ramp: "blocks",
+        ramp: "symbols",
         density: 0.46,
         blocks: [
             { x: 0, y: 0.66, w: 0.1, h: 0.34, ink: "c" },

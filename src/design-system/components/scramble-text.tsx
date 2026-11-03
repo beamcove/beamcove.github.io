@@ -16,8 +16,9 @@ export interface ScrambleTextProps {
 
 /**
  * Text that decodes: scrambled glyphs resolve into the real words, left to
- * right, once. Screen readers get the real text straight away; with motion
- * off, so does everyone.
+ * right, once. The real text keeps its place in the layout (and is what
+ * screen readers get) while the noise prints over it, so nothing around it
+ * moves. With motion off there is no noise.
  */
 export function ScrambleText({
     text,
@@ -30,7 +31,8 @@ export function ScrambleText({
 
     useEffect(() => {
         const el = ref.current;
-        if (!el || !motionAllowed()) return;
+        const root = el?.parentElement;
+        if (!el || !root || !motionAllowed()) return;
         let frame = 0;
         let timer = 0;
         let begin = 0;
@@ -46,8 +48,14 @@ export function ScrambleText({
             }
             el.textContent = out;
             if (p < 1) frame = requestAnimationFrame(tick);
+            else done();
+        };
+        const done = () => {
+            root.removeAttribute("data-scrambling");
+            el.textContent = "";
         };
         const run = () => {
+            root.setAttribute("data-scrambling", "");
             timer = window.setTimeout(() => {
                 frame = requestAnimationFrame(tick);
             }, delay);
@@ -68,16 +76,14 @@ export function ScrambleText({
             io?.disconnect();
             window.clearTimeout(timer);
             cancelAnimationFrame(frame);
-            el.textContent = text;
+            done();
         };
     }, [text, trigger, duration, delay]);
 
     return (
         <span className={["bc-scramble", className].filter(Boolean).join(" ")}>
-            <span className="bc-visually-hidden">{text}</span>
-            <span ref={ref} aria-hidden="true">
-                {text}
-            </span>
+            <span className="bc-scramble-text">{text}</span>
+            <span ref={ref} className="bc-scramble-noise" aria-hidden="true" />
         </span>
     );
 }

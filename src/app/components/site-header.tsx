@@ -3,7 +3,7 @@ import { Menu, X } from "lucide";
 
 import { Icon } from "@/app/components/icon";
 import { NAV, ROUTES } from "@/content/site";
-import { Button } from "@/design-system";
+import { Button, Mark } from "@/design-system";
 
 function isCurrent(href: string) {
     return typeof window !== "undefined" && window.location.pathname === href;
@@ -25,8 +25,8 @@ export function SiteHeader() {
         <header className={menuOpen ? "site-header is-open" : "site-header"}>
             <div className="site-header-row">
                 <a className="wordmark" href={ROUTES.home}>
+                    <Mark size={20} />
                     Beamcove
-                    <span className="bc-cursor" aria-hidden="true" />
                 </a>
                 <nav aria-label="Main" className="site-nav">
                     <ul>

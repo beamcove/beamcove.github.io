@@ -1,6 +1,7 @@
 import { AsciiWord } from "@/app/components/ascii-word";
 import { BrandIcon } from "@/app/components/brand";
 import { FOOTER_GROUPS, ROUTES, SITE, SOCIALS } from "@/content/site";
+import { Mark } from "@/design-system";
 
 export function SiteFooter() {
     return (
@@ -9,6 +10,7 @@ export function SiteFooter() {
                 <div className="footer-top">
                     <div className="footer-brand">
                         <a className="wordmark" href={ROUTES.home}>
+                            <Mark />
                             Beamcove
                         </a>
                         <p className="footer-tag">{SITE.summary}</p>

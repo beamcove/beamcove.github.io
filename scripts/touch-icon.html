@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
     Source for public/assets/apple-touch-icon.png (180×180). The favicon's
-    cursor and ink block on a full midnight square: iOS rounds the corners itself.
+    mark (▲ over ● ■) on a full midnight square: iOS rounds the corners itself.
     Not part of the site build; regenerate with `npm run social-card`.
 -->
 <html lang="en">
@@ -24,9 +24,15 @@
     <body>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="180" height="180">
             <rect width="64" height="64" fill="#11131d" />
-            <rect x="14" y="10" width="20" height="40" fill="#8fa2ff" />
-            <rect x="28" y="32" width="24" height="22" fill="#d39ad6" />
-            <rect x="28" y="32" width="6" height="18" fill="#e9dcff" />
+            <path
+                d="M32 8.5 42.5 27.5H21.5Z"
+                fill="#93c89c"
+                stroke="#93c89c"
+                stroke-width="3"
+                stroke-linejoin="round"
+            />
+            <circle cx="20.5" cy="43.5" r="10" fill="#6fc6d3" />
+            <rect x="34" y="34" width="19" height="19" rx="4.5" fill="#8fa2ff" />
         </svg>
     </body>
 </html>

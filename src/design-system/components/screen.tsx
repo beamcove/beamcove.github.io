@@ -3,6 +3,7 @@ import { useEffect, useRef, type CSSProperties, type HTMLAttributes, type ReactN
 import type { GlyphComposition } from "../glyph/engine";
 import { motionAllowed } from "../glyph/motion";
 import { cx } from "./cx";
+import { docTop, onLayout } from "./doc-layout";
 import { Field } from "./field";
 
 export interface ScreenProps extends HTMLAttributes<HTMLElement> {
@@ -12,6 +13,12 @@ export interface ScreenProps extends HTMLAttributes<HTMLElement> {
     field: GlyphComposition;
     /** Sweep the lighthouse beam (the first screen of the home page). */
     beam?: boolean;
+    /**
+     * Take part in the scene takeover: as the next screen moves up, its scene
+     * replaces this one cell by cell. For a landing page of full screens;
+     * reading pages leave it off. Default false.
+     */
+    takeover?: boolean;
     /**
      * Pin the screen while you scroll past it: `true` for a statement (writes
      * `--p`), or a number of steps (also writes `data-step`, e.g. one per value).
@@ -35,24 +42,36 @@ function usePinProgress(ref: React.RefObject<HTMLElement | null>, steps: number 
             return;
         }
         let frame = 0;
+        let top = 0;
+        let span = 0;
+        let last = "";
+        // from cached positions and scrollY: no layout reads while scrolling, and no
+        // style writes unless the value changed
         const update = () => {
             frame = 0;
-            const r = el.getBoundingClientRect();
-            const span = r.height - window.innerHeight;
-            const p = span > 40 ? clamp01(-r.top / span) : 1;
-            el.style.setProperty("--p", p.toFixed(3));
-            if (steps) el.dataset.step = String(Math.min(steps - 1, Math.floor(p * steps)));
+            const p = span > 40 ? clamp01((window.scrollY - top) / span) : 1;
+            const key = p.toFixed(3);
+            if (key === last) return;
+            last = key;
+            el.style.setProperty("--p", key);
+            if (steps) {
+                const step = String(Math.min(steps - 1, Math.floor(p * steps)));
+                if (el.dataset.step !== step) el.dataset.step = step;
+            }
         };
         const onScroll = () => {
             if (!frame) frame = requestAnimationFrame(update);
         };
-        update();
+        const stop = onLayout(() => {
+            top = docTop(el);
+            span = el.offsetHeight - window.innerHeight;
+            update();
+        });
         window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("resize", onScroll);
         return () => {
             cancelAnimationFrame(frame);
+            stop();
             window.removeEventListener("scroll", onScroll);
-            window.removeEventListener("resize", onScroll);
         };
     }, [ref, steps]);
 }
@@ -60,14 +79,15 @@ function usePinProgress(ref: React.RefObject<HTMLElement | null>, steps: number 
 /**
  * A section of the page with its own glyph scene, printed on the page grid
  * behind its copy (put `data-quiet` on the copy so the art keeps clear). The
- * art belongs to the section and scrolls with it: it prints in, row by row,
- * the first time the section comes into view. Home screens fill the
+ * art scrolls with the section; with `takeover`, as the next section moves up
+ * the screen, its scene takes over this one cell by cell. Home screens fill the
  * viewport; reading pages use `size="fit"`.
  */
 export function Screen({
     scene,
     field,
     beam = false,
+    takeover = false,
     pin,
     size = "full",
     as: Tag = "section",
@@ -86,6 +106,7 @@ export function Screen({
             pinned={steps !== undefined}
             dots={steps !== undefined}
             soften
+            wave={takeover}
         />
     );
     return (

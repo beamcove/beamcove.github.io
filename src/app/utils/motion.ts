@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from "react";
+import { useLayoutEffect } from "react";
 
 /** Set by index.html when IntersectionObserver exists and motion isn't reduced. */
 export function motionAllowed() {
@@ -7,12 +7,14 @@ export function motionAllowed() {
 
 /**
  * Adds `is-in` to every `[data-reveal]` element as its top scrolls into view
- * (threshold 0, so even very tall blocks reveal).
+ * (threshold 0, so even very tall blocks reveal). Whatever is already on
+ * screen when the page opens shows straight away, before the first paint: it
+ * would only hold back the page's first look.
  * Hidden states only apply under `html.motion`, so content never stays hidden
  * where this can't run.
  */
 export function useReveal() {
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!motionAllowed()) return;
         const io = new IntersectionObserver(
             (entries) => {
@@ -24,41 +26,21 @@ export function useReveal() {
             },
             { rootMargin: "0px 0px -12% 0px", threshold: 0 },
         );
-        document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
+        const fold = window.innerHeight * 0.88;
+        const now: HTMLElement[] = [];
+        document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in)").forEach((el) => {
+            if (el.getBoundingClientRect().top < fold) now.push(el);
+            else io.observe(el);
+        });
+        // shown as is, without the fade (measuring above already gave them their hidden style)
+        for (const el of now) {
+            el.style.transition = "none";
+            el.classList.add("is-in");
+        }
+        if (now.length) {
+            void document.body.offsetHeight;
+            for (const el of now) el.style.transition = "";
+        }
         return () => io.disconnect();
     }, []);
-}
-
-/**
- * Writes `--p` (0 → 1) on the element as it travels from the bottom of the
- * viewport to the middle. Stays at 1 when motion is off.
- */
-export function useScrollProgress(ref: RefObject<HTMLElement | null>) {
-    useEffect(() => {
-        const el = ref.current;
-        if (!el) return;
-        if (!motionAllowed()) {
-            el.style.setProperty("--p", "1");
-            return;
-        }
-        let frame = 0;
-        const update = () => {
-            frame = 0;
-            const r = el.getBoundingClientRect();
-            const vh = window.innerHeight;
-            const p = (vh - r.top) / ((vh + r.height) / 2);
-            el.style.setProperty("--p", Math.min(1, Math.max(0, p)).toFixed(3));
-        };
-        const onScroll = () => {
-            if (!frame) frame = requestAnimationFrame(update);
-        };
-        update();
-        window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("resize", onScroll);
-        return () => {
-            cancelAnimationFrame(frame);
-            window.removeEventListener("scroll", onScroll);
-            window.removeEventListener("resize", onScroll);
-        };
-    }, [ref]);
 }

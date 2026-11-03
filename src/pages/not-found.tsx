@@ -1,8 +1,7 @@
-import { AsciiWord } from "@/app/components/ascii-word";
 import { Scene } from "@/app/components/scene";
 import { SiteLayout } from "@/app/components/site-layout";
 import { ROUTES } from "@/content/site";
-import { Button, Kicker } from "@/design-system";
+import { Button, Face, Kicker } from "@/design-system";
 
 export function NotFoundPage() {
     return (
@@ -10,8 +9,8 @@ export function NotFoundPage() {
             <Scene name="lost" className="not-found" id="top" aria-labelledby="page-title">
                 <div className="wrap">
                     <div className="not-found-copy" data-quiet>
-                        <AsciiWord text="404" className="not-found-figure" seed={4} />
-                        <Kicker>Page not found</Kicker>
+                        <Face eyes="cross" ink="c" size={32} className="not-found-face" />
+                        <Kicker>404 · Page not found</Kicker>
                         <h1 className="display page-title" id="page-title">
                             Off the map.
                         </h1>

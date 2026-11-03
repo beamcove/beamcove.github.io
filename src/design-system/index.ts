@@ -18,6 +18,15 @@ export {
     type SegmentedControlProps,
     type SegmentedOption,
 } from "./components/segmented";
+export {
+    Face,
+    Mark,
+    Shape,
+    type FaceEyes,
+    type FaceProps,
+    type ShapeProps,
+} from "./components/shape";
+export { MARK, SHAPE_CHARS, type ShapeInk, type ShapeName } from "./components/shape-data";
 export { Splash, type SplashProps } from "./components/splash";
 export { Stat, type StatProps } from "./components/stat";
 export { Switch, type SwitchProps } from "./components/switch";

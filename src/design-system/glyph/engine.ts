@@ -28,7 +28,11 @@ export type GlyphId =
     | "shade1"
     | "shade2"
     | "shade3"
-    | "block";
+    | "block"
+    | "disc"
+    | "tri"
+    | "solid"
+    | "heart";
 
 /** The character each drawn glyph stands for (for text, docs and fallbacks). */
 export const GLYPH_CHARS: Record<GlyphId, string> = {
@@ -48,14 +52,20 @@ export const GLYPH_CHARS: Record<GlyphId, string> = {
     shade2: "▒",
     shade3: "▓",
     block: "█",
+    disc: "●",
+    tri: "▲",
+    solid: "■",
+    heart: "♥",
 };
 
 /** Density ramps, light to dense. */
 export const RAMPS = {
     signal: ["dot", "plus", "slash", "cross", "square", "target", "boxx", "quad", "boxdot"],
     grid: ["dot", "plus", "cross", "square", "boxx"],
-    marks: ["dot2", "plus", "diamond", "ring", "target", "quad"],
+    marks: ["dot2", "plus", "diamond", "ring", "heart", "target", "quad"],
     blocks: ["dot", "shade1", "shade2", "shade3", "block"],
+    /** The symbol set: universal shapes, bold, ending in ♥ and the three marks ● ▲ ■. */
+    symbols: ["dot", "plus", "cross", "heart", "disc", "tri", "solid"],
 } satisfies Record<string, GlyphId[]>;
 export type RampName = keyof typeof RAMPS;
 
@@ -149,7 +159,17 @@ export interface Field {
     blocks: CellRect[];
 }
 
-export function buildField(c: GlyphComposition, cols: number, rows: number): Field {
+/**
+ * `at` shifts the noise by whole cells: a scene drawn inside a neighbouring
+ * section's canvas uses its offset from its own section, so its glyphs carry
+ * on across the edge as if it were one field (gather still follows the width).
+ */
+export function buildField(
+    c: GlyphComposition,
+    cols: number,
+    rows: number,
+    at: { c: number; r: number } = { c: 0, r: 0 },
+): Field {
     const n = cols * rows;
     const base = new Float32Array(n);
     const zone = new Uint8Array(n);
@@ -160,9 +180,11 @@ export function buildField(c: GlyphComposition, cols: number, rows: number): Fie
     for (let r = 0; r < rows; r++) {
         for (let col = 0; col < cols; col++) {
             const i = r * cols + col;
-            const coarse = hash(Math.floor(col / s), Math.floor(r / s), c.seed);
-            const mid = valueNoise(col / (s * 3), r / (s * 3), c.seed + 7);
-            const fine = hash(col, r, c.seed + 13);
+            const nc = col + at.c;
+            const nr = r + at.r;
+            const coarse = hash(Math.floor(nc / s), Math.floor(nr / s), c.seed);
+            const mid = valueNoise(nc / (s * 3), nr / (s * 3), c.seed + 7);
+            const fine = hash(nc, nr, c.seed + 13);
             let v = coarse * 0.45 + mid * 0.4 + fine * 0.15;
             if (c.gather) {
                 const u = cols > 1 ? col / (cols - 1) : 0.5;
@@ -182,9 +204,9 @@ export function buildField(c: GlyphComposition, cols: number, rows: number): Fie
             }
             base[i] = Math.min(1, v);
 
-            const z = valueNoise(col / (s * 2.5), r / (s * 2.5), c.seed + 31);
+            const z = valueNoise(nc / (s * 2.5), nr / (s * 2.5), c.seed + 31);
             zone[i] = c.inks.length < 2 ? 0 : z > 0.6 ? 1 : c.inks.length > 2 && z < 0.28 ? 2 : 0;
-            phase[i] = hash(col, r, c.seed + 47) * Math.PI * 2;
+            phase[i] = hash(nc, nr, c.seed + 47) * Math.PI * 2;
         }
     }
 

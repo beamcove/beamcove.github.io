@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import react from "@vitejs/plugin-react";
@@ -44,8 +45,44 @@ function siteCopy(): Plugin {
     };
 }
 
+/**
+ * Speeds up first paint: inlines public/boot.js (a blocking script, so a
+ * whole round trip before anything renders), and preloads the two fonts so
+ * text renders in its own face from the start instead of swapping late.
+ */
+function fastHead(): Plugin {
+    const boot = readFileSync(resolve(import.meta.dirname, "public/boot.js"), "utf8").trim();
+    return {
+        name: "fast-head",
+        transformIndexHtml: {
+            order: "post",
+            handler: (html, ctx) => {
+                const out = html.replace(
+                    '<script src="/boot.js"></script>',
+                    () => `<script>${boot}</script>`,
+                );
+                const fonts = Object.keys(ctx.bundle ?? {}).filter((f) => f.endsWith(".woff2"));
+                return {
+                    html: out,
+                    tags: fonts.map((f) => ({
+                        tag: "link",
+                        attrs: {
+                            rel: "preload",
+                            as: "font",
+                            type: "font/woff2",
+                            href: `/${f}`,
+                            crossorigin: "",
+                        },
+                        injectTo: "head" as const,
+                    })),
+                };
+            },
+        },
+    };
+}
+
 export default defineConfig({
-    plugins: [react(), tsconfigPaths(), siteCopy()],
+    plugins: [react(), tsconfigPaths(), siteCopy(), fastHead()],
     // No SPA fallback in dev: unknown paths 404 like they will on Pages.
     appType: "mpa",
     build: {
@@ -55,6 +92,8 @@ export default defineConfig({
         // Emits .map files without referencing them from the bundle — uploadable
         // to an error tracker without exposing source publicly.
         sourcemap: "hidden",
+        // modern browsers preload modules natively; the polyfill would be one more request
+        modulePreload: { polyfill: false },
         rollupOptions: {
             input: {
                 home: resolve(import.meta.dirname, "index.html"),
@@ -62,6 +101,18 @@ export default defineConfig({
                 ...Object.fromEntries(
                     PAGES.map((page) => [page, resolve(import.meta.dirname, page, "index.html")]),
                 ),
+            },
+            // merge the many tiny shared chunks: fewer requests, each a round trip on a slow phone
+            output: {
+                experimentalMinChunkSize: 12_000,
+                // three layers: React (changes rarely, so it stays cached across deploys), the
+                // shared site code, and each page's own small chunk
+                manualChunks: (id) =>
+                    /node_modules\/(react|react-dom|scheduler)\//.test(id)
+                        ? "react"
+                        : /\/src\/(app|design-system|content)\/|node_modules\/lucide\//.test(id)
+                          ? "site"
+                          : undefined,
             },
         },
     },

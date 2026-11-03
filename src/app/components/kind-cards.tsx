@@ -1,6 +1,6 @@
 import { SCENES } from "@/app/components/scenes";
 import { KINDS } from "@/content/fleet";
-import { Card, GlyphField } from "@/design-system";
+import { Card, GlyphField, Shape } from "@/design-system";
 
 /** The three kinds of work side by side, each with a strip of its own scene. */
 export function KindCards() {
@@ -11,7 +11,12 @@ export function KindCards() {
                     <Card
                         variant="art"
                         media={<GlyphField composition={SCENES[kind.art]} quiet={false} />}
-                        eyebrow={String(i + 1).padStart(2, "0")}
+                        eyebrow={
+                            <>
+                                <Shape name={kind.shape} ink={kind.ink} />
+                                {String(i + 1).padStart(2, "0")}
+                            </>
+                        }
                         title={kind.title}
                     >
                         {kind.body}

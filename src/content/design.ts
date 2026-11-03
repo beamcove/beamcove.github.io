@@ -7,7 +7,7 @@ export const DESIGN_PRINCIPLES = [
     },
     {
         title: "Art belongs to its section.",
-        body: "Each section prints its own scene and it scrolls with the content, like ink on paper. It prints in once, row by row.",
+        body: "Each section prints its own scene and it scrolls with the content, like ink on paper. As the next section moves up the screen, its scene takes over cell by cell.",
     },
     {
         title: "Copy stays quiet.",
@@ -16,6 +16,10 @@ export const DESIGN_PRINCIPLES = [
     {
         title: "One voice, one signal.",
         body: "Onest for everything you read. Departure Mono only for the small machine details: kickers, dates, numbers.",
+    },
+    {
+        title: "Shapes everyone knows.",
+        body: "Glyphs are chunky: bold strokes, round ends, soft corners. Symbols are only shapes you already know: ● ▲ ■ ♥ ✕ + and a dash.",
     },
     {
         title: "Solid and calm.",
@@ -36,7 +40,7 @@ export const TYPE_SPECIMENS = [
     },
     { cls: "body", note: "Onest 16", sample: "Body copy sits beside titles and inside cards." },
     { cls: "label", note: "Onest 14 / 500", sample: "Form label" },
-    { cls: "signal", note: "Departure Mono 11", sample: "01 · What we do · Oct 27, 2026" },
+    { cls: "signal", note: "Departure Mono 13", sample: "01 · What we do · Oct 27, 2026" },
     { cls: "signal-lg", note: "Departure Mono 22", sample: "01 / 03" },
     { cls: "signal-xl", note: "Departure Mono 44", sample: "99.9" },
 ] as const;

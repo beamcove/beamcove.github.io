@@ -33,6 +33,8 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    nothing stored on the device). **Two faces only:** Onest for everything you
    read; Departure Mono only for signals (kickers, dates, numbers, tags, the
    wordmark) at 13px for labels, 22 or 44px for numbers. Buttons and controls are solid, never outlined.
+   Glyphs are chunky (bold, round); symbols are only universal shapes (`Shape`:
+   ● ▲ ■ ♥ ✕ + —). The mark is ● ▲ ■ in inks b, e, a; never draw new symbols.
 3. **The page is the grid.** One 16px dot matrix, drawn once on `<html>`,
    centred horizontally and anchored to the document top. Every glyph field
    snaps to it (`glyph/lattice.ts`); never draw a second dot grid on the page.
@@ -48,7 +50,7 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    4%, each kind of work its own pair. `scenes.test.ts` checks it.
 4. **Motion is opt-in via `html.motion`** (set by `public/boot.js`). Scope every
    hidden/start state under `.motion` so content shows without JS or with
-   reduced motion. The print-in, shimmer, pins, the beam and title decoding
+   reduced motion. The scene takeover (home page only), shimmer, pins, the beam and title decoding
    only run under it; otherwise each section prints one still frame.
    Don't advertise crew size or location outside the legal pages.
 5. **A new page touches five places**: `ROUTES` in `src/content/site.ts`,
@@ -58,6 +60,12 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    docs/architecture.md → "Adding a page".
 6. **`public/CNAME`** pins the custom domain into every deploy. Vite `base`
    stays `/` (asset URLs in markup are root-relative).
+
+## Performance
+
+Lazy canvases (pixels only near the screen, only changed cells redrawn), no
+layout reads while scrolling, no layout shift. See docs/architecture.md →
+"Performance" before touching `Field`, the painter or the scroll hooks.
 
 ## Conventions
 

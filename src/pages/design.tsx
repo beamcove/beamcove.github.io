@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ArrowRight, Plus } from "lucide";
 
 import { AsciiWord } from "@/app/components/ascii-word";
@@ -13,21 +13,29 @@ import {
     Button,
     Callout,
     Card,
+    Face,
     Frame,
     GLYPH_CHARS,
     GlyphField,
     LitLine,
+    Mark,
+    MARK,
     Meter,
     RAMPS,
     ScrambleText,
     SegmentedControl,
+    Shape,
+    SHAPE_CHARS,
     Stat,
     Switch,
     TextField,
     type GlyphComposition,
     type InkSlot,
+    type FaceEyes,
     type RampName,
+    type ShapeName,
 } from "@/design-system";
+import { drawGlyph } from "@/design-system/glyph/draw";
 
 const TOC = [
     { id: "top", label: "Signal" },
@@ -35,6 +43,7 @@ const TOC = [
     { id: "color", label: "Colour" },
     { id: "type", label: "Type" },
     { id: "glyphs", label: "Glyphs" },
+    { id: "symbols", label: "Symbols" },
     { id: "grid", label: "Grid" },
     { id: "components", label: "Components" },
     { id: "scenes", label: "Scenes" },
@@ -63,6 +72,45 @@ const CORE_TOKENS = [
     "ink-d",
     "ink-e",
 ];
+
+const SYMBOLS: ShapeName[] = ["disc", "tri", "square", "heart", "cross", "plus", "dash"];
+const FACES: { eyes: FaceEyes; wink?: boolean; ink: InkSlot; label: string }[] = [
+    { eyes: "disc", ink: "b", label: "Calm" },
+    { eyes: "cross", ink: "c", label: "Lost" },
+    { eyes: "plus", ink: "d", label: "Curious" },
+    { eyes: "square", ink: "a", label: "Focused" },
+    { eyes: "disc", wink: true, ink: "e", label: "Wink" },
+];
+
+/** A ramp's glyphs as the art draws them, one 24px cell each, with a gap between. */
+function RampStrip({ ramp }: { ramp: RampName }) {
+    const ref = useRef<HTMLCanvasElement>(null);
+    const glyphs = RAMPS[ramp];
+    const CELL_PX = 24;
+    const STEP = 40;
+    useEffect(() => {
+        const canvas = ref.current;
+        const ctx = canvas?.getContext("2d");
+        if (!canvas || !ctx) return;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.round(glyphs.length * STEP * dpr);
+        canvas.height = Math.round(CELL_PX * dpr);
+        ctx.scale(dpr, dpr);
+        const color = getComputedStyle(canvas).color;
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        glyphs.forEach((id, i) => drawGlyph(ctx, id, i * STEP, 0, CELL_PX));
+    }, [glyphs]);
+    return (
+        <canvas
+            ref={ref}
+            className="ramp-chars"
+            style={{ width: glyphs.length * STEP, height: CELL_PX }}
+            role="img"
+            aria-label={glyphs.map((id) => GLYPH_CHARS[id]).join(" ")}
+        />
+    );
+}
 
 /** One component on its own: a pixel label over a quiet panel. */
 function Specimen({ name, wide, children }: { name: string; wide?: boolean; children: ReactNode }) {
@@ -298,7 +346,7 @@ export function DesignPage() {
                 piece on its own, then all of them together.
             </PageHero>
 
-            <DesignSection id="principles" eyebrow="Principles" title="Five rules.">
+            <DesignSection id="principles" eyebrow="Principles" title="Six rules.">
                 <ol className="principles">
                     {DESIGN_PRINCIPLES.map((p, i) => (
                         <li key={p.title} data-reveal>
@@ -338,7 +386,7 @@ export function DesignPage() {
                 id="grid"
                 eyebrow="Grid"
                 title="The page is the grid."
-                lead="One 16px dot matrix runs through the whole page, centred so both margins match on any screen. Every scene prints onto it: a section’s glyphs sit exactly over the page’s dots, and they print in, row by row, the first time the section comes into view. Copy stays quiet, ink blocks print whole or not at all."
+                lead="One 16px dot matrix runs through the whole page, centred so both margins match on any screen. Every scene prints onto it: a section’s glyphs sit exactly over the page’s dots, and as the next section moves up the screen, its scene takes over cell by cell, bottom first, following your scroll. Copy stays quiet, ink blocks print whole or not at all."
             >
                 <div className="grid-demo">
                     {(["hero", "mission", "values"] as SceneName[]).map((name) => (
@@ -359,7 +407,7 @@ export function DesignPage() {
             <DesignSection
                 id="type"
                 eyebrow="Type"
-                title="Three faces."
+                title="Two faces."
                 lead="Onest for everything you read. Departure Mono only for signals: kickers, dates, numbers, tags and the wordmark, at 13px for labels and 22 or 44px for numbers. Each block switches face at most once."
             >
                 <ul className="type-scale">
@@ -380,19 +428,57 @@ export function DesignPage() {
                 id="glyphs"
                 eyebrow="Glyphs"
                 title="The alphabet."
-                lead="Four ramps run light to dense. Values from layered noise pick the glyph; solid ink blocks cut through."
+                lead="Five ramps run light to dense. Values from layered noise pick the glyph; solid ink blocks cut through."
             >
                 <ul className="ramps">
                     {(Object.keys(RAMPS) as RampName[]).map((name) => (
                         <li key={name}>
                             <span className="mono muted">{name}</span>
-                            <span className="ramp-chars" aria-hidden="true">
-                                {RAMPS[name].map((id) => GLYPH_CHARS[id]).join(" ")}
-                            </span>
+                            <RampStrip ramp={name} />
                         </li>
                     ))}
                 </ul>
                 <Playground />
+            </DesignSection>
+
+            <DesignSection
+                id="symbols"
+                eyebrow="Symbols"
+                title="Shapes everyone knows."
+                lead="Seven symbols, drawn bold and round on one 16px cell, the same shapes the glyph art prints. ● ▲ ■ are the mark and the three kinds of work; ♥ is for the things we love; ✕, + and the dash make faces and status. No new symbols: if a shape needs explaining, it isn’t one of ours."
+            >
+                <ul className="symbol-grid">
+                    {SYMBOLS.map((name) => (
+                        <li key={name}>
+                            <Shape name={name} size={48} />
+                            <span className="signal muted">
+                                {SHAPE_CHARS[name]} {name}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+                <div className="symbol-row">
+                    <figure className="symbol-figure">
+                        <Mark size={32} label="The Beamcove mark" />
+                        <figcaption className="signal muted">The mark</figcaption>
+                    </figure>
+                    <ul className="symbol-kinds">
+                        {MARK.map((m) => (
+                            <li key={m.name}>
+                                <Shape name={m.name} ink={m.ink} />
+                                <span>For {m.kind}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <ul className="face-grid">
+                    {FACES.map((f) => (
+                        <li key={f.label}>
+                            <Face eyes={f.eyes} wink={f.wink} ink={f.ink} size={16} />
+                            <span className="signal muted">{f.label}</span>
+                        </li>
+                    ))}
+                </ul>
             </DesignSection>
 
             <DesignSection

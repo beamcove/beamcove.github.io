@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Signal: the beam cursor (periwinkle) crossed by an orchid ink block on the midnight sky. -->
+  <!-- Signal: the mark, ▲ over ● ■, in the inks of play, everyday life and work, on the midnight sky. -->
   <rect width="64" height="64" rx="12" fill="#11131d"/>
-  <rect x="14" y="10" width="20" height="40" fill="#8fa2ff"/>
-  <rect x="28" y="32" width="24" height="22" fill="#d39ad6"/>
-  <rect x="28" y="32" width="6" height="18" fill="#e9dcff"/>
+  <path d="M32 8.5 42.5 27.5H21.5Z" fill="#93c89c" stroke="#93c89c" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="20.5" cy="43.5" r="10" fill="#6fc6d3"/>
+  <rect x="34" y="34" width="19" height="19" rx="4.5" fill="#8fa2ff"/>
 </svg>
