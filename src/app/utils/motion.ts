@@ -37,6 +37,8 @@ export function useReveal() {
             el.style.transition = "none";
             el.classList.add("is-in");
         }
+        // below the fold, reveals start hidden from here on (see `.motion.ready` in page.css)
+        document.documentElement.classList.add("ready");
         if (now.length) {
             void document.body.offsetHeight;
             for (const el of now) el.style.transition = "";

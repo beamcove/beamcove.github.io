@@ -11,5 +11,11 @@
         "strict": true,
         "skipLibCheck": true
     },
-    "include": ["src/content/identity.ts", "vite.config.ts", "vitest.config.ts", "eslint.config.js"]
+    "include": [
+        "src/content/identity.ts",
+        "preact-alias.ts",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "eslint.config.js"
+    ]
 }

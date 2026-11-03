@@ -18,7 +18,10 @@ export interface ScrambleTextProps {
  * Text that decodes: scrambled glyphs resolve into the real words, left to
  * right, once. The real text keeps its place in the layout (and is what
  * screen readers get) while the noise prints over it, so nothing around it
- * moves. With motion off there is no noise.
+ * moves. With motion off there is no noise, and a `mount` title on a
+ * prerendered page (`<html data-prerendered>`) is already on screen when the
+ * script arrives, so it is left as it is: scrambling readable text only delays
+ * the page.
  */
 export function ScrambleText({
     text,
@@ -33,6 +36,8 @@ export function ScrambleText({
         const el = ref.current;
         const root = el?.parentElement;
         if (!el || !root || !motionAllowed()) return;
+        const prerendered = document.documentElement.hasAttribute("data-prerendered");
+        if (trigger === "mount" && prerendered) return;
         let frame = 0;
         let timer = 0;
         let begin = 0;

@@ -6,10 +6,20 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
+import { PREACT_ALIAS } from "./preact-alias.ts";
+
 export default defineConfig({
     // `tsconfigPaths` resolves the `@/*` aliases from tsconfig.app.json so test
     // files resolve them exactly like the Vite build does (which already runs it).
     plugins: [tsconfigPaths(), react()],
+    // tests run on Preact, like the site
+    resolve: {
+        alias: [
+            // Testing Library's Preact edition: the same API, rendering with Preact
+            { find: /^@testing-library\/react$/, replacement: "@testing-library/preact" },
+            ...PREACT_ALIAS,
+        ],
+    },
     test: {
         environment: "jsdom",
         // Ambient describe/it/expect/vi — typed via tsconfig.app.json "types".

@@ -5,8 +5,14 @@ import { Icon } from "@/app/components/icon";
 import { NAV, ROUTES } from "@/content/site";
 import { Button, Mark } from "@/design-system";
 
+/** The page's path: from the address bar, or (when prerendering) from the build. */
+function currentPath() {
+    if (typeof window !== "undefined") return window.location.pathname;
+    return (globalThis as { __PAGE_PATH__?: string }).__PAGE_PATH__ ?? "";
+}
+
 function isCurrent(href: string) {
-    return typeof window !== "undefined" && window.location.pathname === href;
+    return currentPath() === href;
 }
 
 export function SiteHeader() {

@@ -1508,7 +1508,8 @@ button:focus-visible {
         opacity 700ms var(--ease-out),
         translate 700ms var(--ease-out);
 }
-.motion [data-reveal]:not([data-reveal="fill"]):not(.is-in) {
+/* hidden only once the page's script is running (`ready`), so prerendered copy shows at once */
+.motion.ready [data-reveal]:not([data-reveal="fill"]):not(.is-in) {
     opacity: 0;
     translate: 0 24px;
 }
@@ -1533,7 +1534,7 @@ button:focus-visible {
     transition: opacity 80ms steps(1, end);
     transition-delay: calc(var(--x) * 28ms);
 }
-.motion .footer-wordmark:not(.is-in) .px:not(.g-off) {
+.motion.ready .footer-wordmark:not(.is-in) .px:not(.g-off) {
     opacity: 0;
 }
 

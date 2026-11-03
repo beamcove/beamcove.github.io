@@ -8,7 +8,7 @@ lefthook git hooks via the `prepare` script.
 | Command                             | What it does                                                                                                       |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `npm run dev`                       | Vite dev server with HMR (localhost:5173). Pages live at `/about/`, `/privacy/`, …; the 404 page is at `/404.html` |
-| `npm run build`                     | `tsc -b` (type-check) + `vite build` → `dist/`                                                                     |
+| `npm run build`                     | `tsc -b` + `vite build` + prerender every page → `dist/`                                                           |
 | `npm run preview`                   | Serve the production build (localhost:4173)                                                                        |
 | `npm test` / `npm run test:watch`   | Vitest, jsdom + Testing Library                                                                                    |
 | `npm run test:coverage`             | Coverage report (v8)                                                                                               |
@@ -46,7 +46,7 @@ lefthook git hooks via the `prepare` script.
 
 `npm run size` (after a build) checks all page scripts in `dist/assets/` together
 against the 100 KB budget in [package.json](../package.json). They currently
-come to ~73 KB compressed (React 19, shared components, every page's own chunk,
+come to ~30 KB compressed (Preact, shared components, every page's own chunk,
 a handful of Lucide icons). If the budget trips, check what got imported —
 e.g. something that pulls in all of `lucide` instead of named icon imports.
 Fonts are separate files and don't count.

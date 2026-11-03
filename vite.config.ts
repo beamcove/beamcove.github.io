@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+import { PREACT_ALIAS } from "./preact-alias.ts";
 import { SITE } from "./src/content/identity.ts";
 
 // One HTML file per page, so every page has a real URL on GitHub Pages
@@ -46,14 +47,16 @@ function siteCopy(): Plugin {
 }
 
 /**
- * Speeds up first paint: inlines public/boot.js (a blocking script, so a
- * whole round trip before anything renders), and preloads the two fonts so
- * text renders in its own face from the start instead of swapping late.
+ * Speeds up first paint on every page:
+ * - inlines public/boot.js (a blocking script: a whole round trip before anything renders);
+ * - puts the stylesheet inside the HTML (the one request that still blocks the first paint);
+ * - preloads both fonts, so prerendered text shows in its own face instead of swapping late.
  */
 function fastHead(): Plugin {
     const boot = readFileSync(resolve(import.meta.dirname, "public/boot.js"), "utf8").trim();
     return {
         name: "fast-head",
+        enforce: "post",
         transformIndexHtml: {
             order: "post",
             handler: (html, ctx) => {
@@ -78,11 +81,29 @@ function fastHead(): Plugin {
                 };
             },
         },
+        generateBundle(_, bundle) {
+            const css = Object.values(bundle).filter(
+                (f) => f.type === "asset" && f.fileName.endsWith(".css"),
+            );
+            for (const file of Object.values(bundle)) {
+                if (file.type !== "asset" || !file.fileName.endsWith(".html")) continue;
+                let html = String(file.source);
+                for (const c of css) {
+                    if (c.type !== "asset") continue;
+                    html = html.replace(
+                        new RegExp(`<link rel="stylesheet"[^>]*href="/${c.fileName}"[^>]*>`),
+                        () => `<style>${String(c.source)}</style>`,
+                    );
+                }
+                file.source = html;
+            }
+        },
     };
 }
 
 export default defineConfig({
     plugins: [react(), tsconfigPaths(), siteCopy(), fastHead()],
+    resolve: { alias: PREACT_ALIAS },
     // No SPA fallback in dev: unknown paths 404 like they will on Pages.
     appType: "mpa",
     build: {
@@ -102,14 +123,14 @@ export default defineConfig({
                     PAGES.map((page) => [page, resolve(import.meta.dirname, page, "index.html")]),
                 ),
             },
-            // merge the many tiny shared chunks: fewer requests, each a round trip on a slow phone
             output: {
+                // merge tiny shared chunks: fewer requests, each a round trip on a slow phone
                 experimentalMinChunkSize: 12_000,
-                // three layers: React (changes rarely, so it stays cached across deploys), the
+                // three layers: Preact (changes rarely, so it stays cached across deploys), the
                 // shared site code, and each page's own small chunk
                 manualChunks: (id) =>
-                    /node_modules\/(react|react-dom|scheduler)\//.test(id)
-                        ? "react"
+                    /node_modules\/preact\//.test(id)
+                        ? "preact"
                         : /\/src\/(app|design-system|content)\/|node_modules\/lucide\//.test(id)
                           ? "site"
                           : undefined,

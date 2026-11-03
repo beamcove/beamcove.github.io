@@ -2,8 +2,9 @@
 
 The Beamcove website, served at [beamcove.com](https://beamcove.com) via GitHub Pages.
 
-A multi-page Vite + React + TypeScript site built on the Beamcove design system
-(Ink & tide), vendored in `src/design-system/`. Pages live in `src/pages/`, shared
+A multi-page Vite + Preact + TypeScript site (React's API on `preact/compat`,
+every page prerendered at build time) built on the Beamcove design system
+(Signal), vendored in `src/design-system/`. Pages live in `src/pages/`, shared
 copy in `src/content/`.
 
 Deeper documentation lives in [docs/](docs/): [architecture](docs/architecture.md),
@@ -16,7 +17,7 @@ Requires Node >= 22 (see `.nvmrc`).
 ```sh
 npm install        # install dependencies (also installs lefthook git hooks)
 npm run dev        # dev server with HMR
-npm run build      # type-check + production build into dist/
+npm run build      # type-check + production build + prerender into dist/
 npm run preview    # serve the production build locally
 ```
 

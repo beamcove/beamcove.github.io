@@ -1,7 +1,9 @@
 # CLAUDE.md
 
-Beamcove website — a multi-page Vite + React 19 + TypeScript static site (one
-HTML file per page, no client router), deployed to GitHub Pages (beamcove.com)
+Beamcove website — a multi-page Vite + Preact + TypeScript static site (one
+HTML file per page, no client router), written against React's API and run on
+Preact (`preact/compat`, aliased in `preact-alias.ts`), every page prerendered
+to HTML at build time and hydrated in the browser. Deployed to GitHub Pages (beamcove.com)
 by GitHub Actions on push to `main`. The landing page is the abstract; full
 content lives on inner pages.
 
@@ -13,7 +15,7 @@ Docs: [docs/architecture.md](docs/architecture.md) ·
 
 ```sh
 npm run dev            # dev server (HMR)
-npm run build          # tsc -b + vite build → dist/
+npm run build          # tsc -b + vite build + prerender every page → dist/
 npm test               # vitest (jsdom + Testing Library)
 npm run format         # prettier --write + eslint --fix (run before committing)
 npm run format:check   # CI check — the pre-commit hook and CI both enforce this
@@ -27,7 +29,8 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 1. **CSS import order** in `src/app/mount.tsx`: `tokens.css` → `components.css` →
    `page.css`. Tokens declare the fonts; the page layer overrides components.
 2. **Design system is vendored** in `src/design-system/`. `tokens.css`,
-   `components.css` and `fonts/` are verbatim copies from the sibling
+   `components.css` and `fonts/` (subset to the characters the site uses; see
+   the design-system README to add one) are verbatim copies from the sibling
    `design-system` repo (prettier-ignored) — re-copy, don't hand-edit. Follow its
    rules: tokens never hex, sentence case, one theme (Midnight, no picker,
    nothing stored on the device). **Two faces only:** Onest for everything you
@@ -53,10 +56,12 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    reduced motion. The scene takeover (home page only), shimmer, word lighting, the beam and title decoding
    only run under it; otherwise each section prints one still frame.
    Don't advertise crew size or location outside the legal pages.
-5. **A new page touches five places**: `ROUTES` in `src/content/site.ts`,
-   `src/pages/`, `src/entries/`, `<name>/index.html`, and `PAGES` in
-   `vite.config.ts` (+ the page list in `src/pages/pages.test.tsx` and a line in
-   `public/sitemap.xml`). See
+5. **A new page touches six places**: `ROUTES` in `src/content/site.ts`,
+   `src/pages/`, `src/entries/`, `<name>/index.html`, `PAGES` in
+   `vite.config.ts`, and `PRERENDER` in `src/prerender.tsx` (+ the page list in
+   `src/pages/pages.test.tsx` and a line in `public/sitemap.xml`). The build
+   fails if a page has no prerender entry. Pages render outside a browser at
+   build time: touch `window`/`document` only in effects or behind a guard. See
    docs/architecture.md → "Adding a page".
 6. **`public/CNAME`** pins the custom domain into every deploy. Vite `base`
    stays `/` (asset URLs in markup are root-relative).
@@ -72,7 +77,9 @@ layout reads while scrolling, no layout shift. See docs/architecture.md →
 - TS strict + `noUncheckedIndexedAccess`; `@/*` → `src/*` alias (defined in
   tsconfig.app.json only; no `baseUrl` — TS 6 deprecates it).
 - React named imports only (`import { useEffect } from "react"`); no
-  `esModuleInterop`, so default-importing React fails type-check.
+  `esModuleInterop`, so default-importing React fails type-check. They resolve
+  to Preact; tests run on Preact too (`@testing-library/react` is aliased to
+  `@testing-library/preact`).
 - Named exports; kebab-case filenames; tests colocated as `*.test.tsx`.
 - Icons: `import { Compass } from "lucide"` + `<Icon node={Compass} />`.
 - Prettier: 4-space indent, 100 cols, double quotes. ESLint flat config.

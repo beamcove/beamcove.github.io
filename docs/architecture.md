@@ -1,6 +1,7 @@
 # Architecture
 
-The Beamcove website: a multi-page Vite + React 19 + TypeScript static site with
+The Beamcove website: a multi-page Vite + Preact + TypeScript static site (written
+against React's API, run on `preact/compat`, every page prerendered) with
 no client-side router, no backend of its own, and one external API call
 (newsletter signup). Each page is its own HTML file, built to `dist/` and served
 by GitHub Pages at [beamcove.com](https://beamcove.com).
@@ -78,7 +79,9 @@ to production, see [deployment.md](deployment.md).
 4. Add `<name>/index.html` (copy another page's; change title, description,
    canonical, og:url and the entry script), and add its URL to
    `public/sitemap.xml`.
-5. Add `<name>` to `PAGES` in [`vite.config.ts`](../vite.config.ts).
+5. Add `<name>` to `PAGES` in [`vite.config.ts`](../vite.config.ts), and its
+   built file to `PRERENDER` in [`src/prerender.tsx`](../src/prerender.tsx)
+   (the build fails without it).
 6. Add it to the `PAGES` list in `src/pages/pages.test.tsx`. That test checks
    every page has one `<h1>` and that every internal link resolves;
    `src/site-files.test.ts` checks the sitemap and each page's preview tags.
@@ -157,6 +160,21 @@ always moves with the page, so you can see you are scrolling.
 Measured on a production build (`npm run build && npm run preview`), on a
 phone profile (slow 4G, 4× slower CPU) and on desktop. Keep these:
 
+- **Every page is prerendered.** `npm run build` ends with
+  [`scripts/prerender.mjs`](../scripts/prerender.mjs), which renders each page
+  (listed in [`src/prerender.tsx`](../src/prerender.tsx)) into its HTML file and
+  marks `<html data-prerendered>`; [`mount.tsx`](../src/app/mount.tsx) hydrates
+  it. Text shows before any script runs (first paint about 0.45 s on the phone
+  profile, against 1.3 s when the page was built in the browser). Components
+  must render outside a browser: read `window` and `document` in effects or
+  behind a guard. Reveals only hide below-the-fold content once the script is
+  running (`html.ready`), so prerendered copy shows at once.
+- **Preact, not React.** `preact-alias.ts` points React imports at
+  `preact/compat` (about 9 KB against React's 60 KB, compressed).
+- **A title already on screen stays as it is.** `ScrambleText` with
+  `trigger="mount"` doesn't scramble a prerendered title; it only delayed the
+  page.
+
 - **Canvases are lazy.** A `Field` lays out and holds pixels only within one
   screen of the viewport, and gives them back further away (a canvas costs
   width × height × 4 bytes, at up to 1.5× device pixels). It redraws only the
@@ -171,7 +189,8 @@ phone profile (slow 4G, 4× slower CPU) and on desktop. Keep these:
   counts as painted at once), on-screen content isn't faded in, and
   `ScrambleText` never changes the layout.
 - **The head is lean.** `fastHead` in `vite.config.ts` inlines `public/boot.js`
-  and preloads both fonts. Chunks are three layers: `react` (rarely changes,
+  and the stylesheet, and preloads both fonts (which are subset to the
+  characters the site uses). Chunks are three layers: `preact` (rarely changes,
   stays cached), `site` (shared code) and one small chunk per page.
 
 ## Styling

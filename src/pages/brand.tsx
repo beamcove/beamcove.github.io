@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Check, Copy } from "lucide";
 
 import { AsciiWord } from "@/app/components/ascii-word";
@@ -56,10 +56,18 @@ const SWATCHES: { group: string; items: { name: string; token: string; use: stri
     },
 ];
 
+const noSubscribe = () => () => {};
+
 /** A token's value, read from the stylesheet so it never drifts from the tokens. */
 function TokenValue({ token }: { token: string }) {
-    const [value] = useState(() =>
-        getComputedStyle(document.documentElement).getPropertyValue(`--${token}`).trim(),
+    // read in the browser only: a prerendered page shows the token name until it runs
+    const value = useSyncExternalStore(
+        noSubscribe,
+        () =>
+            typeof document === "undefined"
+                ? ""
+                : getComputedStyle(document.documentElement).getPropertyValue(`--${token}`).trim(),
+        () => "",
     );
     return <span className="mono">{value ? `${value} · ${token}` : token}</span>;
 }
