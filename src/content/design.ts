@@ -3,7 +3,7 @@
 export const DESIGN_PRINCIPLES = [
     {
         title: "Show the machine.",
-        body: "Glyphs, grids, prompts and cursors are the decoration. Nothing hides behind gloss, blur or gradients.",
+        body: "Windows, rules, prompts and glyphs are the decoration. Nothing hides behind gloss, blur or gradients.",
     },
     {
         title: "One field per view.",

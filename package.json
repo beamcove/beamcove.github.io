@@ -23,9 +23,19 @@
     },
     "size-limit": [
         {
-            "name": "all page scripts",
-            "path": "dist/assets/*.js",
+            "name": "all page scripts (main site)",
+            "path": [
+                "dist/assets/*.js",
+                "!dist/assets/lab*.js"
+            ],
             "limit": "100 KB"
+        },
+        {
+            "name": "lab site scripts",
+            "path": [
+                "dist/assets/lab*.js"
+            ],
+            "limit": "60 KB"
         }
     ],
     "dependencies": {

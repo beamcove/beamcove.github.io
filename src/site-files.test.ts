@@ -1,8 +1,15 @@
-import { ROUTES } from "@/content/site";
+import { LAB_ROUTES, ROUTES } from "@/content/site";
 
 // The HTML shells and public/ files, read as text at test time.
 const shells = import.meta.glob<string>(
-    ["/index.html", "/404.html", "/*/index.html", "!/dist/**", "!/node_modules/**"],
+    [
+        "/index.html",
+        "/404.html",
+        "/*/index.html",
+        "/lab/*/index.html",
+        "!/dist/**",
+        "!/node_modules/**",
+    ],
     { query: "?raw", import: "default", eager: true },
 );
 const sitemap = Object.values(
@@ -51,8 +58,21 @@ describe.each(Object.entries(shells))("%s", (file, html) => {
 
     if (file !== "/404.html") {
         it("is a known route with a matching canonical URL", () => {
-            expect(Object.values(ROUTES) as string[]).toContain(routeOf(file));
+            expect([...Object.values(ROUTES), ...Object.values(LAB_ROUTES)] as string[]).toContain(
+                routeOf(file),
+            );
             expect(html).toContain(`rel="canonical" href="https://beamcove.com${routeOf(file)}"`);
         });
     }
+});
+
+describe("the lab", () => {
+    it("keeps every lab page out of search and out of the sitemap", () => {
+        for (const route of Object.values(LAB_ROUTES)) {
+            expect(shells[`${route}index.html`], route).toContain(
+                '<meta name="robots" content="noindex" />',
+            );
+            expect(sitemap).not.toContain(`<loc>https://beamcove.com${route}</loc>`);
+        }
+    });
 });

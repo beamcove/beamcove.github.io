@@ -14,9 +14,9 @@ test fails if a project code or name shows up on any page. Company facts and cop
 (boilerplate, mission, vision, values, story) come from the company's About page
 in Notion; keep `src/content/` in step with it.
 
-It is built on the Beamcove design system, **Signal** (a terminal printed in
-neon: glyph fields cut by ink blocks, five colour themes, Departure Mono +
-JetBrains Mono + Onest). A copy lives in
+It is built on the Beamcove design system, **Signal** (the first desktop
+computers, made today: paper, bold 2px rules, system windows, glyph fields cut by
+ink blocks, five colour themes, Departure Mono + JetBrains Mono + Onest). A copy lives in
 [`src/design-system/`](../src/design-system/README.md), and `/design/` shows every
 piece of it.
 
@@ -141,12 +141,33 @@ splash, the empty projects state. URLs follow the plain names too
 
 ## Theme
 
-The design system themes by `data-theme` on `<html>`: `signal` (default),
-`phosphor`, `amber`, `ultraviolet` and `paper`. A small script,
+The design system themes by `data-theme` on `<html>`: `paper` (default),
+`platinum`, `graphite`, `phosphor` and `midnight`. A small script,
 [`public/boot.js`](../public/boot.js), loaded in every page's `<head>`, restores
-the saved choice (`localStorage["bc-theme"]`, with old `light`/`dark` values
-mapped to `paper`/`signal`) before first paint; the header's `ThemePicker` sets
+the saved choice (`localStorage["bc-theme"]`, with older values such as
+`light`, `dark` or `signal` mapped to their nearest theme) before first paint; the header's `ThemePicker` sets
 and saves it, and the Design page's `ThemeGrid` does the same.
+
+## The lab
+
+`/lab/` is a gallery of five versions of the website: the same content and
+structure (header, hero, what we do, about, values, updates, FAQ, newsletter,
+contact, footer), each taking the design system in a different direction. Its
+front page previews every version live.
+
+| URL               | Folder               | Direction                                          |
+| ----------------- | -------------------- | -------------------------------------------------- |
+| `/lab/editorial/` | `src/lab/editorial/` | A design magazine: big type, asymmetric spreads    |
+| `/lab/grid/`      | `src/lab/grid/`      | Swiss: one strict grid, black and one red          |
+| `/lab/bento/`     | `src/lab/bento/`     | A product launch: a bento grid of live tiles       |
+| `/lab/cinema/`    | `src/lab/cinema/`    | A dark scroll story with a glyph-field stage       |
+| `/lab/poster/`    | `src/lab/poster/`    | Screen-printed posters: ink blocks, oversized type |
+
+Lab pages mount with `mountLab` (tokens, components and `lab-base.css`, without
+`page.css`), carry the `LabBar` switcher, pin a theme with `data-force-theme`
+(read by `boot.js`), use `LAB_ROUTES`, and are `noindex` and out of the sitemap.
+The newsletter logic they share lives in `src/app/utils/subscribe.ts`. The size
+budget counts them separately from the main site.
 
 ## Icons
 

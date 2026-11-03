@@ -24,6 +24,7 @@ import {
     Stat,
     Switch,
     TextField,
+    Window,
     type GlyphComposition,
     type InkSlot,
     type RampName,
@@ -46,6 +47,7 @@ const CORE_TOKENS = [
     "surface-sunken",
     "line",
     "line-strong",
+    "rule",
     "ink",
     "ink-muted",
     "ink-subtle",
@@ -56,12 +58,16 @@ const CORE_TOKENS = [
     "danger",
 ];
 
-/** One component on its own, inside a labelled frame. */
+/** One component on its own, in a window of its own. */
 function Specimen({ name, wide, children }: { name: string; wide?: boolean; children: ReactNode }) {
     return (
-        <Frame label={name} className={wide ? "specimen specimen-wide" : "specimen"}>
-            <div className="specimen-body">{children}</div>
-        </Frame>
+        <Window
+            title={name}
+            className={wide ? "specimen specimen-wide" : "specimen"}
+            bodyClassName="specimen-body"
+        >
+            {children}
+        </Window>
     );
 }
 
@@ -287,8 +293,8 @@ export function DesignPage() {
     return (
         <SiteLayout>
             <PageHero art="design" eyebrow="Design system" title="Signal.">
-                Beamcove’s design language: a terminal printed in neon. Every piece on its own, then
-                all of them together.
+                Beamcove’s design language: the first desktop computers, built today. Every piece on
+                its own, then all of them together.
             </PageHero>
 
             <div className="container design">
@@ -331,7 +337,7 @@ export function DesignPage() {
                         id="themes"
                         eyebrow="Themes"
                         title="Five themes, one system."
-                        lead="Every theme sets a canvas, text and five ink slots. Pick one and the whole site re-inks, glyph fields included."
+                        lead="Paper is the default. Every theme sets a desk, text, a bold rule and five ink slots; pick one and the whole site re-inks, glyph fields included."
                     >
                         <ThemeGrid />
                         <ul className="token-grid">
@@ -391,7 +397,7 @@ export function DesignPage() {
                         id="components"
                         eyebrow="Components"
                         title="Every piece."
-                        lead="Square, mono and bracketed. Each one alone, in every state."
+                        lead="Bold rules, rounded keys, square windows. Each one alone, in every state."
                     >
                         <div className="specimens">
                             <Specimen name="Button" wide>
@@ -524,6 +530,13 @@ export function DesignPage() {
                                         A glyph strip on top. Hover me.
                                     </Card>
                                 </div>
+                            </Specimen>
+                            <Specimen name="Window">
+                                <Window title="Untitled" meta="2 items" onClose={() => {}}>
+                                    <p className="muted">
+                                        A system window: a bold rule, a 2px drop and a striped bar.
+                                    </p>
+                                </Window>
                             </Specimen>
                             <Specimen name="Frame">
                                 <Frame label="status" className="frame-demo">

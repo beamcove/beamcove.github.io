@@ -1,0 +1,115 @@
+/* The lab's front page. Tokens only. */
+.lab-index {
+    max-width: 1248px;
+    margin: 0 auto;
+    padding: 24px 24px 96px;
+}
+.lab-index-head {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: 400px;
+    padding: 48px;
+    border: var(--stroke-bold) solid var(--rule);
+    background: var(--surface-sunken);
+    box-shadow: var(--shadow-sm);
+}
+.lab-index-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+.lab-index-copy {
+    position: relative;
+    display: grid;
+    justify-items: start;
+    gap: 16px;
+    max-width: 620px;
+    padding: 24px;
+    border: var(--stroke-bold) solid var(--rule);
+    background: var(--surface-raised);
+}
+.lab-index-title {
+    font-family: var(--font-display);
+    font-size: 44px;
+    line-height: 44px;
+    font-weight: 400;
+}
+.lab-index-lead {
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--ink-muted);
+}
+.lab-index-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 8px;
+}
+.lab-index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 32px 24px;
+    margin-top: 40px;
+}
+.lab-card {
+    height: 100%;
+}
+.lab-card-body {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: 0;
+}
+/* a live preview: the site at 1280×800, scaled into the window */
+.lab-card-preview {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: var(--stroke-bold) solid var(--rule);
+    background: var(--surface-sunken);
+}
+.lab-card-preview iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1280px;
+    height: 800px;
+    border: 0;
+    transform-origin: 0 0;
+    transform: scale(var(--k, 0.3));
+    pointer-events: none;
+}
+.lab-card-copy {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: 8px;
+    padding: 16px 20px 20px;
+}
+.lab-card-name {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: 600;
+}
+.lab-card-line {
+    margin-bottom: 8px;
+    color: var(--ink-muted);
+}
+@media (max-width: 560px) {
+    .lab-index {
+        padding: 12px 12px 80px;
+    }
+    .lab-index-head {
+        padding: 16px;
+        min-height: 480px;
+    }
+    .lab-index-title {
+        font-size: 33px;
+        line-height: 33px;
+    }
+    .lab-index-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

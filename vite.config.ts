@@ -11,6 +11,9 @@ import { SITE } from "./src/content/identity.ts";
 // for any missing path.
 const PAGES = ["projects", "about", "updates", "contact", "brand", "design", "privacy", "terms"];
 
+// The lab: five versions of the website on the same design system (noindex).
+const LAB = ["editorial", "grid", "bento", "cinema", "poster"];
+
 /**
  * Fills %SITE_…% placeholders in every HTML file (pages and the social card
  * source in scripts/) from SITE, so the tagline and summary live in one place.
@@ -61,6 +64,13 @@ export default defineConfig({
                 "not-found": resolve(import.meta.dirname, "404.html"),
                 ...Object.fromEntries(
                     PAGES.map((page) => [page, resolve(import.meta.dirname, page, "index.html")]),
+                ),
+                lab: resolve(import.meta.dirname, "lab", "index.html"),
+                ...Object.fromEntries(
+                    LAB.map((site) => [
+                        `lab-${site}`,
+                        resolve(import.meta.dirname, "lab", site, "index.html"),
+                    ]),
                 ),
             },
         },

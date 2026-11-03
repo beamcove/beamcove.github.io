@@ -35,7 +35,7 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    inks cross a little but a block never sits inside another and same-ink blocks
    never overlap; each kind card has its own ink pair. `glyph-compositions.test.ts`
    checks it.
-3. **Themes** are `signal` (default), `phosphor`, `amber`, `ultraviolet`, `paper`,
+3. **Themes** are `paper` (default), `platinum`, `graphite`, `phosphor`, `midnight`,
    listed in `src/app/utils/theme.ts` and again in `public/boot.js` (keep them in
    step). Splashes follow the active theme; copy never sits on ink (GlyphField
    thins glyphs and trims blocks behind `.bc-splash-content`).
@@ -83,3 +83,13 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
 Push to `main` → `.github/workflows/deploy.yml` (format check → tests → build →
 deploy-pages). Pages source must be "GitHub Actions" in repo settings. Built
 output is never committed. Details: docs/deployment.md.
+
+## The lab
+
+`/lab/` holds five versions of this website on the same design system (Editorial,
+Grid, Bento, Cinema, Poster): same content and structure, different creative
+directions. Each lives in `src/lab/<name>/` with its own CSS, mounted by
+`mountLab` (design system + `lab-base.css`, not `page.css`), and pins its theme
+with `data-force-theme` in its HTML shell. Routes live in `LAB_ROUTES`; every lab
+page is `noindex` and stays out of the sitemap and the nav. `src/lab/lab.test.tsx`
+checks them like pages.

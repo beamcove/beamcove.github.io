@@ -1,21 +1,27 @@
 import type { InkSlot } from "@/design-system";
 
 export const THEMES = [
-    { id: "signal", label: "Signal", note: "Five neon inks on a black terminal." },
-    { id: "phosphor", label: "Phosphor", note: "A green CRT, with teal and amber." },
-    { id: "amber", label: "Amber", note: "A warm amber terminal." },
-    { id: "ultraviolet", label: "Ultraviolet", note: "Magenta and cyan on deep indigo." },
-    { id: "paper", label: "Paper", note: "A printout: four inks on paper." },
+    { id: "paper", label: "Paper", note: "A printout: four inks and black on paper." },
+    { id: "platinum", label: "Platinum", note: "Desktop grey with quiet inks." },
+    { id: "graphite", label: "Graphite", note: "Charcoal with brass, slate and clay." },
+    { id: "phosphor", label: "Phosphor", note: "A soft green monitor." },
+    { id: "midnight", label: "Midnight", note: "Ink-blue night, periwinkle and cyan." },
 ] as const;
 
 export type Theme = (typeof THEMES)[number]["id"];
 
-export const DEFAULT_THEME: Theme = "signal";
+export const DEFAULT_THEME: Theme = "paper";
 export const THEME_STORAGE_KEY = "bc-theme";
 export const SWATCH_SLOTS: InkSlot[] = ["a", "b", "c", "d", "e"];
 
-/** Saved choices from before the colour themes: dark → signal, light → paper. */
-const LEGACY: Record<string, Theme> = { dark: "signal", light: "paper" };
+/** Saved choices from older theme sets, mapped to their nearest theme today. */
+const LEGACY: Record<string, Theme> = {
+    light: "paper",
+    dark: "graphite",
+    signal: "graphite",
+    amber: "graphite",
+    ultraviolet: "midnight",
+};
 
 export function toTheme(value: string | null | undefined): Theme {
     if (!value) return DEFAULT_THEME;

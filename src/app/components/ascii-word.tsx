@@ -1,3 +1,5 @@
+import "./ascii-word.css";
+
 import type { CSSProperties } from "react";
 
 import { hash } from "@/design-system/glyph/engine";

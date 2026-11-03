@@ -29,11 +29,8 @@ const SWATCHES: { group: string; items: { name: string; token: string; use: stri
     {
         group: "Interface",
         items: [
-            {
-                name: "Canvas",
-                token: "surface-page",
-                use: "The page: a terminal canvas. In Paper, the paper.",
-            },
+            { name: "Desk", token: "surface-page", use: "The page the windows sit on." },
+            { name: "Rule", token: "rule", use: "The bold 2px line around windows and controls." },
             { name: "Text", token: "ink", use: "Text and the wordmark." },
             {
                 name: "Beam",
@@ -193,9 +190,9 @@ export function BrandPage() {
             <section className="section" aria-labelledby="color-title">
                 <div className="container">
                     <SectionHead id="color" eyebrow="Color" title="Brand colors.">
-                        Beamcove is a terminal printed in neon: a dark canvas, one action ink and
-                        five glyph inks. Pick a theme in the header and every colour here changes
-                        with it.
+                        Beamcove looks like the first desktop computers, built today: paper, a bold
+                        black rule, one action ink and five glyph inks. Pick a theme in the header
+                        and every colour here changes with it.
                     </SectionHead>
                     {SWATCHES.map((group) => (
                         <div key={group.group} className="swatch-group">

@@ -20,4 +20,4 @@ Differences from the old port: `Splash` takes a glyph `field` (and `beam`)
 instead of a tone; `Card` variants are `plain`, `framed`, `art` (with `media`)
 and `splash`; `DotMeter` is now `Meter` (a `█▓▒░` bar; the old name still
 works); new `Frame`, `Switch`, `SegmentedControl`, `GlyphField` and
-`ScrambleText`.
+`ScrambleText` and `Window` (a system window with a striped title bar).

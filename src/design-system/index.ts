@@ -17,6 +17,7 @@ export { Splash, type SplashProps } from "./components/splash";
 export { Stat, type StatProps } from "./components/stat";
 export { Switch, type SwitchProps } from "./components/switch";
 export { TextField, type TextFieldProps } from "./components/text-field";
+export { Window, type WindowProps } from "./components/window";
 export {
     GLYPH_CHARS,
     INK_SLOTS,

@@ -1,0 +1,102 @@
+/* Shared by every lab site: a reset and the lab bar. Tokens only. */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+html {
+    background: var(--surface-page);
+}
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+    margin: 0;
+}
+ul,
+ol {
+    padding: 0;
+    list-style: none;
+}
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── Lab bar: a small system window pinned to the bottom ── */
+.lab-bar {
+    position: fixed;
+    left: 50%;
+    bottom: 12px;
+    z-index: 1000;
+    translate: -50% 0;
+    display: flex;
+    align-items: stretch;
+    height: 36px;
+    border: var(--stroke-bold) solid var(--rule);
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+}
+.lab-bar > * {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    color: inherit;
+    text-decoration: none;
+}
+.lab-bar > * + * {
+    border-left: var(--stroke-bold) solid var(--rule);
+}
+.lab-bar a:hover {
+    background: var(--surface-inverse);
+    color: var(--ink-inverse);
+}
+.lab-bar-step {
+    font-size: 10px;
+}
+.lab-bar-home {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 400;
+}
+.lab-bar-now {
+    gap: 8px;
+    min-width: 120px;
+}
+.lab-bar-n {
+    color: var(--ink-subtle);
+}
+@media (max-width: 480px) {
+    .lab-bar-out {
+        display: none;
+    }
+}
+@media print {
+    .lab-bar {
+        display: none;
+    }
+}
