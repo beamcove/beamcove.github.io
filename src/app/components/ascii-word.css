@@ -1,71 +1,20 @@
-/* AsciiWord: a word drawn on a 5×7 grid of glyph pixels, in the grid ramp. Loaded by the
-   component itself, so it works on any page. Tokens only. */
+/* AsciiWord: a word drawn on a 5×7 grid of symbols, one SVG. Loaded by the component
+   itself, so it works on any page. Tokens only. */
 .ascii-word {
-    container-type: inline-size;
     width: 100%;
 }
 .ascii-grid {
-    display: grid;
-    grid-template-columns: repeat(var(--cols), 1fr);
-    font-size: calc(100cqw / var(--cols));
-    line-height: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
 }
-.px {
-    position: relative;
-    aspect-ratio: 1;
+.g-off {
+    fill: var(--glyph-dim);
 }
-.px::before {
-    content: "";
-    position: absolute;
-    inset: 14%;
-}
-.g-off::before {
-    inset: 44%;
-    background: var(--glyph-dim);
-}
-/* the grid ramp, light to dense: + ✕ ▢ ⊠ */
-.g-plus::before,
-.g-cross::before {
-    inset: 18%;
-    background:
-        linear-gradient(currentColor, currentColor) center / 0.16em 100% no-repeat,
-        linear-gradient(currentColor, currentColor) center / 100% 0.16em no-repeat;
-}
-.g-cross::before {
-    inset: 20%;
-    rotate: 45deg;
-    background:
-        linear-gradient(currentColor, currentColor) center / 0.18em 100% no-repeat,
-        linear-gradient(currentColor, currentColor) center / 100% 0.18em no-repeat;
-}
-.g-square::before {
-    border: 0.12em solid currentColor;
-}
-.g-boxx::before {
-    border: 0.12em solid currentColor;
-    background:
-        linear-gradient(
-            45deg,
-            transparent calc(50% - 0.06em),
-            currentColor calc(50% - 0.06em) calc(50% + 0.06em),
-            transparent 0
-        ),
-        linear-gradient(
-            -45deg,
-            transparent calc(50% - 0.06em),
-            currentColor calc(50% - 0.06em) calc(50% + 0.06em),
-            transparent 0
-        );
-}
-/* the faint field around a letter: small + in the resting-dot colour */
+/* the faint field around a letter: a small + in the line colour */
 .g-halo {
     color: var(--line);
-}
-.g-halo::before {
-    inset: 34%;
-    background:
-        linear-gradient(currentColor, currentColor) center / 0.1em 100% no-repeat,
-        linear-gradient(currentColor, currentColor) center / 100% 0.1em no-repeat;
 }
 .ink-a {
     color: var(--ink-a);

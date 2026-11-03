@@ -912,11 +912,13 @@ html {
     text-wrap: balance;
     color: var(--ink);
 }
+/* the words light up one after another when the line comes into view */
 .bc-lit span {
-    transition: opacity var(--duration-fast) linear;
+    transition: opacity 600ms var(--ease-out);
+    transition-delay: calc(var(--i) * 70ms);
 }
-.motion .bc-pin .bc-lit span {
-    opacity: clamp(0.2, calc(var(--p, 1) * (var(--n) + 2) - var(--i)), 1);
+.motion .bc-lit:not(.is-in) span {
+    opacity: 0.2;
 }
 @media (max-width: 1199px) {
     .bc-lit {

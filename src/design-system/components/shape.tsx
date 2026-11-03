@@ -7,8 +7,11 @@ import { MARK, type ShapeInk, type ShapeName } from "./shape-data";
 const inkVar = (ink: ShapeInk) =>
     ink === "beam" || ink === "flare" || ink === "ink" ? `var(--${ink})` : `var(--ink-${ink})`;
 
-/** The shape's marks, in a 16×16 cell. */
-function ShapePath({ name, x = 0, y = 0 }: { name: ShapeName; x?: number; y?: number }) {
+/**
+ * One symbol's marks in a 16×16 cell at (x, y), for drawing inside your own
+ * SVG (the glyph wordmark is built from these). Paints in `currentColor`.
+ */
+export function ShapeCell({ name, x = 0, y = 0 }: { name: ShapeName; x?: number; y?: number }) {
     const t = `translate(${x} ${y})`;
     switch (name) {
         case "disc":
@@ -88,7 +91,7 @@ export function Shape({ name, ink, size = 16, label, className }: ShapeProps) {
             focusable="false"
             {...a11y(label)}
         >
-            <ShapePath name={name} />
+            <ShapeCell name={name} />
         </svg>
     );
 }
@@ -106,7 +109,7 @@ export function Mark({ size = 16, label, mono, className }: CommonProps & { mono
         >
             {MARK.map((m, i) => (
                 <g key={m.name} style={mono ? undefined : { color: inkVar(m.ink) }}>
-                    <ShapePath name={m.name} x={i * 16} />
+                    <ShapeCell name={m.name} x={i * 16} />
                 </g>
             ))}
         </svg>
@@ -139,8 +142,8 @@ export function Face({ eyes = "disc", wink, ink, size = 16, label, className }: 
             focusable="false"
             {...a11y(label)}
         >
-            <ShapePath name={eyes} x={0} y={0} />
-            <ShapePath name={wink ? "dash" : eyes} x={32} y={0} />
+            <ShapeCell name={eyes} x={0} y={0} />
+            <ShapeCell name={wink ? "dash" : eyes} x={32} y={0} />
             <path d="M15 40H33" stroke="currentColor" strokeWidth={3} strokeLinecap="round" />
         </svg>
     );

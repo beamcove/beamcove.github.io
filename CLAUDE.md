@@ -40,7 +40,7 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    snaps to it (`glyph/lattice.ts`); never draw a second dot grid on the page.
    Each section owns its art: a `Scene` (a design-system `Screen` bound to a
    scene in `src/app/components/scenes.ts`) prints its scene behind its copy and
-   scrolls with it. Only the home page (and the 404) uses full screens and pins;
+   scrolls with it. Only the home page (and the 404) uses full screens; nothing pins the scroll;
    reading pages use a compact `PageHero` and `Section`s (`size="fit"`, margin
    scenes, so art lives in the side margins). Put `data-quiet` on copy: glyphs
    thin out and ink blocks print whole or not at all, so text never sits on
@@ -50,7 +50,7 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    4%, each kind of work its own pair. `scenes.test.ts` checks it.
 4. **Motion is opt-in via `html.motion`** (set by `public/boot.js`). Scope every
    hidden/start state under `.motion` so content shows without JS or with
-   reduced motion. The scene takeover (home page only), shimmer, pins, the beam and title decoding
+   reduced motion. The scene takeover (home page only), shimmer, word lighting, the beam and title decoding
    only run under it; otherwise each section prints one still frame.
    Don't advertise crew size or location outside the legal pages.
 5. **A new page touches five places**: `ROUTES` in `src/content/site.ts`,

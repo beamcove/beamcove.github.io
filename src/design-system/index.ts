@@ -22,6 +22,7 @@ export {
     Face,
     Mark,
     Shape,
+    ShapeCell,
     type FaceEyes,
     type FaceProps,
     type ShapeProps,

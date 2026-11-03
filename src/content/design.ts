@@ -7,7 +7,7 @@ export const DESIGN_PRINCIPLES = [
     },
     {
         title: "Art belongs to its section.",
-        body: "Each section prints its own scene and it scrolls with the content, like ink on paper. As the next section moves up the screen, its scene takes over cell by cell.",
+        body: "Each section prints its own scene and it scrolls with the content, like ink on paper. As the next section moves up the screen, its scene sweeps over it on a wave.",
     },
     {
         title: "Copy stays quiet.",

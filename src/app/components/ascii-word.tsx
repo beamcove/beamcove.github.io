@@ -1,12 +1,14 @@
 import "./ascii-word.css";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
+import { ShapeCell, type ShapeName } from "@/design-system";
 import { hash } from "@/design-system/glyph/engine";
 
 /**
  * A 5×7 pixel face for the few words drawn in glyphs: the footer wordmark
- * and the 404. Each lit pixel is a glyph cell; the rest is the resting dot grid.
+ * and the brand pages. Each lit pixel is a symbol (● ▲ ■ ♥ ✕ +) on a 16px
+ * cell, drawn in one SVG; the rest is the resting dot grid.
  */
 const FONT: Record<string, string[]> = {
     B: ["####.", "#...#", "#...#", "####.", "#...#", "#...#", "####."],
@@ -20,23 +22,26 @@ const FONT: Record<string, string[]> = {
     "0": [".###.", "#...#", "#..##", "#.#.#", "##..#", "#...#", ".###."],
 };
 /**
- * Lit pixels draw from the grid ramp (+ ✕ ▢ ⊠), weighted toward the dense end
- * so the letters read solid; unlit cells next to a letter get a faint +, so
- * the word sits in a little glyph field of its own.
+ * Lit pixels are drawn from the symbol set, weighted toward the full shapes
+ * (■ ● ▲, a few ♥) so the letters read solid, with ✕ and + for texture.
+ * Unlit cells next to a letter get a small faint +, so the word sits in a
+ * little glyph field of its own; the rest are resting dots.
  */
-const GRID: [shape: string, weight: number][] = [
-    ["boxx", 0.5],
-    ["square", 0.32],
-    ["cross", 0.12],
+const SYMBOLS: [shape: ShapeName, weight: number][] = [
+    ["square", 0.34],
+    ["disc", 0.26],
+    ["tri", 0.18],
+    ["heart", 0.08],
+    ["cross", 0.08],
     ["plus", 0.06],
 ];
-const pick = (h: number) => {
+const pick = (h: number): ShapeName => {
     let acc = 0;
-    for (const [shape, weight] of GRID) {
+    for (const [shape, weight] of SYMBOLS) {
         acc += weight;
         if (h < acc) return shape;
     }
-    return "boxx";
+    return "square";
 };
 const INKS = ["a", "b", "c", "d", "e"] as const;
 
@@ -57,16 +62,38 @@ export function AsciiWord({
         if (x < 0 || x >= cols || row < 0 || row > 6 || x % 6 === 5) return false;
         return letters[Math.floor(x / 6)]![row]![x % 6] === "#";
     };
-    const cells: { cls: string; x: number }[] = [];
+    const cells: ReactNode[] = [];
     for (let row = 0; row < 7; row++) {
         for (let x = 0; x < cols; x++) {
+            const key = `${x},${row}`;
             if (lit(x, row)) {
                 const ink = INKS[Math.floor(x / 6) % INKS.length]!;
-                cells.push({ cls: `px g-${pick(hash(x, row, seed))} ink-${ink}`, x });
+                cells.push(
+                    <g key={key} className={`px ink-${ink}`} style={{ "--x": x } as CSSProperties}>
+                        <ShapeCell name={pick(hash(x, row, seed))} x={x * 16} y={row * 16} />
+                    </g>,
+                );
+            } else if (lit(x - 1, row) || lit(x + 1, row) || lit(x, row - 1) || lit(x, row + 1)) {
+                cells.push(
+                    <g
+                        key={key}
+                        className="px g-halo"
+                        style={{ "--x": x } as CSSProperties}
+                        transform={`translate(${x * 16 + 4} ${row * 16 + 4}) scale(0.5)`}
+                    >
+                        <ShapeCell name="plus" />
+                    </g>,
+                );
             } else {
-                const near =
-                    lit(x - 1, row) || lit(x + 1, row) || lit(x, row - 1) || lit(x, row + 1);
-                cells.push({ cls: near ? "px g-plus g-halo" : "px g-off", x });
+                cells.push(
+                    <circle
+                        key={key}
+                        className="g-off"
+                        cx={x * 16 + 8}
+                        cy={row * 16 + 8}
+                        r={1.4}
+                    />,
+                );
             }
         }
     }
@@ -76,11 +103,9 @@ export function AsciiWord({
             className={["ascii-word", className].filter(Boolean).join(" ")}
             aria-hidden="true"
         >
-            <div className="ascii-grid" style={{ "--cols": cols } as CSSProperties}>
-                {cells.map((cell, i) => (
-                    <span key={i} className={cell.cls} style={{ "--x": cell.x } as CSSProperties} />
-                ))}
-            </div>
+            <svg className="ascii-grid" viewBox={`0 0 ${cols * 16} ${7 * 16}`} focusable="false">
+                {cells}
+            </svg>
         </div>
     );
 }

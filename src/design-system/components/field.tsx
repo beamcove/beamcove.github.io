@@ -10,6 +10,7 @@ import {
     type Rect,
     type SceneLayer,
     type WaveFrame,
+    WAVE_BAND,
 } from "../glyph/painter";
 import { cx } from "./cx";
 
@@ -28,6 +29,32 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 // the scene each section's canvas prints, so neighbours can print it too
 const SCENES = new WeakMap<HTMLCanvasElement, GlyphComposition>();
+
+/**
+ * The mouse, on screen, shared by every field. Each field turns it into its
+ * own coordinates every frame, so the light stays under the cursor while the
+ * page scrolls beneath a still mouse. Touch doesn't light anything.
+ */
+const POINTER = { x: 0, y: 0, in: false, listening: false };
+function trackPointer() {
+    if (POINTER.listening) return;
+    POINTER.listening = true;
+    window.addEventListener(
+        "pointermove",
+        (e) => {
+            if (e.pointerType === "touch") return;
+            POINTER.x = e.clientX;
+            POINTER.y = e.clientY;
+            POINTER.in = true;
+        },
+        { passive: true },
+    );
+    const out = () => {
+        POINTER.in = false;
+    };
+    document.documentElement.addEventListener("pointerleave", out);
+    window.addEventListener("blur", out);
+}
 
 /** Where an element's top sits in the document at rest (stable while scrolling). */
 const docTop = (el: Element) => restingRect(el).top + window.scrollY;
@@ -48,7 +75,7 @@ export interface FieldProps {
     pinned?: boolean;
     /**
      * Take part in the takeover between sections: as the next section moves up
-     * the screen, its scene replaces this one cell by cell, bottom first, and
+     * the screen, its scene sweeps over this one on a dense wave, bottom first, and
      * this scene carries on into the next section until then. Default false.
      */
     wave?: boolean;
@@ -101,7 +128,8 @@ export function Field({
         let px = 0;
         let py = 0;
         let amt = 0;
-        let over = false;
+        let width = 0;
+        let height = 0;
 
         // measured at layout: the copy to keep quiet around, fixed furniture, positions
         let boxes: Rect[] = [];
@@ -151,6 +179,8 @@ export function Field({
                 el.getBoundingClientRect(),
             );
             canvasTop = rect.top + window.scrollY;
+            width = host.clientWidth;
+            height = host.clientHeight;
             canvasLeft = rect.left;
             sectionTop = docTop(section);
             if (takeover) {
@@ -180,8 +210,10 @@ export function Field({
                       })),
                   ]
                 : boxes;
+            // 0 → 1 turns every cell over; on to 1 + WAVE_BAND carries the dense band off the top
             const progress = (docY: number) =>
-                clamp01((vh * TAKE_FROM - (docY - scrollY)) / (vh * (TAKE_FROM - TAKE_TO)));
+                clamp01((vh * TAKE_FROM - (docY - scrollY)) / (vh * (TAKE_FROM - TAKE_TO))) *
+                (1 + WAVE_BAND);
             const wave: WaveFrame | undefined = takeover
                 ? {
                       prev,
@@ -217,10 +249,20 @@ export function Field({
             });
         };
 
+        /** Is the mouse over this field right now? Updates the light's spot, in canvas px. */
+        const pointerOver = () => {
+            if (!pointer || !POINTER.in) return false;
+            const top = sticky ? canvas.getBoundingClientRect().top : canvasTop - window.scrollY;
+            px = POINTER.x - canvasLeft;
+            py = POINTER.y - top;
+            return px >= 0 && py >= 0 && px < width && py < height;
+        };
+
         const tick = (t: number) => {
             frame = 0;
             if (!visible || !animate) return;
             const y = window.scrollY;
+            const over = pointerOver();
             const moving = over || amt > 0 || (beam && beamSweeping(t));
             if (y !== lastY || t - last >= (moving ? MOVING_MS : IDLE_MS)) {
                 last = t;
@@ -269,19 +311,7 @@ export function Field({
         };
         if (!animate) window.addEventListener("scroll", onScroll, { passive: true });
 
-        const onMove = (e: PointerEvent) => {
-            const r = canvas.getBoundingClientRect();
-            px = e.clientX - r.left;
-            py = e.clientY - r.top;
-            over = true;
-        };
-        const onLeave = () => {
-            over = false;
-        };
-        if (animate && pointer) {
-            host.addEventListener("pointermove", onMove);
-            host.addEventListener("pointerleave", onLeave);
-        }
+        if (animate && pointer) trackPointer();
 
         return () => {
             cancelAnimationFrame(frame);
@@ -290,8 +320,6 @@ export function Field({
             show.disconnect();
             ro?.disconnect();
             window.removeEventListener("scroll", onScroll);
-            host.removeEventListener("pointermove", onMove);
-            host.removeEventListener("pointerleave", onLeave);
         };
     }, [composition, beam, pointer, quiet, dots, soften, pinned, wave]);
 

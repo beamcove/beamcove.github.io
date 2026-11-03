@@ -480,6 +480,7 @@ button:focus-visible {
 .statement {
     width: var(--wrap);
     max-width: 980px;
+    margin-inline: auto;
     text-align: center;
 }
 .statement .bc-lit {
@@ -1511,17 +1512,21 @@ button:focus-visible {
     opacity: 0;
     translate: 0 24px;
 }
-/* values: each takes its turn as the pin scrolls */
-@media (min-width: 768px) {
-    .motion #values[data-step] .value {
-        opacity: 0.35;
-    }
-    .motion #values[data-step="0"] .value:nth-child(1),
-    .motion #values[data-step="1"] .value:nth-child(2),
-    .motion #values[data-step="2"] .value:nth-child(3) {
-        opacity: 1;
-        border-top-color: var(--beam);
-    }
+/* values: they rise in one after another, each rule lighting as it lands */
+.motion .value[data-reveal] {
+    transition:
+        opacity 700ms var(--ease-out),
+        translate 700ms var(--ease-out),
+        border-color 700ms var(--ease-out);
+}
+.motion .value.is-in {
+    border-top-color: var(--beam);
+}
+.motion .value[data-reveal]:nth-child(2) {
+    transition-delay: 160ms;
+}
+.motion .value[data-reveal]:nth-child(3) {
+    transition-delay: 320ms;
 }
 /* footer wordmark: pixels light left to right, like the beam passing */
 .motion .footer-wordmark .px:not(.g-off) {

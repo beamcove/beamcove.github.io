@@ -102,8 +102,8 @@ where you are.
 | Hero       | `hero.tsx`           | `hero`              | The tagline alone, decoding in; the beam sweeps  |
 | What we do | `what-we-do.tsx`     | `intro`, kinds      | An intro, then one screen per kind of work       |
 | Story      | `story.tsx`          | `story`             | The story, its key phrase highlighted            |
-| Mission    | `manifesto.tsx`      | `mission`, `vision` | Two pinned statements that light up word by word |
-| Values     | `values.tsx`         | `values`            | One pinned screen; each value takes its turn     |
+| Mission    | `manifesto.tsx`      | `mission`, `vision` | Two statements that light up word by word        |
+| Values     | `values.tsx`         | `values`            | One screen; the values rise in one after another |
 | Updates    | `latest-updates.tsx` | `updates`           | The newest log entries                           |
 | FAQ        | `questions.tsx`      | `faq`               | Top four questions (all of them on Contact)      |
 | Newsletter | `dispatches.tsx`     | `contact`           | The sign-up form and the other ways to say hello |
@@ -115,7 +115,8 @@ its ink blocks right of the copy. The rest of the page is `Section`s: as tall
 as their content, a 2px rule on top, the heading in a sticky left column and
 the content beside it (`stacked` for wide grids). Their scenes gather into the
 side margins, so the art runs the length of the page without touching the
-text. Only the home page uses full screens and pins.
+text. Only the home page uses full screens. Nothing pins the scroll: the art
+always moves with the page, so you can see you are scrolling.
 
 ## Motion
 
@@ -132,13 +133,15 @@ text. Only the home page uses full screens and pins.
   `engine.ts`). It scrolls with the content. On the landing page only
   (`SceneTakeover` in `pages/home.tsx` → `Screen takeover`), as the next
   section's top moves from 90% to 20% of the screen, its scene takes over cell
-  by cell (bottom of the screen first, with grain, `flipAt` in `painter.ts`), in
+  on a wave (a dense band of its glyphs, lit along the leading edge, sweeping
+  up from the bottom of the screen; `flipAt` and `WAVE_BAND` in `painter.ts`), in
   both canvases, so the takeover runs across the edge; it follows scroll both
   ways. Reading pages keep each section's own scene. Fields shimmer while visible and
   light under the pointer; the hero sweeps the lighthouse beam. Glyphs thin out
   around `[data-quiet]` copy, and ink blocks print whole or not at all.
-  Pinned screens draw their own dots inside the sticky frame and write `--p`
-  (and `data-step`) for `LitLine` and the values. Without `.motion` every field
+  The pointer light follows the mouse in screen space, so it stays under the
+  cursor while the page scrolls. `LitLine` lights its words in turn when it
+  comes into view. Without `.motion` every field
   prints one still frame.
 - `useReveal()` ([utils/motion.ts](../src/app/utils/motion.ts)) adds `is-in`
   to `[data-reveal]` elements as they scroll into view; `data-reveal="fill"`

@@ -41,10 +41,13 @@ export interface SceneLayer {
 }
 
 /**
- * As the next section moves up the screen, its scene takes over cell by cell:
- * bottom of the screen first, with grain, so it dissolves in gradually. `tIn`
- * is how far this section has taken over from the one before (0–1), `tOut`
- * how far the next one has taken over from this. Both follow scroll.
+ * As the next section moves up the screen, its scene takes over on a wave:
+ * a dense band of its glyphs, lit along the leading edge, sweeps from the
+ * bottom of the screen to the top, and the scene settles to its own density
+ * behind it. `tIn` is how far this section has taken over from the one before
+ * and `tOut` how far the next one has taken over from this: 0 → 1 turns every
+ * cell over, and on to 1 + WAVE_BAND carries the band off the top. Both
+ * follow scroll.
  */
 export interface WaveFrame {
     prev: SceneLayer | null;
@@ -59,13 +62,20 @@ export interface WaveFrame {
     row: number;
 }
 
-/** When a cell turns over, 0–1: the bottom of the screen first, with grain. */
+/**
+ * When a cell turns over, 0–1: the bottom of the screen first. The edge is a
+ * slow swell across the columns with a little grain, so the wave reads as one
+ * front rather than scattered specks.
+ */
 export function flipAt(viewY: number, vh: number, col: number, row: number) {
     const v = Math.min(1, Math.max(0, viewY / vh));
-    return (1 - v) * 0.6 + hash(col, row, 5) * 0.4;
+    const swell = 0.5 + 0.3 * Math.sin(col * 0.19) + 0.2 * Math.sin(col * 0.071 + 1.3);
+    return (1 - v) * 0.76 + swell * 0.14 + hash(col, row, 5) * 0.1;
 }
-// the cells about to turn over light up: a thin seam that runs ahead of the takeover
-const SEAM = 0.035;
+/** How deep the wave's dense band is, in turnover units (about a third of the screen). */
+export const WAVE_BAND = 0.24;
+// the leading edge of the band is lit
+const CREST = 0.035;
 
 export interface FieldOptions {
     /** Draw the resting dots too (fields on an opaque surface); the page has them otherwise. */
@@ -307,25 +317,29 @@ export function createPainter(
                 const x = ox + c * CELL;
                 const cx = x + CELL / 2;
 
-                // which scene this cell shows (0 its own, 1 the one before, 2 the next),
-                // and whether it's on the seam
+                // which scene this cell shows (0 its own, 1 the one before, 2 the next), and
+                // how deep in the wave's band it sits (1 at the leading edge, 0 behind the band)
                 let src: Field = f;
                 let sc: GlyphComposition = comp;
                 let scene = 0;
-                let seam = false;
+                let surge = 0;
+                let crest = false;
                 if (wave && (wave.next || wave.prev)) {
                     const key = flipAt(wave.top + cy, wave.vh, wave.col + c, wave.row + r);
+                    let behind = Infinity; // how far behind the leading edge, in turnover units
                     if (wave.next && wave.tOut > 0 && key < wave.tOut) {
                         src = wave.next.field;
                         sc = wave.next.comp;
                         scene = 2;
-                    } else if (wave.prev && wave.tIn < 1 && key >= wave.tIn) {
+                        behind = wave.tOut - key;
+                    } else if (wave.prev && key >= wave.tIn) {
                         src = wave.prev.field;
                         sc = wave.prev.comp;
                         scene = 1;
-                        seam = key - wave.tIn < SEAM && wave.tIn > 0.02;
-                    } else if (wave.next && wave.tOut > 0.02) {
-                        seam = key - wave.tOut < SEAM;
+                    } else if (wave.prev) behind = wave.tIn - key;
+                    if (behind < WAVE_BAND) {
+                        surge = 1 - behind / WAVE_BAND;
+                        crest = behind < CREST;
                     }
                 }
 
@@ -346,7 +360,7 @@ export function createPainter(
                         );
                         q = Math.max(q, d <= PAD ? 1 : d < PAD + FADE ? 1 - (d - PAD) / FADE : 0);
                     }
-                    let boost = seam ? 0.5 : 0;
+                    let boost = crest ? 0.6 : 0;
                     if (bx > -1e8) {
                         const d = Math.abs(cx - bx + (cy - h / 2) * SLANT);
                         if (d < BAND) boost = Math.max(boost, (1 - d / BAND) ** 2 * fr.beam);
@@ -360,6 +374,8 @@ export function createPainter(
                         src.base[i]! +
                         (fr.animate ? 0.05 * Math.sin(fr.time * 0.0011 + src.phase[i]!) : 0);
                     v *= (1 - 0.8 * q) * soft;
+                    // the wave's band: packed with glyphs, densest at the leading edge
+                    if (surge > 0) v = Math.max(v, (0.5 + 0.5 * surge) * (1 - 0.85 * q));
                     boost *= 1 - 0.75 * q;
                     v += boost * 0.55;
                     const g = glyphFor(v, sc.density, RAMPS[sc.ramp].length);

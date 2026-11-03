@@ -15,7 +15,7 @@ export interface ScreenProps extends HTMLAttributes<HTMLElement> {
     beam?: boolean;
     /**
      * Take part in the scene takeover: as the next screen moves up, its scene
-     * replaces this one cell by cell. For a landing page of full screens;
+     * sweeps over this one on a wave. For a landing page of full screens;
      * reading pages leave it off. Default false.
      */
     takeover?: boolean;
@@ -80,7 +80,7 @@ function usePinProgress(ref: React.RefObject<HTMLElement | null>, steps: number 
  * A section of the page with its own glyph scene, printed on the page grid
  * behind its copy (put `data-quiet` on the copy so the art keeps clear). The
  * art scrolls with the section; with `takeover`, as the next section moves up
- * the screen, its scene takes over this one cell by cell. Home screens fill the
+ * the screen, its scene sweeps over this one on a wave. Home screens fill the
  * viewport; reading pages use `size="fit"`.
  */
 export function Screen({

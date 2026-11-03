@@ -386,7 +386,7 @@ export function DesignPage() {
                 id="grid"
                 eyebrow="Grid"
                 title="The page is the grid."
-                lead="One 16px dot matrix runs through the whole page, centred so both margins match on any screen. Every scene prints onto it: a section’s glyphs sit exactly over the page’s dots, and as the next section moves up the screen, its scene takes over cell by cell, bottom first, following your scroll. Copy stays quiet, ink blocks print whole or not at all."
+                lead="One 16px dot matrix runs through the whole page, centred so both margins match on any screen. Every scene prints onto it: a section’s glyphs sit exactly over the page’s dots, and as the next section moves up the screen, its scene sweeps up over it on a wave, bottom first, following your scroll. Copy stays quiet, ink blocks print whole or not at all."
             >
                 <div className="grid-demo">
                     {(["hero", "mission", "values"] as SceneName[]).map((name) => (
