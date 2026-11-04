@@ -4,7 +4,8 @@ import type { GlyphComposition } from "../glyph/engine";
 import { motionAllowed } from "../glyph/motion";
 import { cx } from "./cx";
 import { docTop, onLayout } from "./doc-layout";
-import { Field } from "./field";
+import { Field, type Story, type StoryMoment } from "./field";
+import { cancelFrame, type FrameView, nextFrame } from "./frame-loop";
 
 export interface ScreenProps extends HTMLAttributes<HTMLElement> {
     /** The scene's name (for styling and tests). */
@@ -19,6 +20,8 @@ export interface ScreenProps extends HTMLAttributes<HTMLElement> {
      * reading pages leave it off. Default false.
      */
     takeover?: boolean;
+    /** A page-wide story its art takes part in (see `Field`). */
+    story?: (now: StoryMoment) => Story | null;
     /**
      * Pin the screen while you scroll past it: `true` for a statement (writes
      * `--p`), or a number of steps (also writes `data-step`, e.g. one per value).
@@ -41,15 +44,13 @@ function usePinProgress(ref: React.RefObject<HTMLElement | null>, steps: number 
             el.style.setProperty("--p", "1");
             return;
         }
-        let frame = 0;
         let top = 0;
         let span = 0;
         let last = "";
-        // from cached positions and scrollY: no layout reads while scrolling, and no
-        // style writes unless the value changed
-        const update = () => {
-            frame = 0;
-            const p = span > 40 ? clamp01((window.scrollY - top) / span) : 1;
+        // from cached positions and the frame's scroll (read once per frame, before any
+        // writes): no layout reads while scrolling, and no style writes unless the value changed
+        const at = (scrollY: number) => {
+            const p = span > 40 ? clamp01((scrollY - top) / span) : 1;
             const key = p.toFixed(3);
             if (key === last) return;
             last = key;
@@ -59,17 +60,16 @@ function usePinProgress(ref: React.RefObject<HTMLElement | null>, steps: number 
                 if (el.dataset.step !== step) el.dataset.step = step;
             }
         };
-        const onScroll = () => {
-            if (!frame) frame = requestAnimationFrame(update);
-        };
+        const update = (view: FrameView) => at(view.scrollY);
+        const onScroll = () => nextFrame(update);
         const stop = onLayout(() => {
             top = docTop(el);
             span = el.offsetHeight - window.innerHeight;
-            update();
+            at(window.scrollY);
         });
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => {
-            cancelAnimationFrame(frame);
+            cancelFrame(update);
             stop();
             window.removeEventListener("scroll", onScroll);
         };
@@ -88,6 +88,7 @@ export function Screen({
     field,
     beam = false,
     takeover = false,
+    story,
     pin,
     size = "full",
     as: Tag = "section",
@@ -107,6 +108,7 @@ export function Screen({
             dots={steps !== undefined}
             soften
             wave={takeover}
+            story={story}
         />
     );
     return (

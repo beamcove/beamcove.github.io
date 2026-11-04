@@ -6,7 +6,7 @@ export { Callout, type CalloutProps } from "./components/callout";
 export { ChapterRail } from "./components/chapter-rail";
 export { Card, type CardProps } from "./components/card";
 export { Frame, type FrameProps } from "./components/frame";
-export { Field, type FieldProps } from "./components/field";
+export { Field, type FieldProps, type Story, type StoryMoment } from "./components/field";
 export { GlyphField, type GlyphFieldProps } from "./components/glyph-field";
 export { Kicker } from "./components/kicker";
 export { LitLine } from "./components/lit-line";

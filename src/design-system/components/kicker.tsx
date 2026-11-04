@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { cx } from "./cx";
 
-/** A chapter kicker: a two-digit number, a rule, a word. `01 —— What we do` */
+/** A chapter kicker: a two-digit number, a dot leader, a word. `01 ··· What we do` */
 export function Kicker({
     n,
     className,

@@ -14,6 +14,7 @@ import { PrivacyPage } from "@/pages/privacy";
 import { ProjectsPage } from "@/pages/projects";
 import { TermsPage } from "@/pages/terms";
 import { UpdatesPage } from "@/pages/updates";
+import { DEBUG, DEBUG_ROUTES } from "@/content/site";
 
 /** Built HTML file → its page, and the path it is served at. */
 export const PRERENDER: Record<string, { path: string; page: () => ReactNode }> = {
@@ -22,11 +23,14 @@ export const PRERENDER: Record<string, { path: string; page: () => ReactNode }> 
     "about/index.html": { path: "/about/", page: () => <AboutPage /> },
     "brand/index.html": { path: "/brand/", page: () => <BrandPage /> },
     "contact/index.html": { path: "/contact/", page: () => <ContactPage /> },
-    "design/index.html": { path: "/design/", page: () => <DesignPage /> },
     "privacy/index.html": { path: "/privacy/", page: () => <PrivacyPage /> },
     "projects/index.html": { path: "/projects/", page: () => <ProjectsPage /> },
     "terms/index.html": { path: "/terms/", page: () => <TermsPage /> },
     "updates/index.html": { path: "/updates/", page: () => <UpdatesPage /> },
+    // debug builds only: a production build doesn't build this page at all
+    ...(DEBUG
+        ? { "design/index.html": { path: DEBUG_ROUTES.design, page: () => <DesignPage /> } }
+        : {}),
 };
 
 export function render(file: string) {

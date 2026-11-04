@@ -894,11 +894,14 @@ html {
     gap: var(--space-3);
     color: var(--ink-subtle);
 }
+/* a dot leader, never a thin rule: three round dots from the page's matrix */
 .bc-kicker-n::after {
     content: "";
-    width: 32px;
-    height: var(--stroke-bold);
-    background: var(--line-strong);
+    flex: none;
+    width: 26px;
+    height: 6px;
+    background: radial-gradient(circle closest-side, var(--line-strong) 96%, transparent) -2px 0 /
+        10px 6px repeat-x;
 }
 
 /* ── LitLine: words light up with the pin's --p ──── */
@@ -1003,12 +1006,18 @@ html {
     align-items: center;
     gap: var(--space-2);
 }
+/* one dot per chapter; the current one grows to three, a dot at a time. The dots' room is
+   always three wide (only shown in part), so the rail never changes size as you scroll:
+   the numbers stay in one column, and nothing has to measure the rail again */
 .bc-rail-n::after {
     content: "";
-    width: 12px;
-    height: var(--stroke-bold);
-    background: var(--line-strong);
-    transition: width var(--duration-base) var(--ease-out);
+    flex: none;
+    width: 26px;
+    height: 6px;
+    background: radial-gradient(circle closest-side, var(--line-strong) 96%, transparent) -2px 0 /
+        10px 6px repeat-x;
+    clip-path: inset(0 20px 0 0);
+    transition: clip-path var(--duration-base) steps(2, end);
 }
 .bc-rail-label {
     opacity: 0;
@@ -1024,8 +1033,8 @@ html {
     color: var(--ink);
 }
 .bc-rail a[aria-current] .bc-rail-n::after {
-    width: 28px;
-    background: var(--beam);
+    clip-path: inset(0);
+    background-image: radial-gradient(circle closest-side, var(--beam) 96%, transparent);
 }
 
 /* ── Reduced motion ───────────────────────────────── */

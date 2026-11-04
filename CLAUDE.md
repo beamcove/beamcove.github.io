@@ -15,7 +15,8 @@ Docs: [docs/architecture.md](docs/architecture.md) ·
 
 ```sh
 npm run dev            # dev server (HMR)
-npm run build          # tsc -b + vite build + prerender every page → dist/
+npm run build          # tsc -b + vite build + prerender every page → dist/ (production)
+npm run build:debug    # the same as a debug build: includes the debug-only /design/ page
 npm test               # vitest (jsdom + Testing Library)
 npm run format         # prettier --write + eslint --fix (run before committing)
 npm run format:check   # CI check — the pre-commit hook and CI both enforce this
@@ -99,7 +100,9 @@ layout reads while scrolling, no layout shift. See docs/architecture.md →
   nodes), brand (social SVGs).
 - `src/design-system/` — Signal tokens, CSS, fonts (Onest, Departure Mono),
   typed component port (Screen, Field, LitLine, ChapterRail, …) and the glyph
-  engine, page lattice and painter (`glyph/`). `/design/` shows every piece.
+  engine, page lattice and painter (`glyph/`). `/design/` shows every piece: it's
+  debug-only (`DEBUG_ROUTES`, the dev server and `build:debug`), and production
+  builds don't build, link or list it.
 - `public/` — copied verbatim to dist (boot.js, CNAME, robots.txt, sitemap.xml,
   favicon, touch icon, social card). `scripts/` renders the two PNGs.
 

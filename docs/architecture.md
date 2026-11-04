@@ -65,7 +65,7 @@ to production, see [deployment.md](deployment.md).
 | `/updates/`  | `pages/updates.tsx`   | `log`                 | Every update by year, newsletter                     |
 | `/contact/`  | `pages/contact.tsx`   | `hello`               | Email + social channels, full FAQ (`#questions`)     |
 | `/brand/`    | `pages/brand.tsx`     | `brand`               | Boilerplate, mark and name, colours, type, voice     |
-| `/design/`   | `pages/design.tsx`    | `design`              | Principles, colour, type, glyphs, grid, components   |
+| `/design/`   | `pages/design.tsx`    | `design`              | Debug builds only: the design system, every piece    |
 | `/privacy/`  | `pages/privacy.tsx`   | `legal` (`LegalPage`) | Privacy policy with contents sidebar                 |
 | `/terms/`    | `pages/terms.tsx`     | `legal` (`LegalPage`) | Terms of use with contents sidebar                   |
 | 404          | `pages/not-found.tsx` | `lost`                | Glyph “404”, “Off the map”                           |
@@ -141,9 +141,16 @@ always moves with the page, so you can see you are scrolling.
   both canvases, so the takeover runs across the edge; it follows scroll both
   ways. Reading pages keep each section's own scene. Fields shimmer while visible and
   light under the pointer; the hero sweeps the lighthouse beam. Glyphs thin out
-  around `[data-quiet]` copy, and ink blocks print whole or not at all.
+  around `[data-quiet]` copy, and ink blocks print whole or not at all. The
+  quiet zones (`glyph/quiet.ts`) are measured from the content inside each
+  marker, not the marker's box: text by its line boxes, joined per paragraph or
+  heading, plus anything drawn as a box (controls, images, backgrounds, borders,
+  `::before`/`::after` ornaments). Hidden content isn't quiet. Every zone gets one
+  clear cell, then the art fades back over three. Fields re-measure when a
+  marker changes size (an answer opening), not only when the section does.
   The pointer light follows the mouse in screen space, so it stays under the
-  cursor while the page scrolls. `LitLine` lights its words in turn when it
+  cursor while the page scrolls; over copy it shows as faint minor glyphs
+  (· + ×), so it never disappears. `LitLine` lights its words in turn when it
   comes into view. Without `.motion` every field
   prints one still frame.
 - `useReveal()` ([utils/motion.ts](../src/app/utils/motion.ts)) adds `is-in`
@@ -199,10 +206,31 @@ phone profile (slow 4G, 4× slower CPU) and on desktop. Keep these:
 - **The takeover is the costliest effect** (about a quarter of a phone's
   scroll frame), then CSS motion (reveals, lit words). Measure before adding
   to either.
+- **120 Hz is the budget: 8.3 ms a frame.** Measure with headless Chrome
+  uncapped (`--disable-frame-rate-limit --disable-gpu-vsync`) and count frames
+  over 8.3 ms while the page moves.
+- **One frame loop, one read.** Everything that runs per frame while scrolling
+  (fields, pinned screens' `--p`, the chapter rail) goes through `nextFrame`
+  in `components/frame-loop.ts`: the page is read once (`scrollY`, the window's
+  size) at the start of the frame, and jobs then only write. A job that reads
+  `scrollY` itself, after another has written a style, makes the browser redo
+  style and layout mid-frame.
 - **No layout reads while scrolling.** Positions are measured on layout
   changes (`onLayout` in `components/doc-layout.ts`) and scroll handlers work
-  from them and `scrollY`. Measurements leave out reveal slides
-  (`restingRect` in `glyph/lattice.ts`).
+  from them and the frame's scroll. A `Field` measures its geometry (in
+  document px) when the page is idle and again only when something resizes;
+  a section coming into range reuses it. A pinned canvas's place on screen is
+  worked out from its sticky frame's geometry, not read. Measurements leave
+  out reveal slides (`restingRect` in `glyph/lattice.ts`).
+- **Fades run on the compositor.** Animate `opacity` and `translate`, not
+  colours or borders, and not hundreds of small elements: the value rule's
+  light is an overlay that fades in, and the footer wordmark lights whole
+  letters (one SVG each), not its 330 shapes.
+- **Repaint only what moves.** Slow motions (shimmer, twinkle, buoys) step at
+  12 fps and the swell at 30, whatever the frame rate, and the takeover's band
+  has three density tiers rather than a ramp, so scrolling redraws cells only
+  where something visibly changes. The takeover is still the biggest share of
+  canvas drawing while scrolling.
 - **Nothing shifts.** Entrance animations start at 1% opacity (so the copy
   counts as painted at once), on-screen content isn't faded in, and
   `ScrambleText` never changes the layout.

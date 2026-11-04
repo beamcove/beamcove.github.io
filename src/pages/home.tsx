@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { Dispatches } from "@/app/components/dispatches";
 import { Hero } from "@/app/components/hero";
 import { LatestUpdates } from "@/app/components/latest-updates";
@@ -7,6 +9,8 @@ import { SceneTakeover } from "@/app/components/scene-takeover";
 import { SiteLayout } from "@/app/components/site-layout";
 import { Story } from "@/app/components/story";
 import { Values } from "@/app/components/values";
+import { createVoyage, Voyage } from "@/app/components/voyage";
+import { VoyageLab } from "@/app/components/voyage-lab";
 import { WhatWeDo } from "@/app/components/what-we-do";
 import type { Chapter } from "@/design-system";
 
@@ -22,18 +26,24 @@ const CHAPTERS: Chapter[] = [
 
 /** The landing page: the whole company as one scroll, one idea per screen. */
 export function HomePage() {
+    // one voyage for the page's life: its stories must stay the same functions
+    const [voyage] = useState(createVoyage);
+    useEffect(() => () => voyage.dispose(), [voyage]);
     return (
         <SceneTakeover.Provider value>
-            <SiteLayout chapters={CHAPTERS}>
-                <Hero />
-                <WhatWeDo n={1} />
-                <Story n={2} />
-                <Manifesto />
-                <Values n={3} />
-                <LatestUpdates n={4} />
-                <Questions n={5} />
-                <Dispatches n={6} />
-            </SiteLayout>
+            <Voyage.Provider value={voyage}>
+                <VoyageLab />
+                <SiteLayout chapters={CHAPTERS}>
+                    <Hero />
+                    <WhatWeDo n={1} />
+                    <Story n={2} />
+                    <Manifesto />
+                    <Values n={3} />
+                    <LatestUpdates n={4} />
+                    <Questions n={5} />
+                    <Dispatches n={6} />
+                </SiteLayout>
+            </Voyage.Provider>
         </SceneTakeover.Provider>
     );
 }

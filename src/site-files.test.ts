@@ -1,4 +1,4 @@
-import { ROUTES } from "@/content/site";
+import { DEBUG_ROUTES, ROUTES } from "@/content/site";
 
 // The HTML shells and public/ files, read as text at test time.
 const shells = import.meta.glob<string>(
@@ -30,6 +30,10 @@ describe("sitemap.xml", () => {
             expect(sitemap).toContain(`<loc>https://beamcove.com${route}</loc>`);
         }
     });
+
+    it("leaves out the debug-only pages", () => {
+        for (const route of Object.values(DEBUG_ROUTES)) expect(sitemap).not.toContain(route);
+    });
 });
 
 describe("robots.txt", () => {
@@ -51,7 +55,10 @@ describe.each(Object.entries(shells))("%s", (file, html) => {
 
     if (file !== "/404.html") {
         it("is a known route with a matching canonical URL", () => {
-            expect(Object.values(ROUTES) as string[]).toContain(routeOf(file));
+            expect([
+                ...Object.values(ROUTES),
+                ...Object.values(DEBUG_ROUTES),
+            ] as string[]).toContain(routeOf(file));
             expect(html).toContain(`rel="canonical" href="https://beamcove.com${routeOf(file)}"`);
         });
     }

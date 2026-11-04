@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { docTop, onLayout } from "./doc-layout";
+import { cancelFrame, type FrameView, nextFrame } from "./frame-loop";
 
 export interface Chapter {
     id: string;
@@ -11,29 +12,27 @@ export interface Chapter {
 export function useActiveChapter(chapters: Chapter[]) {
     const [active, setActive] = useState(chapters[0]?.id ?? "");
     useEffect(() => {
-        let frame = 0;
         let tops: { id: string; top: number }[] = [];
-        // from cached positions and scrollY: scrolling never reads the layout
-        const update = () => {
-            frame = 0;
-            const line = window.scrollY + window.innerHeight * 0.4;
+        // from cached positions and the frame's scroll (read once per frame): scrolling never
+        // reads the layout
+        const at = (scrollY: number, vh: number) => {
+            const line = scrollY + vh * 0.4;
             let current = chapters[0]?.id ?? "";
             for (const { id, top } of tops) if (top <= line) current = id;
             setActive(current);
         };
-        const onScroll = () => {
-            if (!frame) frame = requestAnimationFrame(update);
-        };
+        const update = (view: FrameView) => at(view.scrollY, view.vh);
+        const onScroll = () => nextFrame(update);
         const stop = onLayout(() => {
             tops = chapters.map(({ id }) => {
                 const el = document.getElementById(id);
                 return { id, top: el ? docTop(el) : Infinity };
             });
-            update();
+            at(window.scrollY, window.innerHeight);
         });
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => {
-            cancelAnimationFrame(frame);
+            cancelFrame(update);
             stop();
             window.removeEventListener("scroll", onScroll);
         };

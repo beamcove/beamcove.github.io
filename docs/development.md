@@ -9,6 +9,7 @@ lefthook git hooks via the `prepare` script.
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `npm run dev`                       | Vite dev server with HMR (localhost:5173). Pages live at `/about/`, `/privacy/`, …; the 404 page is at `/404.html` |
 | `npm run build`                     | `tsc -b` + `vite build` + prerender every page → `dist/`                                                           |
+| `npm run build:debug`               | The same as a debug build: also builds the debug-only `/design/` page                                              |
 | `npm run preview`                   | Serve the production build (localhost:4173)                                                                        |
 | `npm test` / `npm run test:watch`   | Vitest, jsdom + Testing Library                                                                                    |
 | `npm run test:coverage`             | Coverage report (v8)                                                                                               |

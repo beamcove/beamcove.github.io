@@ -36,7 +36,40 @@ export interface FieldFrame {
     wave?: WaveFrame;
     /** Only draw rows between these canvas y's (the part on screen); default all. */
     view?: { top: number; bottom: number };
+    /** Light and water that tell a story across sections (motion only); see `StoryFrame`. */
+    story?: StoryFrame;
 }
+
+/**
+ * Effects that run across a whole page, in this canvas's px. A page decides
+ * what they mean (the home page tells a voyage with them); the painter only
+ * prints them on the lattice. Each is optional.
+ */
+export interface StoryFrame {
+    /**
+     * A light fixed on screen: its origin, the direction it points (radians,
+     * y down), its half-width (radians), how far it reaches at full strength
+     * (px), and its strength, 0–1. Glyphs inside the cone light up.
+     */
+    light?: { x: number; y: number; dir: number; spread: number; reach: number; amt: number };
+    /** Glyphs the light leaves keep a glow that fades over this many ms. */
+    afterglow?: number;
+    /** Some of the brightest glowing glyphs briefly turn into the mark (● ▲ ■). */
+    marks?: boolean;
+    /** Slow rolling waves through the density below `horizon` (canvas y); strength 0–1. */
+    swell?: { amt: number; horizon: number };
+    /** A few cells far from the copy hold a slowly blinking ● or ▲, each in its own time; 0–1. */
+    beacons?: number;
+    /** Above `horizon` (canvas y), the glyphs thin to a sparse, twinkling field; strength 0–1. */
+    sky?: { amt: number; horizon: number };
+}
+
+// the mark, as steps of the `symbols` ramp, and the ink each one prints in (● b, ▲ e, ■ a)
+const MARK_STEPS = [4, 5, 6] as const;
+const MARK_INKS: Record<number, string> = { 4: "b", 5: "e", 6: "a" };
+// per-cell picks, fixed per layout: cells that may spark, and the beacons
+const SPARK = 1;
+const BEACON = 2;
 
 /** A neighbouring section's scene, and where this canvas's first cell sits in it. */
 export interface Neighbour {
@@ -79,8 +112,11 @@ export function flipGrain(col: number, row: number) {
     const swell = 0.5 + 0.3 * Math.sin(col * 0.19) + 0.2 * Math.sin(col * 0.071 + 1.3);
     return swell * 0.14 + hash(col, row, 5) * 0.1;
 }
-/** How deep the wave's dense band is, in turnover units (about a third of the screen). */
-export const WAVE_BAND = 0.24;
+/** How deep the wave's dense band is, in turnover units (about a quarter of the screen). */
+export const WAVE_BAND = 0.18;
+// the band's density comes in three tiers (densest at the leading edge), not a smooth ramp:
+// as the band moves, a cell is redrawn only when a tier boundary crosses it, not every frame
+const BAND_TIERS = 3;
 // the leading edge of the band is lit
 const CREST = 0.035;
 
@@ -91,9 +127,19 @@ export interface FieldOptions {
     soften: boolean;
 }
 
-// around the copy: fully quiet within PAD, the art returns over FADE, and ink
-// blocks that come closer than CLEAR don't print at all (tighter on phones)
-const QUIET = { wide: [20, 72, 40], narrow: [8, 32, 16] } as const;
+// around the copy (measured tight to its text and boxes, see quiet.ts): one clear cell
+// (PAD), then the art returns over three (FADE), and ink blocks closer than two cells
+// (CLEAR) don't print at all; on phones half that
+const QUIET = { wide: [CELL, CELL * 3, CELL * 2], narrow: [CELL / 2, CELL * 2, CELL] } as const;
+// over the copy, the pointer light still shows, in minor glyphs (· + ×) faint enough to
+// read through: from this much quiet on, at this much light
+const MINOR_QUIET = 0.35;
+// the slow motions (shimmer, twinkle, buoys' blink) step 12 times a second and the swell
+// 30, whatever the frame rate: scrolling repaints every frame, and without these steps it
+// would turn cells over on every one of them for no change anyone can see
+const SLOW_STEP = 1000 / 12;
+const SWELL_STEP = 1000 / 30;
+const MINOR_LIGHT = 0.1;
 const SWEEP_MS = 4200;
 const PAUSE_MS = 3800;
 const BAND = 120;
@@ -273,6 +319,10 @@ export function createPainter(
     let grain: Float32Array | null = null;
     let grainAt = "";
     let blocks: Field["blocks"] = [];
+    let picks = new Uint8Array(0);
+    // the light's afterglow: each cell's last peak, and when it was
+    let glowPeak = new Float32Array(0);
+    let glowAt = new Float64Array(0);
     const neighbourField = (n: Neighbour | null) =>
         n ? buildField(n.comp, cols, rows, n.at) : null;
 
@@ -374,6 +424,18 @@ export function createPainter(
             for (let r = 0; r < rows; r++)
                 for (let c = 0; c < cols; c++)
                     still[r * cols + c] = quietness(boxes, ox + c * CELL, oy + r * CELL, PAD, FADE);
+            // sparks may print anywhere glyphs do; beacons only in open water, well clear of copy
+            picks = new Uint8Array(rows * cols);
+            for (let i = 0; i < rows * cols; i++) {
+                const c = i % cols;
+                const r = (i / cols) | 0;
+                let p = hash(c, r, comp.seed + 101) < 0.08 ? SPARK : 0;
+                if (!f.covered[i] && still[i]! < 0.02 && hash(c, r, comp.seed + 211) < 0.0022)
+                    p |= BEACON;
+                // which mark (bits 2–3): ● ▲ ■ for a spark, ● or ▲ for a beacon
+                p |= Math.floor(hash(c, r, comp.seed + 307) * (p & BEACON ? 2 : 3)) << 2;
+                picks[i] = p;
+            }
             blocks = f.blocks.filter(
                 (b) =>
                     !boxes.some(
@@ -410,6 +472,23 @@ export function createPainter(
             }
         }
         const turn = grain;
+
+        // the story: a light fixed on screen, its afterglow, the swell, beacons and the sky
+        const story = fr.animate ? fr.story : undefined;
+        const light = story?.light && story.light.amt > 0.01 ? story.light : null;
+        const lcos = light ? Math.cos(light.dir) : 0;
+        const lsin = light ? Math.sin(light.dir) : 0;
+        const ltan = light ? Math.tan(light.spread) : 0;
+        const glowMs = story?.afterglow ?? 0;
+        if (glowMs > 0 && glowPeak.length !== rows * cols) {
+            glowPeak = new Float32Array(rows * cols);
+            glowAt = new Float64Array(rows * cols);
+        }
+        const swell = story?.swell && story.swell.amt > 0.01 ? story.swell : null;
+        const sky = story?.sky && story.sky.amt > 0.01 ? story.sky : null;
+        const beacons = story?.beacons ?? 0;
+        const slow = Math.floor(fr.time / SLOW_STEP) * SLOW_STEP;
+        const tide = Math.floor(fr.time / SWELL_STEP) * SWELL_STEP;
 
         // cells a neighbouring scene takes are cleared
         const inBlock = (c: number, r: number) =>
@@ -487,7 +566,7 @@ export function createPainter(
                         scene = 1;
                     } else if (prev) behind = wave.tIn - key;
                     if (behind < WAVE_BAND) {
-                        surge = 1 - behind / WAVE_BAND;
+                        surge = Math.ceil((1 - behind / WAVE_BAND) * BAND_TIERS) / BAND_TIERS;
                         crest = behind < CREST;
                     }
                 }
@@ -496,6 +575,7 @@ export function createPainter(
                 let step = -1;
                 let slot = "";
                 let aq = 0;
+                let ramp = sc.ramp;
                 if (scene === 0 && f.covered[i] && inBlock(c, r)) state = BLOCK;
                 else {
                     let q = quietStill[i]!;
@@ -505,14 +585,85 @@ export function createPainter(
                         const d = Math.abs(cx - bx + (cy - h / 2) * SLANT);
                         if (d < BAND) boost = Math.max(boost, (1 - d / BAND) ** 2 * fr.beam);
                     }
+                    let held = 0; // the pointer's light here, before the copy quiets it
                     if (fr.pointer && fr.pointer.amt > 0) {
                         const d = Math.hypot(cx - fr.pointer.x, cy - fr.pointer.y);
-                        if (d < POINTER_RADIUS)
-                            boost = Math.max(boost, (1 - d / POINTER_RADIUS) ** 2 * fr.pointer.amt);
+                        if (d < POINTER_RADIUS) {
+                            held = (1 - d / POINTER_RADIUS) ** 2 * fr.pointer.amt;
+                            boost = Math.max(boost, held);
+                        }
+                    }
+                    // the light: brightest along its axis, softer at the edges and far away
+                    let shine = 0;
+                    if (light) {
+                        const dx = cx - light.x;
+                        const dy = cy - light.y;
+                        const along = dx * lcos + dy * lsin;
+                        if (along > 0) {
+                            const half = along * ltan + CELL / 2;
+                            const off = Math.abs(dx * lsin - dy * lcos);
+                            if (off < half) {
+                                const t = 1 - off / half;
+                                shine =
+                                    t *
+                                    t *
+                                    light.amt *
+                                    Math.max(0.45, 1 - (0.55 * along) / light.reach);
+                            }
+                        }
+                    }
+                    // what the light leaves behind fades; the brightest of it sparks into the mark
+                    let mark = -1;
+                    let markA = 0;
+                    if (glowMs > 0) {
+                        let glow = glowPeak[i]!;
+                        if (glow > 0.004) glow *= Math.exp(-(fr.time - glowAt[i]!) / glowMs);
+                        if (shine > glow) {
+                            glow = shine;
+                            glowPeak[i] = shine;
+                            glowAt[i] = fr.time;
+                        } else if (glow <= 0.004) glowPeak[i] = 0;
+                        shine = Math.max(shine, glow * 0.8);
+                        const pick = picks[i]!;
+                        if (story?.marks && pick & SPARK && glow > 0.45 && q < 0.2) {
+                            mark = MARK_STEPS[(pick >> 2) % 3]!;
+                            markA = 0.45 + 0.5 * glow;
+                        }
+                    }
+                    boost = Math.max(boost, shine);
+                    // beacons blink slowly, each on its own beat
+                    if (beacons > 0 && mark < 0 && picks[i]! & BEACON) {
+                        const beat = Math.sin(
+                            slow * (0.0009 + 0.0004 * src.phase[i]!) + src.phase[i]! * 3,
+                        );
+                        if (beat > 0.55) {
+                            mark = MARK_STEPS[(picks[i]! >> 2) % 2]!;
+                            markA = (0.35 + 0.55 * ((beat - 0.55) / 0.45)) * beacons;
+                        }
                     }
                     let v =
                         src.base[i]! +
-                        (fr.animate ? 0.05 * Math.sin(fr.time * 0.0011 + src.phase[i]!) : 0);
+                        (fr.animate ? 0.05 * Math.sin(slow * 0.0011 + src.phase[i]!) : 0);
+                    // the sky: thinner above the horizon, a few glyphs twinkling
+                    if (sky && cy < sky.horizon) {
+                        const up = Math.min(1, (sky.horizon - cy) / (CELL * 3)) * sky.amt;
+                        v *= 1 - 0.55 * up;
+                        if (src.phase[i]! < 0.9)
+                            v +=
+                                0.3 * up * Math.max(0, Math.sin(slow * 0.0021 + src.phase[i]! * 7));
+                    }
+                    // the swell: long, slow waves rolling through the water below the horizon
+                    if (swell && cy > swell.horizon) {
+                        const deep = Math.min(1, (cy - swell.horizon) / (CELL * 4)) * swell.amt;
+                        v +=
+                            0.1 *
+                            deep *
+                            Math.sin(
+                                cx * 0.011 -
+                                    tide * 0.0009 +
+                                    1.4 * Math.sin(cy * 0.017 + tide * 0.0005),
+                            );
+                    }
                     v *= (1 - 0.8 * q) * soft;
                     // the wave's band: packed with glyphs, densest at the leading edge
                     if (surge > 0) v = Math.max(v, (0.5 + 0.5 * surge) * (1 - 0.85 * q));
@@ -520,7 +671,22 @@ export function createPainter(
                     v += boost * 0.55;
                     const g = glyphFor(v, sc.density, RAMPS[sc.ramp].length);
                     step = g.step;
-                    if (step < 0) state = EMPTY;
+                    if (mark >= 0) {
+                        // the mark, in its own ink
+                        step = mark;
+                        ramp = "symbols";
+                        slot = MARK_INKS[mark]!;
+                        aq = Math.max(1, Math.round(Math.min(1, markA) * ALPHA_STEPS));
+                        state = 1 + step + (aq << 7) + (scene << 12) + (1 << 14);
+                    } else if (held > MINOR_LIGHT && q > MINOR_QUIET) {
+                        // over the copy: a minor glyph, fainter the further from the pointer
+                        const k = held * (0.6 + (0.8 * src.phase[i]!) / (2 * Math.PI));
+                        step = k > 0.75 ? 2 : k > 0.45 ? 1 : 0;
+                        ramp = "grid";
+                        slot = "lit";
+                        aq = Math.max(1, Math.round((0.12 + 0.28 * held) * ALPHA_STEPS));
+                        state = 1 + step + (7 << 4) + (aq << 7) + (scene << 12) + (1 << 15);
+                    } else if (step < 0) state = EMPTY;
                     else {
                         const lit = boost > 0.3;
                         const zone = src.zone[i]!;
@@ -540,7 +706,7 @@ export function createPainter(
                     blockCell(c, r, x, y);
                 } else {
                     // the glyph pre-printed over the paper, which covers the page dot under it
-                    const atlas = printedAtlas(sc.ramp, inkColor(slot), paper, size);
+                    const atlas = printedAtlas(ramp, inkColor(slot), paper, size);
                     c2d.drawImage(atlas, step * size, aq * size, size, size, x, y, CELL, CELL);
                 }
             }
@@ -568,25 +734,10 @@ export function createPainter(
             field = null;
             prevField = null;
             nextField = null;
+            glowPeak = new Float32Array(0);
         },
         get origin() {
             return { x: ox, y: oy };
         },
     };
-}
-
-/** The boxes of the quiet elements under `root`, relative to `origin`'s top left. */
-export function quietRects(root: ParentNode, origin: { left: number; top: number }): Rect[] {
-    return [...root.querySelectorAll<HTMLElement>('[data-quiet]:not([data-quiet="fixed"])')].map(
-        (el) => {
-            const r = el.getBoundingClientRect();
-            return {
-                l: r.left - origin.left,
-                t: r.top - origin.top,
-                r: r.right - origin.left,
-                b: r.bottom - origin.top,
-                soft: el.dataset.quiet === "soft",
-            };
-        },
-    );
 }

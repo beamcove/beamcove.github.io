@@ -11,7 +11,9 @@ import { SITE } from "./src/content/identity.ts";
 // One HTML file per page, so every page has a real URL on GitHub Pages
 // (beamcove.com/about/ → dist/about/index.html). 404.html is served by Pages
 // for any missing path.
-const PAGES = ["projects", "about", "updates", "contact", "brand", "design", "privacy", "terms"];
+const PAGES = ["projects", "about", "updates", "contact", "brand", "privacy", "terms"];
+// built only in debug builds (`npm run build:debug`); the dev server serves them anyway
+const DEBUG_PAGES = ["design"];
 
 /**
  * Fills %SITE_…% placeholders in every HTML file (pages and the social card
@@ -101,7 +103,7 @@ function fastHead(): Plugin {
     };
 }
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [react(), tsconfigPaths(), siteCopy(), fastHead()],
     resolve: { alias: PREACT_ALIAS },
     // the field worker (glyph/field-worker.ts) is a module worker, split like the pages
@@ -122,7 +124,10 @@ export default defineConfig({
                 home: resolve(import.meta.dirname, "index.html"),
                 "not-found": resolve(import.meta.dirname, "404.html"),
                 ...Object.fromEntries(
-                    PAGES.map((page) => [page, resolve(import.meta.dirname, page, "index.html")]),
+                    [...PAGES, ...(mode === "production" ? [] : DEBUG_PAGES)].map((page) => [
+                        page,
+                        resolve(import.meta.dirname, page, "index.html"),
+                    ]),
                 ),
             },
             output: {
@@ -139,4 +144,4 @@ export default defineConfig({
             },
         },
     },
-});
+}));

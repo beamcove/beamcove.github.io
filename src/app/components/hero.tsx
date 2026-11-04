@@ -1,14 +1,17 @@
+import { useContext } from "react";
 import { ArrowDown } from "lucide";
 
 import { Icon } from "@/app/components/icon";
 import { Scene } from "@/app/components/scene";
+import { Voyage } from "@/app/components/voyage";
 import { SITE } from "@/content/site";
 import { Button, ScrambleText } from "@/design-system";
 
-/** The home page's first screen: the tagline, alone, with the beam sweeping. */
+/** The home page's first screen: the tagline, alone, with the beam sweeping (the voyage's lighthouse, when it runs). */
 export function Hero() {
+    const voyage = useContext(Voyage);
     return (
-        <Scene name="hero" beam className="hero" id="top" aria-labelledby="hero-title">
+        <Scene name="hero" beam={!voyage} className="hero" id="top" aria-labelledby="hero-title">
             <div className="hero-copy">
                 <p className="hero-eyebrow" data-quiet>
                     Beamcove is a technology company

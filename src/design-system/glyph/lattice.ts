@@ -25,14 +25,28 @@ export function latticeOffset(left: number, top: number, pageWidth: number, cell
 }
 
 /** The same offset for a live element, from its rect and the current scroll. */
+/** Is an animation or transition moving this element (its translate or transform) right now? */
+const moving = (e: Element) =>
+    !!e
+        .getAnimations?.()
+        .some((a) =>
+            ((a.effect as KeyframeEffect | null)?.getKeyframes?.() ?? []).some(
+                (k) => "translate" in k || "transform" in k,
+            ),
+        );
+
 /**
- * How far an element's ancestors have slid it with `translate` or a
- * transform right now (reveals slide in), so measurements can leave it out.
+ * How far reveals have slid an element right now (its own or an ancestor's
+ * `translate` or transform), so measurements can leave the slide out. Only
+ * reveal motion counts: an element marked `data-reveal`, or one animating (the
+ * first screen's copy rises in). A translate that's part of the layout, such as
+ * centring with `translate: -50%`, stays in.
  */
 export function slide(el: Element) {
     let x = 0;
     let y = 0;
     for (let e: Element | null = el; e && e !== document.documentElement; e = e.parentElement) {
+        if (!e.hasAttribute("data-reveal") && !moving(e)) continue;
         const cs = getComputedStyle(e);
         if (cs.translate && cs.translate !== "none") {
             const [tx = "0", ty = "0"] = cs.translate.split(" ");

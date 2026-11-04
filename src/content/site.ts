@@ -9,19 +9,34 @@ export const ROUTES = {
     updates: "/updates/",
     contact: "/contact/",
     brand: "/brand/",
-    design: "/design/",
     privacy: "/privacy/",
     terms: "/terms/",
 } as const;
 
-type Route = (typeof ROUTES)[keyof typeof ROUTES];
+/**
+ * A debug build: the dev server, tests, or `npm run build:debug`. `npm run build`
+ * (what deploys) is not one.
+ */
+export const DEBUG = import.meta.env.MODE !== "production";
+
+/**
+ * Pages that exist only in debug builds: the design system's working page. A
+ * production build doesn't build, prerender, link or list them, so their URL is
+ * a 404 there.
+ */
+export const DEBUG_ROUTES = { design: "/design/" } as const;
+
+type Route =
+    | (typeof ROUTES)[keyof typeof ROUTES]
+    | (typeof DEBUG_ROUTES)[keyof typeof DEBUG_ROUTES];
 
 export const NAV: { href: Route; label: string }[] = [
     { href: ROUTES.projects, label: "Projects" },
     { href: ROUTES.about, label: "About" },
     { href: ROUTES.updates, label: "Updates" },
     { href: ROUTES.contact, label: "Contact" },
-    { href: ROUTES.design, label: "Design" },
+    // the design system page is a working tool: debug builds only
+    ...(DEBUG ? [{ href: DEBUG_ROUTES.design, label: "Design" } as const] : []),
 ];
 
 export const FOOTER_GROUPS: { title: string; links: { href: string; label: string }[] }[] = [
@@ -32,7 +47,7 @@ export const FOOTER_GROUPS: { title: string; links: { href: string; label: strin
             { href: `${ROUTES.about}#values`, label: "Values" },
             { href: ROUTES.updates, label: "Updates" },
             { href: ROUTES.brand, label: "Brand kit" },
-            { href: ROUTES.design, label: "Design system" },
+            ...(DEBUG ? [{ href: DEBUG_ROUTES.design, label: "Design system" }] : []),
         ],
     },
     {

@@ -6,7 +6,11 @@ import { join, relative } from "node:path";
 
 import { createServer } from "vite";
 
-const dist = process.argv[2] ?? "dist";
+const dist = process.argv[2] && !process.argv[2].startsWith("--") ? process.argv[2] : "dist";
+// the build's mode: "production" (npm run build) or "development" (npm run build:debug)
+const mode = process.argv.includes("--mode")
+    ? process.argv[process.argv.indexOf("--mode") + 1]
+    : "production";
 
 /** Every HTML file the build wrote, as paths relative to dist. */
 function builtPages(dir) {
@@ -17,7 +21,10 @@ function builtPages(dir) {
     });
 }
 
+// render in the build's mode, so the prerendered HTML matches the script that hydrates it
+if (mode === "production") process.env.NODE_ENV = "production";
 const vite = await createServer({
+    mode,
     server: { middlewareMode: true },
     appType: "custom",
     logLevel: "error",

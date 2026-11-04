@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
 
-import { ROUTES, SITE } from "@/content/site";
+import { DEBUG_ROUTES, ROUTES, SITE } from "@/content/site";
 import { AboutPage } from "@/pages/about";
 import { BrandPage } from "@/pages/brand";
 import { ContactPage } from "@/pages/contact";
@@ -20,7 +20,7 @@ const PAGES: [string, () => ReactElement][] = [
     [ROUTES.updates, () => <UpdatesPage />],
     [ROUTES.contact, () => <ContactPage />],
     [ROUTES.brand, () => <BrandPage />],
-    [ROUTES.design, () => <DesignPage />],
+    [DEBUG_ROUTES.design, () => <DesignPage />],
     [ROUTES.privacy, () => <PrivacyPage />],
     [ROUTES.terms, () => <TermsPage />],
     ["/404.html", () => <NotFoundPage />],
@@ -61,7 +61,11 @@ describe.each(PAGES)("%s", (_route, renderPage) => {
                 continue;
             }
             const [path = "", hash] = href.split("#");
-            expect(Object.values(ROUTES) as string[], href).toContain(path);
+            // tests run as a debug build, so the debug-only pages are linked too
+            expect(
+                [...Object.values(ROUTES), ...Object.values(DEBUG_ROUTES)] as string[],
+                href,
+            ).toContain(path);
             if (hash) expect(idsOn(path)?.has(hash), href).toBe(true);
         }
     });
