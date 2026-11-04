@@ -1,4 +1,4 @@
-import { buildAtlasRow } from "./draw";
+import { type AnyCanvas, buildAtlasRow, context2d, makeCanvas } from "./draw";
 import {
     buildField,
     glyphFor,
@@ -21,7 +21,11 @@ export interface Rect {
 }
 
 export interface FieldFrame {
-    quiet: Rect[];
+    /**
+     * Quiet boxes that move from frame to frame (fixed furniture, like the chapter
+     * rail). The copy's own boxes hold between layouts: pass them to `layout`.
+     */
+    live?: Rect[];
     time: number;
     animate: boolean;
     /** How much of the lighthouse beam to show, 0–1. */
@@ -34,10 +38,10 @@ export interface FieldFrame {
     view?: { top: number; bottom: number };
 }
 
-/** A scene from a neighbouring section, as this canvas prints it. */
-export interface SceneLayer {
+/** A neighbouring section's scene, and where this canvas's first cell sits in it. */
+export interface Neighbour {
     comp: GlyphComposition;
-    field: Field;
+    at: { c: number; r: number };
 }
 
 /**
@@ -50,8 +54,6 @@ export interface SceneLayer {
  * follow scroll.
  */
 export interface WaveFrame {
-    prev: SceneLayer | null;
-    next: SceneLayer | null;
     tIn: number;
     tOut: number;
     /** The canvas's top on screen, and the screen height (CSS px). */
@@ -68,9 +70,14 @@ export interface WaveFrame {
  * front rather than scattered specks.
  */
 export function flipAt(viewY: number, vh: number, col: number, row: number) {
-    const v = Math.min(1, Math.max(0, viewY / vh));
+    return flipHeight(viewY, vh) + flipGrain(col, row);
+}
+/** The part of `flipAt` that follows the cell's height on screen. */
+const flipHeight = (viewY: number, vh: number) => (1 - Math.min(1, Math.max(0, viewY / vh))) * 0.76;
+/** The part of `flipAt` fixed to the cell: the swell and the grain (worked out once per layout). */
+export function flipGrain(col: number, row: number) {
     const swell = 0.5 + 0.3 * Math.sin(col * 0.19) + 0.2 * Math.sin(col * 0.071 + 1.3);
-    return (1 - v) * 0.76 + swell * 0.14 + hash(col, row, 5) * 0.1;
+    return swell * 0.14 + hash(col, row, 5) * 0.1;
 }
 /** How deep the wave's dense band is, in turnover units (about a third of the screen). */
 export const WAVE_BAND = 0.24;
@@ -98,6 +105,99 @@ export function beamSweeping(time: number) {
     return ((time + 600) % (SWEEP_MS + PAUSE_MS)) / SWEEP_MS <= 1.05;
 }
 
+/** A canvas's size and where its cells start, as `resize` lays it out. */
+export interface Geometry {
+    dpr: number;
+    /** The first cell's top left (the lattice offset, snapped to device px). */
+    ox: number;
+    oy: number;
+    cols: number;
+    rows: number;
+}
+
+/** Lays a canvas of `width` × `height` CSS px over the page lattice, at `offset` (in (-CELL, 0]). */
+export function geometry(
+    width: number,
+    height: number,
+    offset: { x: number; y: number },
+    maxDpr: number,
+    deviceDpr: number,
+): Geometry {
+    // a whole number of device pixels per cell, so neighbouring cells meet without seams
+    const dpr = Math.max(1, Math.round(Math.min(maxDpr, deviceDpr || 1) * 4) / 4);
+    const ox = Math.round(offset.x * dpr) / dpr;
+    const oy = Math.round(offset.y * dpr) / dpr;
+    return {
+        dpr,
+        ox,
+        oy,
+        cols: Math.max(1, Math.ceil((width - ox) / CELL)),
+        rows: Math.max(1, Math.ceil((height - oy) / CELL)),
+    };
+}
+
+/**
+ * What a painter needs from the page, read once on the main thread (a painter
+ * in a worker can't read styles): the design tokens it prints with, its host's
+ * background and the screen's pixel ratio.
+ */
+export interface PainterEnv {
+    tokens: Partial<Record<(typeof PAINTER_TOKENS)[number], string>>;
+    /** The host's background colour (an opaque card paints its own paper). */
+    bg: string;
+    dpr: number;
+}
+const PAINTER_TOKENS = [
+    "--surface-page",
+    "--glyph-dim",
+    "--glyph-blend",
+    "--glyph-block-alpha",
+    "--ink",
+    "--ink-a",
+    "--ink-b",
+    "--ink-c",
+    "--ink-d",
+    "--ink-e",
+] as const;
+
+/** Reads a painter's environment for `canvas` (main thread only). */
+export function readEnv(canvas: HTMLCanvasElement): PainterEnv {
+    const style = getComputedStyle(canvas);
+    return {
+        tokens: Object.fromEntries(
+            PAINTER_TOKENS.map((name) => [name, style.getPropertyValue(name).trim()]),
+        ),
+        bg: getComputedStyle(canvas.parentElement ?? canvas).backgroundColor,
+        dpr: window.devicePixelRatio || 1,
+    };
+}
+
+// every glyph of a ramp in one ink, pre-printed over the paper at each of the 17
+// alpha steps (one row per step), shared by every painter: a changed cell is then
+// one image copy, instead of clear, fill, set alpha and copy
+const PRINTED = new Map<string, AnyCanvas>();
+function printedAtlas(ramp: RampName, color: string, paper: string, size: number) {
+    const key = `${ramp}:${color}:${paper}:${size}`;
+    let out = PRINTED.get(key);
+    if (!out) {
+        const glyphs = buildAtlasRow(RAMPS[ramp], color, size);
+        out = makeCanvas(glyphs.width, size * (ALPHA_STEPS + 1));
+        const g = context2d(out);
+        if (g) {
+            g.fillStyle = paper;
+            g.fillRect(0, 0, out.width, out.height);
+            for (let a = 1; a <= ALPHA_STEPS; a++) {
+                g.globalAlpha = a / ALPHA_STEPS;
+                g.drawImage(glyphs, 0, a * size);
+            }
+        }
+        PRINTED.set(key, out);
+    }
+    return out;
+}
+// sixteen steps of alpha: smooth to the eye, and most frames change none
+const ALPHA_STEPS = 16;
+
 /** "#rrggbb" → [r, g, b]; anything else → null. */
 function rgb(color: string): [number, number, number] | null {
     const m = /^#([0-9a-f]{6})/i.exec(color.trim());
@@ -121,13 +221,17 @@ function overprint(ink: string, paper: string, alpha: number) {
  * lattice offset, so they sit exactly over the page's dots. Glyphs thin out
  * around every quiet box (the copy); ink blocks print whole, or not at all
  * if they would come too close to it, so text never sits on ink.
+ *
+ * It reads nothing from the page (`env` carries what it needs), so it runs the
+ * same on the main thread or in the field worker.
  */
 export function createPainter(
-    canvas: HTMLCanvasElement,
+    canvas: AnyCanvas,
     comp: GlyphComposition,
     opts: FieldOptions,
+    env: PainterEnv,
 ) {
-    const ctx = canvas.getContext("2d");
+    const ctx = context2d(canvas);
     if (!ctx) return null;
     const c2d = ctx;
 
@@ -143,13 +247,12 @@ export function createPainter(
     let dim = "#23273a";
     let blend: GlobalCompositeOperation = "screen";
     let blockAlpha = 0.72;
-    const atlas = new Map<string, HTMLCanvasElement>();
     // one cell with its resting dot, tiled: far cheaper than a circle path per cell
     let dotTile: CanvasPattern | null = null;
     const colors = new Map<string, string>();
 
     const token = (name: string, fallback: string) =>
-        getComputedStyle(canvas).getPropertyValue(name).trim() || fallback;
+        env.tokens[name as keyof PainterEnv["tokens"]] || fallback;
     const inkColor = (slot: string) => {
         let color = colors.get(slot);
         if (!color) {
@@ -158,15 +261,20 @@ export function createPainter(
         }
         return color;
     };
-    const row = (ramp: RampName, slot: string) => {
-        const key = `${ramp}:${slot}`;
-        let out = atlas.get(key);
-        if (!out) {
-            out = buildAtlasRow(RAMPS[ramp], inkColor(slot), CELL * dpr);
-            atlas.set(key, out);
-        }
-        return out;
-    };
+
+    // the copy to keep quiet around, and the neighbours' scenes: both hold between layouts
+    let quietBoxes: Rect[] = [];
+    let near: { prev: Neighbour | null; next: Neighbour | null } = { prev: null, next: null };
+    let prevField: Field | null = null;
+    let nextField: Field | null = null;
+    // worked out once per layout, per cell: how quiet the copy keeps it, and when the
+    // wave turns it over (the part that doesn't follow scroll); and the blocks that print
+    let still: Float32Array | null = null;
+    let grain: Float32Array | null = null;
+    let grainAt = "";
+    let blocks: Field["blocks"] = [];
+    const neighbourField = (n: Neighbour | null) =>
+        n ? buildField(n.comp, cols, rows, n.at) : null;
 
     /** Size the canvas and snap its cells to the lattice offset (in (-CELL, 0]). */
     const resize = (
@@ -177,27 +285,24 @@ export function createPainter(
     ) => {
         w = width;
         h = height;
-        // a whole number of device pixels per cell, so neighbouring cells meet without seams
-        dpr = Math.max(1, Math.round(Math.min(maxDpr, window.devicePixelRatio || 1) * 4) / 4);
+        ({ dpr, ox, oy, cols, rows } = geometry(w, h, offset, maxDpr, env.dpr));
         canvas.width = Math.round(w * dpr);
         canvas.height = Math.round(h * dpr);
-        ox = Math.round(offset.x * dpr) / dpr;
-        oy = Math.round(offset.y * dpr) / dpr;
-        cols = Math.max(1, Math.ceil((w - ox) / CELL));
-        rows = Math.max(1, Math.ceil((h - oy) / CELL));
         field = buildField(comp, cols, rows);
+        prevField = neighbourField(near.prev);
+        nextField = neighbourField(near.next);
         fresh = true;
-        atlas.clear();
+        still = null;
+        grain = null;
         colors.clear();
         paper = token("--surface-page", paper);
-        const bg = getComputedStyle(canvas.parentElement ?? canvas).backgroundColor;
+        const bg = env.bg;
         if (opts.dots && bg && !bg.endsWith(", 0)") && bg !== "transparent") paper = bg;
         dim = token("--glyph-dim", dim);
         dotTile = null;
         if (opts.dots) {
-            const tile = document.createElement("canvas");
-            tile.width = tile.height = Math.round(CELL * dpr);
-            const t = tile.getContext("2d");
+            const tile = makeCanvas(Math.round(CELL * dpr), Math.round(CELL * dpr));
+            const t = context2d(tile);
             if (t) {
                 t.fillStyle = dim;
                 t.beginPath();
@@ -208,6 +313,26 @@ export function createPainter(
         }
         blend = token("--glyph-blend", "screen") === "multiply" ? "multiply" : "screen";
         blockAlpha = parseFloat(token("--glyph-block-alpha", "0.72")) || 0.72;
+    };
+
+    /** The copy moved, or the neighbours changed: take the new boxes and scenes, and repaint. */
+    const layout = (quiet: Rect[], prev: Neighbour | null, next: Neighbour | null) => {
+        quietBoxes = quiet;
+        near = { prev, next };
+        prevField = field && neighbourField(prev);
+        nextField = field && neighbourField(next);
+        still = null;
+        fresh = true;
+    };
+
+    /** Per cell, how quiet a set of boxes keeps it (1 silent, 0 untouched). */
+    const quietness = (boxes: Rect[], x: number, y: number, pad: number, fade: number) => {
+        let q = 0;
+        for (const rect of boxes) {
+            const d = Math.max(rect.l - x - CELL, x - rect.r, rect.t - y - CELL, y - rect.b, 0);
+            q = Math.max(q, d <= pad ? 1 : d < pad + fade ? 1 - (d - pad) / fade : 0);
+        }
+        return q;
     };
 
     // what each cell shows right now, so a frame only repaints the cells that changed
@@ -240,16 +365,30 @@ export function createPainter(
         const r1 = fr.view ? Math.min(rows, Math.ceil((fr.view.bottom - oy) / CELL)) : rows;
 
         const [PAD, FADE, CLEAR] = w < 600 ? QUIET.narrow : QUIET.wide;
-        const quiet = fr.quiet.filter((q) => q.b > -FADE && q.t < h + FADE);
-        const nearCopy = (x: number, y: number, x2: number, y2: number) =>
-            quiet.some(
-                (q) =>
-                    !q.soft &&
-                    x < q.r + CLEAR &&
-                    x2 > q.l - CLEAR &&
-                    y < q.b + CLEAR &&
-                    y2 > q.t - CLEAR,
+        const onCanvas = (q: Rect) => q.b > -FADE && q.t < h + FADE;
+        if (!still || still.length !== rows * cols) {
+            // the copy only moves on layout: how quiet it keeps each cell, and which ink
+            // blocks print (whole, or not at all near the copy), hold until then
+            const boxes = quietBoxes.filter(onCanvas);
+            still = new Float32Array(rows * cols);
+            for (let r = 0; r < rows; r++)
+                for (let c = 0; c < cols; c++)
+                    still[r * cols + c] = quietness(boxes, ox + c * CELL, oy + r * CELL, PAD, FADE);
+            blocks = f.blocks.filter(
+                (b) =>
+                    !boxes.some(
+                        (q) =>
+                            !q.soft &&
+                            ox + b.c0 * CELL < q.r + CLEAR &&
+                            ox + b.c1 * CELL > q.l - CLEAR &&
+                            oy + b.r0 * CELL < q.b + CLEAR &&
+                            oy + b.r1 * CELL > q.t - CLEAR,
+                    ),
             );
+        }
+        const quietStill = still;
+        // fixed furniture moves over the canvas every frame
+        const live = (fr.live ?? []).filter(onCanvas);
 
         let bx = -1e9;
         if (fr.beam > 0.02 && fr.animate) {
@@ -257,12 +396,22 @@ export function createPainter(
             if (p <= 1) bx = -BAND * 2 + (w + BAND * 4) * p;
         }
 
-        // ink blocks print whole or not at all near the copy (the copy only moves on layout,
-        // so this set holds between layouts); cells a neighbouring scene takes are cleared
-        const blocks = f.blocks.filter(
-            (b) =>
-                !nearCopy(ox + b.c0 * CELL, oy + b.r0 * CELL, ox + b.c1 * CELL, oy + b.r1 * CELL),
-        );
+        // the wave: which neighbours there are, and the fixed part of each cell's turnover
+        const prev = wave && prevField ? { comp: near.prev!.comp, field: prevField } : null;
+        const next = wave && nextField ? { comp: near.next!.comp, field: nextField } : null;
+        if (wave && (prev || next)) {
+            const at = `${wave.col},${wave.row}`;
+            if (!grain || grain.length !== rows * cols || grainAt !== at) {
+                grainAt = at;
+                grain = new Float32Array(rows * cols);
+                for (let r = 0; r < rows; r++)
+                    for (let c = 0; c < cols; c++)
+                        grain[r * cols + c] = flipGrain(wave.col + c, wave.row + r);
+            }
+        }
+        const turn = grain;
+
+        // cells a neighbouring scene takes are cleared
         const inBlock = (c: number, r: number) =>
             blocks.some((b) => c >= b.c0 && c < b.c1 && r >= b.r0 && r < b.r1);
         const blockColor = (b: (typeof blocks)[number]) =>
@@ -324,19 +473,19 @@ export function createPainter(
                 let scene = 0;
                 let surge = 0;
                 let crest = false;
-                if (wave && (wave.next || wave.prev)) {
-                    const key = flipAt(wave.top + cy, wave.vh, wave.col + c, wave.row + r);
+                if (wave && turn && (next || prev)) {
+                    const key = flipHeight(wave.top + cy, wave.vh) + turn[i]!;
                     let behind = Infinity; // how far behind the leading edge, in turnover units
-                    if (wave.next && wave.tOut > 0 && key < wave.tOut) {
-                        src = wave.next.field;
-                        sc = wave.next.comp;
+                    if (next && wave.tOut > 0 && key < wave.tOut) {
+                        src = next.field;
+                        sc = next.comp;
                         scene = 2;
                         behind = wave.tOut - key;
-                    } else if (wave.prev && key >= wave.tIn) {
-                        src = wave.prev.field;
-                        sc = wave.prev.comp;
+                    } else if (prev && key >= wave.tIn) {
+                        src = prev.field;
+                        sc = prev.comp;
                         scene = 1;
-                    } else if (wave.prev) behind = wave.tIn - key;
+                    } else if (prev) behind = wave.tIn - key;
                     if (behind < WAVE_BAND) {
                         surge = 1 - behind / WAVE_BAND;
                         crest = behind < CREST;
@@ -346,20 +495,11 @@ export function createPainter(
                 let state: number;
                 let step = -1;
                 let slot = "";
-                let alpha = 0;
+                let aq = 0;
                 if (scene === 0 && f.covered[i] && inBlock(c, r)) state = BLOCK;
                 else {
-                    let q = 0;
-                    for (const rect of quiet) {
-                        const d = Math.max(
-                            rect.l - x - CELL,
-                            x - rect.r,
-                            rect.t - y - CELL,
-                            y - rect.b,
-                            0,
-                        );
-                        q = Math.max(q, d <= PAD ? 1 : d < PAD + FADE ? 1 - (d - PAD) / FADE : 0);
-                    }
+                    let q = quietStill[i]!;
+                    if (live.length) q = Math.max(q, quietness(live, x, y, PAD, FADE));
                     let boost = crest ? 0.6 : 0;
                     if (bx > -1e8) {
                         const d = Math.abs(cx - bx + (cy - h / 2) * SLANT);
@@ -385,34 +525,31 @@ export function createPainter(
                         const lit = boost > 0.3;
                         const zone = src.zone[i]!;
                         slot = lit ? "lit" : (sc.inks[zone] ?? sc.inks[0]!);
-                        // sixteen steps of alpha: smooth to the eye, and most frames change none
-                        const aq = Math.round(
-                            (lit ? 0.85 : (0.32 + 0.55 * g.level) * (1 - 0.6 * q)) * 16,
+                        aq = Math.round(
+                            (lit ? 0.85 : (0.32 + 0.55 * g.level) * (1 - 0.6 * q)) * ALPHA_STEPS,
                         );
-                        alpha = aq / 16;
                         state = 1 + step + ((lit ? 7 : zone) << 4) + (aq << 7) + (scene << 12);
                     }
                 }
 
                 if (drawn[i] === state) continue;
                 drawn[i] = state;
-                clearCell(x, y, size);
-                if (state === BLOCK) blockCell(c, r, x, y);
-                else if (state !== EMPTY) {
-                    // cover the page dot under the glyph, then print it
-                    c2d.globalAlpha = 1;
-                    c2d.fillStyle = paper;
-                    c2d.fillRect(x, y, CELL, CELL);
-                    c2d.globalAlpha = alpha;
-                    c2d.drawImage(row(sc.ramp, slot), step * size, 0, size, size, x, y, CELL, CELL);
+                if (state === EMPTY) clearCell(x, y, size);
+                else if (state === BLOCK) {
+                    clearCell(x, y, size);
+                    blockCell(c, r, x, y);
+                } else {
+                    // the glyph pre-printed over the paper, which covers the page dot under it
+                    const atlas = printedAtlas(sc.ramp, inkColor(slot), paper, size);
+                    c2d.drawImage(atlas, step * size, aq * size, size, size, x, y, CELL, CELL);
                 }
             }
         }
-        c2d.globalAlpha = 1;
     };
 
     return {
         resize,
+        layout,
         draw,
         get cols() {
             return cols;
@@ -429,6 +566,8 @@ export function createPainter(
             canvas.width = 0;
             canvas.height = 0;
             field = null;
+            prevField = null;
+            nextField = null;
         },
         get origin() {
             return { x: ox, y: oy };

@@ -175,12 +175,30 @@ phone profile (slow 4G, 4× slower CPU) and on desktop. Keep these:
   `trigger="mount"` doesn't scramble a prerendered title; it only delayed the
   page.
 
-- **Canvases are lazy.** A `Field` lays out and holds pixels only within one
+- **Canvases are painted off the main thread.** Where the browser has
+  OffscreenCanvas (Safari 16.4+, every current Chrome and Firefox), a `Field`
+  hands its canvas to one shared worker (`glyph/field-worker.ts`, driven by
+  `glyph/remote-painter.ts`). The page still measures the layout and sends
+  each frame's scroll, pointer and wave state; the worker holds the scenes and
+  paints. This halves the main thread's work per scroll frame on a phone.
+  Elsewhere, or if the worker fails, the same painter runs on the main thread.
+  So the painter (`glyph/painter.ts`) must never read the page: what it needs
+  from styles comes in `PainterEnv`, read once by `readEnv`.
+- **Canvases are lazy.** A `Field` lays out and holds pixels only within half a
   screen of the viewport, and gives them back further away (a canvas costs
   width × height × 4 bytes, at up to 1.5× device pixels). It redraws only the
   rows on screen, and only the cells whose glyph, ink or alpha changed since
   the last frame (`drawn` in `painter.ts`). Idle shimmer runs at 12fps; the
   beam, the pointer light and scrolling at up to 30/60fps.
+- **Per-cell work is done once per layout.** How quiet the copy keeps each
+  cell, which ink blocks print, and the fixed part of the wave's turnover are
+  worked out when the layout changes (`painter.layout`), not every frame. Only
+  fixed furniture (the chapter rail) is checked per frame (`FieldFrame.live`).
+  Glyphs come from atlases pre-printed over the paper at each of the 16 alpha
+  steps, shared by every field, so a changed cell is one image copy.
+- **The takeover is the costliest effect** (about a quarter of a phone's
+  scroll frame), then CSS motion (reveals, lit words). Measure before adding
+  to either.
 - **No layout reads while scrolling.** Positions are measured on layout
   changes (`onLayout` in `components/doc-layout.ts`) and scroll handlers work
   from them and `scrollY`. Measurements leave out reveal slides

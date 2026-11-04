@@ -104,6 +104,8 @@ function fastHead(): Plugin {
 export default defineConfig({
     plugins: [react(), tsconfigPaths(), siteCopy(), fastHead()],
     resolve: { alias: PREACT_ALIAS },
+    // the field worker (glyph/field-worker.ts) is a module worker, split like the pages
+    worker: { format: "es" },
     // No SPA fallback in dev: unknown paths 404 like they will on Pages.
     appType: "mpa",
     build: {

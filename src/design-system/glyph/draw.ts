@@ -1,6 +1,23 @@
 import type { GlyphId } from "./engine";
 import { SYMBOL_PATHS, TRI_STROKE } from "./symbol-paths";
 
+/** A 2D context on the page or in a worker. */
+export type Ctx2D = CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+/** A canvas on the page, or one a worker holds. */
+export type AnyCanvas = HTMLCanvasElement | OffscreenCanvas;
+
+/** A scratch canvas: an OffscreenCanvas where there is one (always, in a worker), else a DOM one. */
+export function makeCanvas(width: number, height: number): AnyCanvas {
+    if (typeof OffscreenCanvas !== "undefined") return new OffscreenCanvas(width, height);
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    return canvas;
+}
+
+/** A canvas's 2D context, whichever kind of canvas it is. */
+export const context2d = (canvas: AnyCanvas) => canvas.getContext("2d") as Ctx2D | null;
+
 const paths = new Map<string, Path2D>();
 /** A symbol's path (16×16 cell units), built once. */
 const symbol = (name: keyof typeof SYMBOL_PATHS) => {
@@ -18,13 +35,7 @@ const symbol = (name: keyof typeof SYMBOL_PATHS) => {
  * They are chunky: bold strokes with round caps and joins, and soft corners,
  * the same family as the Symbol marks (● ▲ ■ ✕ +).
  */
-export function drawGlyph(
-    ctx: CanvasRenderingContext2D,
-    id: GlyphId,
-    x: number,
-    y: number,
-    s: number,
-) {
+export function drawGlyph(ctx: Ctx2D, id: GlyphId, x: number, y: number, s: number) {
     const m = s * 0.2;
     const g = s - 2 * m; // inner box
     const lw = Math.max(1.5, s * 0.13);
@@ -161,15 +172,9 @@ export function drawGlyph(
 }
 
 /** One horizontal strip of glyphs in one colour, each `size` device px square. */
-export function buildAtlasRow(
-    glyphs: readonly GlyphId[],
-    color: string,
-    size: number,
-): HTMLCanvasElement {
-    const canvas = document.createElement("canvas");
-    canvas.width = size * glyphs.length;
-    canvas.height = size;
-    const ctx = canvas.getContext("2d");
+export function buildAtlasRow(glyphs: readonly GlyphId[], color: string, size: number): AnyCanvas {
+    const canvas = makeCanvas(size * glyphs.length, size);
+    const ctx = context2d(canvas);
     if (!ctx) return canvas;
     ctx.fillStyle = color;
     ctx.strokeStyle = color;

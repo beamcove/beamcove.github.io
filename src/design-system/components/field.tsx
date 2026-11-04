@@ -1,17 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { buildField, type GlyphComposition } from "../glyph/engine";
+import type { GlyphComposition } from "../glyph/engine";
 import { CELL, elementLattice, restingRect } from "../glyph/lattice";
 import { motionAllowed } from "../glyph/motion";
 import {
     beamSweeping,
     createPainter,
+    type Neighbour,
     quietRects,
+    readEnv,
     type Rect,
-    type SceneLayer,
     type WaveFrame,
     WAVE_BAND,
 } from "../glyph/painter";
+import { canPaintOffThread, handedOver, remotePainter } from "../glyph/remote-painter";
 import { cx } from "./cx";
 
 // frame pacing: the shimmer is slow, so 12fps is plenty; the beam and the pointer
@@ -20,8 +22,9 @@ const IDLE_MS = 1000 / 12;
 const MOVING_MS = 1000 / 30;
 // 1.5 device px per CSS px is crisp enough for 16px glyphs and keeps canvases light
 const MAX_DPR = 1.5;
-// canvases this far off screen give their pixels back (a canvas is width × height × 4 bytes)
-const KEEP_MARGIN = "100% 0px";
+// canvases more than half a screen away give their pixels back (a canvas is
+// width × height × 4 bytes); half a screen is still well ahead of a fast fling
+const KEEP_MARGIN = "50% 0px";
 // the takeover: it starts as a section's top passes 90% of the screen, and is done at 20%
 const TAKE_FROM = 0.9;
 const TAKE_TO = 0.2;
@@ -89,7 +92,9 @@ export interface FieldProps {
  * each other as you scroll. With motion off it prints one still frame.
  *
  * It only holds pixels while near the screen, only redraws the rows on
- * screen, and reads the layout once per resize, not per frame.
+ * screen, and reads the layout once per resize, not per frame. Where the
+ * browser can (OffscreenCanvas), the painting runs in a worker: the page only
+ * measures and says what to draw, so a busy frame never holds up scrolling.
  */
 export function Field({
     composition,
@@ -103,12 +108,24 @@ export function Field({
     className,
 }: FieldProps) {
     const ref = useRef<HTMLCanvasElement>(null);
+    // bumped if the worker goes down: a fresh canvas, painted on the main thread
+    const [canvasKey, setCanvasKey] = useState(0);
 
     useEffect(() => {
         const canvas = ref.current;
         const host = canvas?.parentElement;
         if (!canvas || !host || typeof IntersectionObserver === "undefined") return;
-        const painter = createPainter(canvas, composition, { dots, soften });
+        // the props changed after the canvas went to the worker: start again on a fresh one
+        if (handedOver(canvas)) {
+            setCanvasKey((k) => k + 1);
+            return;
+        }
+        const env = readEnv(canvas);
+        const opts = { dots, soften };
+        const remote = canPaintOffThread(canvas)
+            ? remotePainter(canvas, composition, opts, env, () => setCanvasKey((k) => k + 1))
+            : null;
+        const painter = remote ?? createPainter(canvas, composition, opts, env);
         if (!painter) return;
         const animate = motionAllowed();
         const takeover = wave && animate;
@@ -137,14 +154,14 @@ export function Field({
         let canvasTop = 0;
         let canvasLeft = 0;
         let sectionTop = 0;
-        let prev: SceneLayer | null = null;
-        let next: (SceneLayer & { top: number }) | null = null;
+        let prev: (Neighbour & { top: number }) | null = null;
+        let next: (Neighbour & { top: number }) | null = null;
 
         /** A neighbour's scene as this canvas prints it, its noise carried on across the edge. */
         const neighbour = (
             other: HTMLCanvasElement | undefined,
             mine: { left: number; top: number },
-        ) => {
+        ): (Neighbour & { top: number }) | null => {
             const comp = other && SCENES.get(other);
             if (!other || !comp) return null;
             const theirs = restingRect(other);
@@ -155,11 +172,7 @@ export function Field({
                 c: Math.round((mine.left + painter.origin.x - (theirs.left + lattice.x)) / CELL),
                 r: Math.round((mine.top + painter.origin.y - (theirs.top + lattice.y)) / CELL),
             };
-            return {
-                comp,
-                field: buildField(comp, painter.cols, painter.rows, at),
-                top: docTop(other.closest("[data-scene]") ?? other),
-            };
+            return { comp, at, top: docTop(other.closest("[data-scene]") ?? other) };
         };
 
         const layout = () => {
@@ -189,7 +202,8 @@ export function Field({
                 prev = neighbour(all[i - 1], rect);
                 next = neighbour(all[i + 1], rect);
             }
-            painter.invalidate();
+            const scene = (n: typeof prev) => n && { comp: n.comp, at: n.at };
+            painter.layout(boxes, scene(prev), scene(next));
         };
 
         const paint = (time: number) => {
@@ -197,27 +211,20 @@ export function Field({
             const scrollY = window.scrollY;
             const vh = window.innerHeight;
             const top = sticky ? canvas.getBoundingClientRect().top : canvasTop - scrollY;
-            const quietNow = fixed.length
-                ? [
-                      ...boxes,
-                      // fixed furniture (the chapter rail) floats over every section
-                      ...fixed.map((r) => ({
-                          l: r.left - canvasLeft,
-                          t: r.top - top,
-                          r: r.right - canvasLeft,
-                          b: r.bottom - top,
-                          soft: true,
-                      })),
-                  ]
-                : boxes;
+            // fixed furniture (the chapter rail) floats over every section
+            const live = fixed.map((r) => ({
+                l: r.left - canvasLeft,
+                t: r.top - top,
+                r: r.right - canvasLeft,
+                b: r.bottom - top,
+                soft: true,
+            }));
             // 0 → 1 turns every cell over; on to 1 + WAVE_BAND carries the dense band off the top
             const progress = (docY: number) =>
                 clamp01((vh * TAKE_FROM - (docY - scrollY)) / (vh * (TAKE_FROM - TAKE_TO))) *
                 (1 + WAVE_BAND);
             const wave: WaveFrame | undefined = takeover
                 ? {
-                      prev,
-                      next,
                       tIn: prev ? progress(sectionTop) : 1,
                       tOut: next ? progress(next.top) : 0,
                       top,
@@ -227,7 +234,7 @@ export function Field({
                   }
                 : undefined;
             painter.draw({
-                quiet: quietNow,
+                live,
                 time,
                 animate,
                 beam: beam ? 1 : 0,
@@ -320,11 +327,13 @@ export function Field({
             show.disconnect();
             ro?.disconnect();
             window.removeEventListener("scroll", onScroll);
+            remote?.remove();
         };
-    }, [composition, beam, pointer, quiet, dots, soften, pinned, wave]);
+    }, [composition, beam, pointer, quiet, dots, soften, pinned, wave, canvasKey]);
 
     return (
         <canvas
+            key={canvasKey}
             ref={ref}
             className={cx("bc-print", className)}
             data-wave={wave ? "" : undefined}
