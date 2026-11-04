@@ -1541,13 +1541,13 @@ button:focus-visible {
 .motion .page-hero-copy > :nth-child(4) {
     animation-delay: 180ms;
 }
-.motion [data-reveal]:not([data-reveal="fill"]) {
+.motion [data-reveal] {
     transition:
         opacity 700ms var(--ease-out),
         translate 700ms var(--ease-out);
 }
 /* hidden only once the page's script is running (`ready`), so prerendered copy shows at once */
-.motion.ready [data-reveal]:not([data-reveal="fill"]):not(.is-in) {
+.motion.ready [data-reveal]:not(.is-in) {
     opacity: 0;
     translate: 0 24px;
 }
@@ -1565,15 +1565,6 @@ button:focus-visible {
 }
 .motion .value[data-reveal]:nth-child(3) {
     transition-delay: 320ms;
-}
-/* footer wordmark: letters light left to right, like the beam passing (whole letters, so
-   each is one fade on the compositor, not hundreds of shapes repainting) */
-.motion .footer-wordmark .ascii-letter {
-    transition: opacity 160ms steps(1, end);
-    transition-delay: calc(var(--i) * 140ms);
-}
-.motion.ready .footer-wordmark:not(.is-in) .ascii-letter {
-    opacity: 0;
 }
 
 /* ── Smaller screens ──────────────────────────────── */

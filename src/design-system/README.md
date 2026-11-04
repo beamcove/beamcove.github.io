@@ -8,7 +8,7 @@ splash per view, tokens never hex, ink slots in art, sentence case, etc.
 | ---------------- | ---------------------------------------- | ------------------------------- |
 | `tokens.css`     | `tokens.css` (built from `tokens.json`)  | no — copy again on update       |
 | `components.css` | `components/bundle.css`                  | no — copy again on update       |
-| `fonts/`         | `fonts/` (Onest, Departure Mono)         | no                              |
+| `fonts/`         | `fonts/` (Onest, Bitcount Grid Double)   | no                              |
 | `components/`    | typed TSX port                           | yes — the source of `bundle.js` |
 | `glyph/`         | the glyph engine (noise, ramps, drawing) | yes — the source of `bundle.js` |
 

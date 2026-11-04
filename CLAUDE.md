@@ -35,8 +35,9 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    `design-system` repo (prettier-ignored) — re-copy, don't hand-edit. Follow its
    rules: tokens never hex, sentence case, one theme (Midnight, no picker,
    nothing stored on the device). **Two faces only:** Onest for everything you
-   read; Departure Mono only for signals (kickers, dates, numbers, tags, the
-   wordmark) at 13px for labels, 22 or 44px for numbers. Buttons and controls are solid, never outlined.
+   read; Bitcount Grid Double, pinned at Light 300 (never heavier), only for
+   signals (kickers, dates, numbers, tags, the wordmark) at 13px for labels, 22 or
+   44px for numbers. The glyph wordmark copies its letterforms. Buttons and controls are solid, never outlined.
    Glyphs are chunky (bold, round); symbols are only universal shapes (`Shape`:
    ● ▲ ■ ♥ ✕ + —). The mark is ● ▲ ■ in inks b, e, a; never draw new symbols.
 3. **The page is the grid.** One 16px dot matrix, drawn once on `<html>`,
@@ -98,7 +99,7 @@ layout reads while scrolling, no layout shift. See docs/architecture.md →
   pieces (kind-cards, statements, value-list), plus scenes (every
   screen's glyph art), ascii-word (glyph wordmark), icon (renders Lucide icon
   nodes), brand (social SVGs).
-- `src/design-system/` — Signal tokens, CSS, fonts (Onest, Departure Mono),
+- `src/design-system/` — Signal tokens, CSS, fonts (Onest, Bitcount Grid Double),
   typed component port (Screen, Field, LitLine, ChapterRail, …) and the glyph
   engine, page lattice and painter (`glyph/`). `/design/` shows every piece: it's
   debug-only (`DEBUG_ROUTES`, the dev server and `build:debug`), and production

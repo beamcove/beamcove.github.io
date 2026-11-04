@@ -158,7 +158,7 @@ export function BrandPage() {
                 id="wordmark"
                 kicker="Logo"
                 title="The mark and the name."
-                lead="The mark is three shapes everyone already knows, ● ▲ ■, one for each kind of work we do: everyday life, play and work, each in its own ink. It sits before the name, Beamcove, set in Departure Mono. For big moments, the name can be drawn in glyphs."
+                lead="The mark is three shapes everyone already knows, ● ▲ ■, one for each kind of work we do: everyday life, play and work, each in its own ink. It sits before the name, Beamcove, set in Bitcount Grid Double. For big moments, the name can be drawn in glyphs."
                 stacked
             >
                 <div className="wordmark-grid">
@@ -232,7 +232,7 @@ export function BrandPage() {
                 id="type"
                 kicker="Type"
                 title="Typography."
-                lead="One voice and one signal: Onest for everything you read, and Departure Mono for the small machine details around it."
+                lead="One voice and one signal: Onest for everything you read, and Bitcount Grid Double for the small machine details around it."
                 stacked
             >
                 <div className="type-grid type-grid-two">
@@ -246,7 +246,7 @@ export function BrandPage() {
                         </p>
                     </Card>
                     <Card variant="plain" data-reveal>
-                        <p className="signal muted">Departure Mono · signals</p>
+                        <p className="signal muted">Bitcount Grid Double · signals</p>
                         <p className="type-specimen type-specimen-display">01</p>
                         <p className="signal">Oct 27, 2026 · beamcove.com · {SITE.email}</p>
                         <p className="body-text">

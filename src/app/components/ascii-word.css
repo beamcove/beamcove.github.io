@@ -1,17 +1,9 @@
-/* AsciiWord: a word drawn on a 5×7 grid of symbols, one SVG. Loaded by the component
-   itself, so it works on any page. Tokens only. */
+/* AsciiWord: a word drawn in glyphs, in the pixel face's letterforms, one SVG. Loaded
+   by the component itself, so it works on any page. Tokens only. */
 .ascii-word {
-    position: relative;
     width: 100%;
 }
-/* one letter's symbols, over its own columns of the grid */
-.ascii-letter {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    overflow: visible;
-}
-.ascii-grid {
+.ascii-word svg {
     display: block;
     width: 100%;
     height: auto;

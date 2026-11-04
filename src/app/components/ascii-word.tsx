@@ -1,27 +1,28 @@
 import "./ascii-word.css";
 
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { ShapeCell, type ShapeName } from "@/design-system";
 import { hash } from "@/design-system/glyph/engine";
 
 /**
- * A 5×7 pixel face for the few words drawn in glyphs: the footer wordmark
- * and the brand pages. Each lit pixel is a symbol (● ▲ ■ ♥ ✕ +) on a 16px
- * cell; the rest is the resting dot grid. The dots are one SVG and each letter another,
- * laid over it, so a reveal can fade whole letters cheaply.
+ * The few words drawn in glyphs (the footer wordmark, the brand pages), in
+ * the letterforms of the pixel face, Bitcount Grid Double Light: each letter
+ * is its 5-wide pixel grid read from the font, caps 6 pixels tall, with the
+ * face's doubled left stems. Each lit pixel is a symbol (● ▲ ■ ♥ ✕ +) on a 16px
+ * cell; the rest is the resting dot grid. Rows run from the cap line down to
+ * the baseline. To add a letter, read its pixels from the font the same way.
  */
 const FONT: Record<string, string[]> = {
-    B: ["####.", "#...#", "#...#", "####.", "#...#", "#...#", "####."],
-    e: [".....", ".....", ".###.", "#...#", "#####", "#....", ".####"],
-    a: [".....", ".....", ".###.", "....#", ".####", "#...#", ".####"],
-    m: [".....", ".....", "##.#.", "#.#.#", "#.#.#", "#.#.#", "#.#.#"],
-    c: [".....", ".....", ".####", "#....", "#....", "#....", ".####"],
-    o: [".....", ".....", ".###.", "#...#", "#...#", "#...#", ".###."],
-    v: [".....", ".....", "#...#", "#...#", "#...#", ".#.#.", "..#.."],
-    "4": ["...#.", "..##.", ".#.#.", "#..#.", "#####", "...#.", "...#."],
-    "0": [".###.", "#...#", "#..##", "#.#.#", "##..#", "#...#", ".###."],
+    B: ["####.", "##..#", "####.", "##.##", "##..#", "####."],
+    a: [".....", ".###.", "...##", ".####", "#..##", ".##.#"],
+    c: [".....", ".####", "##...", "##...", "##..#", ".###."],
+    e: [".....", ".###.", "##..#", "#####", "##...", ".####"],
+    m: [".....", "####.", "#####", "#.#.#", "#.#.#", "#.#.#"],
+    o: [".....", ".###.", "##.##", "##..#", "##..#", ".###."],
+    v: [".....", "##..#", "##..#", "##..#", "##.#.", ".##.."],
 };
+const ROWS = 6;
 /**
  * Lit pixels are drawn from the symbol set, weighted toward the full shapes
  * (■ ● ▲, a few ♥) so the letters read solid, with ✕ and + for texture.
@@ -50,37 +51,30 @@ export function AsciiWord({
     text,
     className,
     seed = 1,
-    ...rest
 }: {
     text: string;
     className?: string;
     seed?: number;
-    "data-reveal"?: string;
 }) {
     const letters = [...text].map((ch) => FONT[ch] ?? FONT.o!);
     const cols = letters.length * 6 - 1;
     const lit = (x: number, row: number) => {
-        if (x < 0 || x >= cols || row < 0 || row > 6 || x % 6 === 5) return false;
+        if (x < 0 || x >= cols || row < 0 || row >= ROWS || x % 6 === 5) return false;
         return letters[Math.floor(x / 6)]![row]![x % 6] === "#";
     };
-    // the resting dots never change: one SVG; each letter's symbols (and its faint halo)
-    // get an SVG of their own, so a reveal fades whole letters on the compositor instead
-    // of repainting hundreds of shapes
-    const dots: ReactNode[] = [];
-    const byLetter: ReactNode[][] = letters.map(() => []);
-    for (let row = 0; row < 7; row++) {
+    const cells: ReactNode[] = [];
+    for (let row = 0; row < ROWS; row++) {
         for (let x = 0; x < cols; x++) {
             const key = `${x},${row}`;
-            const letter = byLetter[Math.min(letters.length - 1, Math.floor(x / 6))]!;
             if (lit(x, row)) {
                 const ink = INKS[Math.floor(x / 6) % INKS.length]!;
-                letter.push(
+                cells.push(
                     <g key={key} className={`px ink-${ink}`}>
                         <ShapeCell name={pick(hash(x, row, seed))} x={x * 16} y={row * 16} />
                     </g>,
                 );
             } else if (lit(x - 1, row) || lit(x + 1, row) || lit(x, row - 1) || lit(x, row + 1)) {
-                letter.push(
+                cells.push(
                     <g
                         key={key}
                         className="px g-halo"
@@ -90,7 +84,7 @@ export function AsciiWord({
                     </g>,
                 );
             } else {
-                dots.push(
+                cells.push(
                     <circle
                         key={key}
                         className="g-off"
@@ -102,27 +96,11 @@ export function AsciiWord({
             }
         }
     }
-    const share = (n: number) => `${((n * 16) / (cols * 16)) * 100}%`;
     return (
-        <div
-            {...rest}
-            className={["ascii-word", className].filter(Boolean).join(" ")}
-            aria-hidden="true"
-        >
-            <svg className="ascii-grid" viewBox={`0 0 ${cols * 16} ${7 * 16}`} focusable="false">
-                {dots}
+        <div className={["ascii-word", className].filter(Boolean).join(" ")} aria-hidden="true">
+            <svg viewBox={`0 0 ${cols * 16} ${ROWS * 16}`} focusable="false">
+                {cells}
             </svg>
-            {byLetter.map((cells, i) => (
-                <svg
-                    key={i}
-                    className="ascii-letter"
-                    viewBox={`${i * 96} 0 96 ${7 * 16}`}
-                    style={{ left: share(i * 6), width: share(6), "--i": i } as CSSProperties}
-                    focusable="false"
-                >
-                    {cells}
-                </svg>
-            ))}
         </div>
     );
 }

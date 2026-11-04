@@ -39,7 +39,7 @@ export function SiteFooter() {
                         ))}
                     </nav>
                 </div>
-                <AsciiWord text="Beamcove" className="footer-wordmark" data-reveal="fill" />
+                <AsciiWord text="Beamcove" className="footer-wordmark" />
                 <p className="footer-bottom">
                     <span>
                         © {new Date().getFullYear()} {SITE.legalName} ·{" "}

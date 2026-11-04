@@ -17,7 +17,7 @@ in Notion; keep `src/content/` in step with it.
 
 It is built on the Beamcove design system, **Signal** (a night sky, a lighthouse
 and a field of glyphs: one dark theme, one dot grid through every page that
-each section prints its own glyph scene onto, Departure Mono + JetBrains Mono + Onest). A copy lives in
+each section prints its own glyph scene onto, Bitcount Grid Double + JetBrains Mono + Onest). A copy lives in
 [`src/design-system/`](../src/design-system/README.md), and `/design/` shows every
 piece of it.
 

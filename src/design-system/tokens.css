@@ -8,9 +8,9 @@
     font-display: swap;
 }
 @font-face {
-    font-family: "Departure Mono";
-    src: url("fonts/DepartureMono-Regular.woff2") format("woff2");
-    font-weight: 400;
+    font-family: "Bitcount Grid Double";
+    src: url("fonts/BitcountGridDouble-Light.woff2") format("woff2");
+    font-weight: 100 900;
     font-style: normal;
     font-display: swap;
 }
@@ -59,7 +59,7 @@
 
 :root {
     --font-sans: "Onest", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-pixel: "Departure Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-pixel: "Bitcount Grid Double", ui-monospace, SFMono-Regular, Menlo, monospace;
     --font-display: var(--font-pixel);
     --space-0-5: 2px;
     --space-1: 4px;

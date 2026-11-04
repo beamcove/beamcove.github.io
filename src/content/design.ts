@@ -15,7 +15,7 @@ export const DESIGN_PRINCIPLES = [
     },
     {
         title: "One voice, one signal.",
-        body: "Onest for everything you read. Departure Mono only for the small machine details: kickers, dates, numbers.",
+        body: "Onest for everything you read. Bitcount Grid Double only for the small machine details: kickers, dates, numbers.",
     },
     {
         title: "Shapes everyone knows.",
@@ -40,7 +40,7 @@ export const TYPE_SPECIMENS = [
     },
     { cls: "body", note: "Onest 16", sample: "Body copy sits beside titles and inside cards." },
     { cls: "label", note: "Onest 14 / 500", sample: "Form label" },
-    { cls: "signal", note: "Departure Mono 13", sample: "01 · What we do · Oct 27, 2026" },
-    { cls: "signal-lg", note: "Departure Mono 22", sample: "01 / 03" },
-    { cls: "signal-xl", note: "Departure Mono 44", sample: "99.9" },
+    { cls: "signal", note: "Bitcount Grid Double 13", sample: "01 · What we do · Oct 27, 2026" },
+    { cls: "signal-lg", note: "Bitcount Grid Double 22", sample: "01 / 03" },
+    { cls: "signal-xl", note: "Bitcount Grid Double 44", sample: "99.9" },
 ] as const;
