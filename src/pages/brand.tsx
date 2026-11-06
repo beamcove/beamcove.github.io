@@ -250,8 +250,8 @@ export function BrandPage() {
                         <p className="type-specimen type-specimen-display">01</p>
                         <p className="signal">Oct 27, 2026 · beamcove.com · {SITE.email}</p>
                         <p className="body-text">
-                            Kickers, dates, numbers, tags, captions and the wordmark. Only at these
-                            sizes: 13px for labels, 22 and 44px for numbers.
+                            Dates, numbers and the wordmark. Only at these sizes: 16px for dates and
+                            small numbers, 22 and 44px for big numbers. Labels read in Onest.
                         </p>
                     </Card>
                 </div>

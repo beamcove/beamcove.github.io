@@ -12,6 +12,6 @@ export const LOGBOOK: LogEntry[] = [
         date: "2026-10-27",
         tag: "Site",
         title: "A new beamcove.com",
-        body: "Redesigned on Ink & tide, our design system. New pages: about, values, this updates page, and privacy and terms in plain language.",
+        body: "A full redesign, with new pages: about, values, this updates page, and privacy and terms in plain language.",
     },
 ];

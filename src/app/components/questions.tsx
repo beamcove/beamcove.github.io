@@ -14,7 +14,7 @@ export function Questions({ n }: { n?: number }) {
             <div className="wrap split">
                 <div className="copy" data-quiet data-reveal>
                     <ChapterHead id="questions" n={n} kicker="FAQ" title="Asked and answered.">
-                        "The things people ask us most."
+                        The things people ask us most.
                     </ChapterHead>
                     <a className="bc-more more" href={`${ROUTES.contact}#questions`}>
                         See all questions <Icon node={ArrowRight} />

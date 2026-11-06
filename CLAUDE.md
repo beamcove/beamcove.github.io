@@ -36,8 +36,10 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    rules: tokens never hex, sentence case, one theme (Midnight, no picker,
    nothing stored on the device). **Two faces only:** Onest for everything you
    read; Bitcount Grid Double, pinned at Light 300 (never heavier), only for
-   signals (kickers, dates, numbers, tags, the wordmark) at 13px for labels, 22 or
-   44px for numbers. The glyph wordmark copies its letterforms. Buttons and controls are solid, never outlined.
+   signals (dates, numbers, the wordmark) at 16px for small details, 22 or 44px
+   for big numbers. Labels (kickers, eyebrows, tags) read in Onest 500: the
+   dotted face is too faint at small sizes (see the readability block at the
+   end of `page.css`). The glyph wordmark copies its letterforms. Buttons and controls are solid, never outlined.
    Glyphs are chunky (bold, round); symbols are only universal shapes (`Shape`:
    ● ▲ ■ ♥ ✕ + —). The mark is ● ▲ ■ in inks b, e, a; never draw new symbols.
 3. **The page is the grid.** One 16px dot matrix, drawn once on `<html>`,
