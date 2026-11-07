@@ -232,7 +232,7 @@ export function BrandPage() {
                 id="type"
                 kicker="Type"
                 title="Typography."
-                lead="One voice and one signal: Onest for everything you read, and Bitcount Grid Double for the small machine details around it."
+                lead="One voice and one signal: Onest for everything you read, and Bitcount Grid Double for the few big moments around it: the name, counters and big numbers."
                 stacked
             >
                 <div className="type-grid type-grid-two">
@@ -248,10 +248,11 @@ export function BrandPage() {
                     <Card variant="plain" data-reveal>
                         <p className="signal muted">Bitcount Grid Double · signals</p>
                         <p className="type-specimen type-specimen-display">01</p>
-                        <p className="signal">Oct 27, 2026 · beamcove.com · {SITE.email}</p>
+                        <p className="signal-lg">Beamcove · 01 / 03</p>
                         <p className="body-text">
-                            Dates, numbers and the wordmark. Only at these sizes: 16px for dates and
-                            small numbers, 22 and 44px for big numbers. Labels read in Onest.
+                            The wordmark, counters and big numbers, at 20 or 40px only: its dots sit
+                            on a 10px grid, so other sizes blur. Labels, dates and small numbers
+                            read in Onest.
                         </p>
                     </Card>
                 </div>

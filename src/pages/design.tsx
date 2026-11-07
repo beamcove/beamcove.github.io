@@ -408,7 +408,7 @@ export function DesignPage() {
                 id="type"
                 eyebrow="Type"
                 title="Two faces."
-                lead="Onest for everything you read. Bitcount Grid Double only for signals: dates, numbers and the wordmark, at 16px for small details and 22 or 44px for big numbers. Labels read in Onest. Each block switches face at most once."
+                lead="Onest for everything you read, labels, dates and small numbers included. Bitcount Grid Double only for big signals: the wordmark and counters at 20px, big numbers at 40px, on its 10px grid so the dots print crisp. Each block switches face at most once."
             >
                 <ul className="type-scale">
                     {TYPE_SPECIMENS.map((t) => (

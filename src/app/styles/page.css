@@ -1727,49 +1727,154 @@ button:focus-visible {
    vendored files stay verbatim copies. Move them into the design-system repo
    when it takes these values.
 
-   Bitcount Grid Double draws each letter in dots, and at 13px Light only about
-   a fifth of a label's box is ink: a label whose colour measures 8:1 renders
-   nearer 4:1, and fainter still on standard-density screens. So words in
-   labels read in Onest 500, and the dotted face stays for dates and numbers,
-   at 16px or larger. */
+   Bitcount Grid Double draws each letter in dots on a 100-unit grid. Below 20px
+   (and Light, as we set it) only a fifth of a letter's box is ink, so a label
+   whose colour measures 8:1 reads nearer 4:1, and the dots blur on standard
+   screens. And at sizes off its grid (13, 16, 22, 44px) the dots fall between
+   screen pixels and smear. So:
+   - every small signal (labels, dates, chapter numbers, captions, code) reads
+     in Onest: `--font-pixel` now points at it, so nothing small can slip back;
+   - Bitcount is opt-in, through `--font-signal`, for display moments only:
+     the wordmark and counters at 20px, big numbers at 40px. On its grid
+     (whole multiples of 10px) each dot lands on whole pixels and prints crisp. */
 :root {
+    --font-signal: "Bitcount Grid Double", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-pixel: var(--font-sans);
     /* 4.5:1 or more on every surface (was #727790: 4.2, 3.9 and 3.6:1) */
     --ink-subtle: #8a8fa8;
     /* 3:1 or more on page and panels, so field edges and rules read
        (was #3c4259: 1.9:1) */
     --line-strong: #666e8e;
 }
+
+/* Bitcount, at sizes on its grid */
+.wordmark,
+.count,
+.value-n,
+.principle-n,
+.signal-lg,
+.bc-meter-lg .bc-meter-value,
+.wordmark-big,
+.signal-xl,
+.bc-stat-value,
+.type-specimen-display {
+    font-family: var(--font-signal);
+    font-weight: 300;
+    letter-spacing: 0;
+    /* the page's thin antialiasing shrinks each dot; the system default keeps
+       them full, about twice as bright on standard-density screens */
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}
+.wordmark,
+.count,
+.value-n,
+.principle-n,
+.signal-lg,
+.bc-meter-lg .bc-meter-value {
+    font-size: 20px;
+}
+.wordmark-big,
+.signal-xl,
+.bc-stat-value {
+    font-size: 40px;
+}
+/* dotted numbers need a stronger ink than solid text to read the same */
+.value-n {
+    color: var(--ink-muted);
+}
+
+/* Labels: words in Onest 500 */
 .bc-eyebrow,
 .bc-kicker,
 .hero-eyebrow,
 .kicker-plain,
 .hero-cue,
 .footer-heading,
-.footer-bottom,
-.bc-badge,
-.bc-rail-label {
-    font-family: var(--font-sans);
+.bc-rail-label,
+.legal-toc .caption,
+.bc-frame-label,
+.bc-stat-label,
+.voyage-lab-title {
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.01em;
 }
-.bc-badge {
-    font-size: 13px;
-}
-/* numbers and dates keep the signal face, one cell tall */
+
+/* Small details: dates, chapter numbers, captions, code. Onest, at 14px or more,
+   with even-width figures so numbers line up the way they did in the pixel face */
 .signal,
+.eyebrow,
+.caption,
+.mono,
+.footer-bottom,
+.entry-meta,
+.page-meta,
 .bc-kicker-n,
 .bc-rail-n,
-.entry-meta time,
+.legal-toc a::before,
+.prose code,
+.swatch-grid .mono,
+.type-scale-meta,
+.bc-kbd,
+.bc-stat-unit,
+.bc-stat-caption,
+.bc-meter-value,
+.bc-field-hint,
+.bc-field-error,
+.tick-list li::before,
+.cross-list li::before {
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+}
+.bc-kicker-n,
+.bc-rail-n,
 .legal-toc a::before {
-    font-family: var(--font-pixel);
-    font-size: 16px;
-    font-weight: 400;
+    font-weight: 500;
 }
 .entry-meta {
     line-height: 20px;
 }
+.bc-badge {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+.bc-callout-icon,
+.crew-avatar {
+    font-weight: 600;
+}
+.crew-avatar {
+    font-size: 20px;
+}
+
 /* words waiting to light up stay readable (0.5 is 4.6:1; 0.2 was 1.7:1) */
 .motion .bc-lit:not(.is-in) span {
     opacity: 0.5;
+}
+
+/* Targets: footer links and the wordmark reach 24px tall without moving anything */
+.footer-cols a,
+.footer-bottom a,
+.wordmark {
+    display: inline-block;
+    padding-block: 3px;
+    margin-block: -3px;
+}
+.wordmark {
+    display: inline-flex;
+}
+
+/* Asked for more contrast: secondary text reads in the text colour, and the glyph
+   art steps back behind the copy */
+@media (prefers-contrast: more) {
+    :root {
+        --ink-muted: var(--ink);
+        --ink-subtle: var(--ink);
+        --line-strong: var(--rule);
+    }
+    .bc-print {
+        opacity: 0.4;
+    }
 }

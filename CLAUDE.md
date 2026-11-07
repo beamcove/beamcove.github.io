@@ -35,11 +35,12 @@ Node >= 22. A lefthook pre-commit hook blocks unformatted commits.
    `design-system` repo (prettier-ignored) — re-copy, don't hand-edit. Follow its
    rules: tokens never hex, sentence case, one theme (Midnight, no picker,
    nothing stored on the device). **Two faces only:** Onest for everything you
-   read; Bitcount Grid Double, pinned at Light 300 (never heavier), only for
-   signals (dates, numbers, the wordmark) at 16px for small details, 22 or 44px
-   for big numbers. Labels (kickers, eyebrows, tags) read in Onest 500: the
-   dotted face is too faint at small sizes (see the readability block at the
-   end of `page.css`). The glyph wordmark copies its letterforms. Buttons and controls are solid, never outlined.
+   read, including labels, dates and small numbers (`--font-pixel` points at
+   Onest); Bitcount Grid Double, pinned at Light 300 (never heavier), only for
+   display signals through `--font-signal`: the wordmark and counters at 20px,
+   big numbers at 40px. Its dots sit on a 10px grid, so only multiples of 10px
+   print crisp; below 20px it's too faint to read (see the readability block at
+   the end of `page.css`). The glyph wordmark copies its letterforms. Buttons and controls are solid, never outlined.
    Glyphs are chunky (bold, round); symbols are only universal shapes (`Shape`:
    ● ▲ ■ ♥ ✕ + —). The mark is ● ▲ ■ in inks b, e, a; never draw new symbols.
 3. **The page is the grid.** One 16px dot matrix, drawn once on `<html>`,
