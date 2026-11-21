@@ -14,15 +14,16 @@ concurrency:
     group: pages
     cancel-in-progress: true
 
+# Every job runs on the self-hosted Mac, `beamcove-mac`, never on GitHub's runners (the handbook's
+# ci.md); npm keeps its own cache there.
 jobs:
     build:
-        runs-on: ubuntu-latest
+        runs-on: beamcove-mac
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
               with:
                   node-version-file: .nvmrc
-                  cache: npm
             - run: npm ci
             - run: npm run format:check
             - run: npm test
@@ -33,7 +34,7 @@ jobs:
 
     deploy:
         needs: build
-        runs-on: ubuntu-latest
+        runs-on: beamcove-mac
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
