@@ -1,4 +1,0 @@
-# actionlint: the self-hosted runner every job runs on, the Mac (handbook ci.md).
-self-hosted-runner:
-    labels:
-        - beamcove-mac
